@@ -14,9 +14,17 @@ class LanguageTools():
 
     def __init__(self,qiapp):
         self.qiapp = qiapp
-        self.memory = self.qiapp.session.service("ALMemory")
-        self.tts = self.qiapp.session.service("ALTextToSpeech")
-        self.asr = self.qiapp.session.service("ALSpeechRecognition")
+        if self.qiapp != None:
+            self.memory = self.qiapp.session.service("ALMemory")
+            self.tts = self.qiapp.session.service("ALTextToSpeech")
+            self.asr = self.qiapp.session.service("ALSpeechRecognition")
+        else:
+            # fuck compatibility of retro compatibility of cleaning that mess to come back to a efficient emulated old naoqi v1 Arghhghghghghgh
+            import abcdk.naoqitools as naoqitools
+            self.memory = naoqitools.myGetProxy("ALMemory")
+            self.tts = naoqitools.myGetProxy("ALTextToSpeech")
+            self.asr = naoqitools.myGetProxy("ALSpeechRecognition")
+            
 
     def getSpeakLanguage(self):
         """

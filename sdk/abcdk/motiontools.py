@@ -631,21 +631,21 @@ def getCurrentPosture():
         #~ print( "DBG: motiontools.getCurrentPosture: nNumPos: %s" % nNumPos );
         kPosCrouching1_14 = 10162;
         strSensorTemplate = "Device/SubDeviceList/%s/Position/Sensor/Value";
-        arKneeAngle = memory.getListData( [ strSensorTemplate % "RKneePitch", strSensorTemplate % "LKneePitch" ] );
+        arKneeAngle = memory.getListData( [ strSensorTemplate % "RKneePitch", strSensorTemplate % "LKneePitch" ] ); # TODO: Err on pepper: joint name is KneePitch !
         #~ print( "DBG: motiontools.getCurrentPosture: arKneeAngle: %s" % arKneeAngle );
         bKneeFlexed = (reduce(lambda x, y: abs(x) + y, arKneeAngle) / len(arKneeAngle)) >1.3; # is average > 1.3 ?
         #~ print( "DBG: motiontools.getCurrentPosture: bKneeFlexed: %s" % bKneeFlexed );
         if( nNumPos == kPosCrouching1_14 or kPosCrouching1_14 in nNumPos or (strPos == "Standing" and bKneeFlexed) ): # What a surprise, now in 1.22 _getPosture return an array of posture !!!
             strPos = "Crouching";
     except BaseException, err:
-        print( "DBG: normal error: " + str( err ) );
+        print( "DBG: getCurrentPosture: normal error (or not on NAO): " + str( err ) );
         rp = None;
     if( rp == None ):
         try:
             rp = naoqitools.myGetProxy( "ALRobotPose" );
             strPos = rp.getActualPoseAndTime()[0];    
         except BaseException, err:
-            print( "ERR: abnormal error: " + str( err ) + " (or we are on romeo? => TODO: add in poselibrary the romeo case) => returning Standing" );
+            print( "DBG: getCurrentPosture: abnormal error: " + str( err ) + " (or we are on romeo? => TODO: add in poselibrary the romeo case) => returning Standing" );
             return "Standing";
     return convertPostureName( strPos );
 # getCurrentPosture - end

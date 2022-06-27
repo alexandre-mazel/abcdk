@@ -2,7 +2,7 @@
 
 ###########################################################
 # Aldebaran Behavior Complementary Development Kit
-# Knowledge database access
+# Knowledge database access from the web
 # Aldebaran Robotics (c) 2010 All Rights Reserved - This file is confidential.
 ###########################################################
 

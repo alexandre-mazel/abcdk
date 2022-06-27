@@ -23,7 +23,8 @@ import sys
 import os
 import time
 from threading import Thread
-from termcolor import colored, cprint
+try: from termcolor import colored, cprint
+except: print( "WRN: termcolor module not found !" )
 
 DEBUG    = 0
 INFO     = 1
@@ -111,7 +112,11 @@ class LogFormatter(Thread):
         Method used to format and display the logs on the fly
         """
 
-        logFile = open(self.filename, 'r')
+        try:
+            logFile = open(self.filename, 'r')
+        except Exception as err:
+            print( "WRN: followAndDisplayLogs: can't open %s ? is it important ?" % (self.filename) )
+            return
 
         logFile.seek(0.2)
 

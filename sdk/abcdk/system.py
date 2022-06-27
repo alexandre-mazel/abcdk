@@ -10,6 +10,7 @@
 """Aldebaran Behavior Complementary Development Kit: A module for system tools."""
 print( "importing abcdk.system" );
 
+import datetime
 import math
 import os
 import signal
@@ -107,6 +108,19 @@ def isOnPepper( bForceRecompute = False ):
     global_isOnPepper = bRet;
     return bRet;
 # isOnPepper - end
+
+global_rPepperVersion = None
+def getPepperVersion():
+    """
+    Get the pepper version as a float 1.0,1.6, 1.8, 1.9 ...
+    return -1 if not on Pepper
+    NB: Pepper 1.8a will be returned as 1.78
+    """
+    global global_rPepperVersion
+    if global_rPepperVersion != None:
+        return global_rPepperVersion
+    return 1.78 # TODO: explore: RobotConfig/Head/Version
+    
 
 def reloadSystemPrecalcGlobal():
     """
@@ -971,6 +985,16 @@ class BatteryRomeo:
 # class BatteryRomeo - end
     
 battery = BatteryRomeo();
+
+def getHourMin():
+    dt = datetime.datetime.today()
+    return dt.hour, dt.minute
+#~ print( "getHourMin:  " + str(getHourMin() ) )
+
+def getDateStamp():
+    dt = datetime.datetime.today()
+    return "%4d/%02d/%02d" % (dt.year, dt.month, dt.day)
+#~ print( "getDateStamp:  " + str(getDateStamp() ) )
     
 
 def autoTest():

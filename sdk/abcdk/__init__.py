@@ -8,7 +8,7 @@
 
 """A package for developping behavior on Nao."""
 
-__version__ = '0.9.400'
+__version__ = '0.9.500'
 
 __all__ = [
     'config.py',

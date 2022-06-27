@@ -12,7 +12,7 @@ import time
 try: 
     import speech_recognition 
 except: 
-    pass
+    print "ERROR: please install speech_recognition: pip install speechrecognition # as root"
 
 try:
     from bs4 import BeautifulSoup 
@@ -20,6 +20,33 @@ except:
     pass
 
 from abcdk.sound import language_tools
+
+# for sakes, you want somme logging ? let's print them, first.
+class LogCustom:
+    def __init__( self ):
+        self.bPrintAll = False
+        
+    def setPrintAll( self, bNewVal ):
+        self.bPrintAll = bNewVal
+        
+    def info( self, s ):
+        if self.bPrintAll: print( "INF: %s" % str(s) )
+        logging.info(s)
+
+    def warn( self, s ):
+        if self.bPrintAll: print( "WRN: %s" % str(s) )
+        logging.warn(s)
+
+    def debug( self, s ):
+        if self.bPrintAll: print( "DBG: %s" % str(s) )
+        logging.debug(s)
+
+    def error( self, s ):
+        if self.bPrintAll: print( "ERR: %s" % str(s) )
+        logging.error(s)
+# class LogCustom
+log = LogCustom()
+log.setPrintAll(True)
 
 # Define the singleton metaclass
 class Singleton(type):
@@ -36,7 +63,7 @@ class FreeSpeech():
     #specify that FreeSpeech is an instantiation of the metaclass Singleton
     __metaclass__ = Singleton
     
-    def __init__( self, qiapp ):
+    def __init__( self, qiapp = None ):
         self.lt = language_tools.LanguageTools(qiapp)
 
     def cleanText(self, rawResume):
@@ -57,29 +84,29 @@ class FreeSpeech():
         try:
             txt = str(txt)
         except BaseException, err:
-            logging.debug( "can't convert text to ascii?" )
+            log.debug( "can't convert text to ascii?" )
             try:
                 txt = self.cleanText(txt)
             except:
-#                    logging.warning("freespeech : analyse : you need to install beautifulsoup4")
+#                    log.warning("freespeech : analyse : you need to install beautifulsoup4")
                 #Methode with "ai"
                 unicoded = unicode(txt).encode('utf8')
-                logging.debug( "unicoded: %s" % unicoded )
+                log.debug( "unicoded: %s" % unicoded )
                 utxt = str(unicoded)
-                logging.debug( "txt: %s" % utxt )
+                log.debug( "txt: %s" % utxt )
                 txt = ""
                 for c in utxt:
                     if ord(c) < 128:
                         txt += c
                     else:
-                        logging.debug( "bad char: %s %d" % (c, ord(c) ) )
+                        log.debug( "bad char: %s %d" % (c, ord(c) ) )
                         ordc = ord(c)
                         if( ordc in [168, 169, 170, 171] ):
                             txt += "ai"
                         if( ordc in [160] ):
                             txt += "a"
                         
-            logging.debug( "txt2: %s" % txt )
+            log.debug( "txt2: %s" % txt )
         return txt
         
 
@@ -92,18 +119,18 @@ class FreeSpeech():
         try:
             import speech_recognition
         except:
-            logging.error( "FreeSpeech.analyse: remote free speech server is not available... (speech_recognition: is not installed on this robot ? copy some binary to the site-library" )
+            log.error( "FreeSpeech.analyse: remote free speech server is not available... (speech_recognition: is not installed on this robot ? copy some binary to the site-library" )
             return None
         
     
-        #~ logging.info( "FreeSpeech.analyse: sending to speech reco '%s'" % strSoundFilename )
+        #~ log.info( "FreeSpeech.analyse: sending to speech reco '%s'" % strSoundFilename )
         
         strAnsiLang = strUseLang
         if( strAnsiLang == "" ):
             strAnsiLang = self.lt.getSpeakLanguageAnsiCode( self.lt.getSpeakLanguage() )
-            logging.debug( "After autodetection, using Lang input: %s" % strAnsiLang )
+            log.info( "sound.freespeech.analyse: After autodetection, using Lang input: %s" % strAnsiLang )
         else:
-            logging.debug( "Using Lang input: %s" % strAnsiLang )
+            log.info( "sound.freespeech.analyse: Using Lang input: %s" % strAnsiLang )
 
         retVal = None
         
@@ -117,7 +144,7 @@ class FreeSpeech():
         try:
             # for testing purposes, we're just using the default API key
             retFromReco =r.recognize_google(audio, language = strAnsiLang, show_all = True )
-            logging.debug( "retFromReco: %s" % retFromReco )
+            log.debug( "retFromReco: %s" % retFromReco )
             if retFromReco != []:
                 
                 alt = retFromReco['alternative']
@@ -127,22 +154,25 @@ class FreeSpeech():
                 if 'confidence' in alt[0]:
                     rConf = alt[0]['confidence']
                 else:
-                    logging.debug('no confidence returned')
+                    log.debug('no confidence returned')
                     rConf = -1.0
             
                 strTxt = self.cleanText2( strTxt )
-                logging.info("Google Speech Recognition thinks you said: '%s' (conf:%5.2f)\n" % (strTxt, rConf) )
+                log.info("Google Speech Recognition thinks you said: '%s' (conf:%5.2f)\n" % (strTxt, rConf) )
                 retVal = [ [strTxt,rConf] ]
 
         except speech_recognition.UnknownValueError:
             pass
             
         except speech_recognition.RequestError as e:
-            logging.error("Could not request results from Google Speech Recognition service; {0}".format(e))
+            log.error("Could not request results from Google Speech Recognition service; {0}".format(e))
     
         rProcessDuration = time.time() - timeBegin
         self.rSkipBufferTime = rProcessDuration  # if we're here, it's already to zero
 
-        if retVal == None: logging.info("Google Speech Recognition could not understand audio\n")
+        if retVal == None: log.info("Google Speech Recognition could not understand audio\n")
 
         return retVal
+
+# class FreeSpeech
+freeSpeech = FreeSpeech()

@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+# todo
+# oh yes => yes
+# yes please => yes
+
 ###########################################################
 # Aldebaran Behavior Complementary Development Kit
 # method to help constructing some ihm dialog (choice, ...)
@@ -85,21 +89,27 @@ def choice( strQuestion, listChoice, rTimeOut = 12., nDefaultSelection = -1, bUs
         else:
             html_manager.showHTMLQuestion(strQuestion,listSpecificDisplay)        
 
+    try:
+        bUseCustomASR = mem.getData( "CustomRemoteASR_Running" ) == True
+    except: bUseCustomASR = False
     if( bUseSpeechReco ):
-        try:        
-            strExtractorName = "abcdk.ihmtools";
-            asr = naoqitools.myGetProxy( "ALSpeechRecognition" );
-            asr.setVisualExpression( True );
-            asr.setAudioExpression( False );
-            asr.setVocabulary( listChoice, bEnableWordSpotting );
-            print( "avant*****************************************" );
-            asr.subscribe( strExtractorName );
-            print( "apres******************************************" );
+        try:
+            if bUseCustomASR:
+                print("WRN: ihmtools.choice: Using WordRecognized from another ASR" )
+            else:
+                strExtractorName = "abcdk.ihmtools";
+                asr = naoqitools.myGetProxy( "ALSpeechRecognition" );
+                asr.setVisualExpression( True );
+                asr.setAudioExpression( False );
+                asr.setVocabulary( listChoice, bEnableWordSpotting );
+                print( "avant*****************************************" );
+                asr.subscribe( strExtractorName );
+                print( "apres******************************************" );
         except BaseException, err:
             print("WRN: ihmtools.choice: can't start Automatic Speech Recognition. Using only tactile sensors... err: %s" % str(err) );
             bUseSpeechReco = False; # error occurs, bad...
         
-    if( not bUseSpeechReco ):
+    if( not bUseSpeechReco ): # or bUseCustomASR to activate bip when using customasr
         sound.play.playSound( "bipReco13.wav" ); 
         sound.play.playSound( "/usr/share/naoqi/wav/begin_reco.wav" ); # depuis la 2.0.x, le nom a changé $$$$ todo: retrocompatibilité plus propre ?
         sound.play.playSound( "/opt/aldebaran/share/naoqi/wav/begin_reco.wav" ) # depuis la 2.5.x, le nom a changé $$$$ todo: retrocompatibilité plus propre ?
@@ -138,8 +148,9 @@ def choice( strQuestion, listChoice, rTimeOut = 12., nDefaultSelection = -1, bUs
         if( bFront or bMiddle or bRear ):
             print( "INF: ihmtools.choice: touched: %s, %s, %s => user cancel: %s" % (str(bFront), str(bMiddle), str(bRear), str(bUserCancel)) );
             if( bUseSpeechReco ):
-                bUseSpeechReco = False;                
-                asr.unsubscribe( strExtractorName );
+                bUseSpeechReco = False;
+                if not bUseCustomASR:
+                    asr.unsubscribe( strExtractorName );
 
 
         if( bUserCancel ):
@@ -169,8 +180,9 @@ def choice( strQuestion, listChoice, rTimeOut = 12., nDefaultSelection = -1, bUs
             nSelection = -1;
             
         recognized = mem.getData( "WordRecognized" ); # we check it every time, as it could be simulated from an external point
-        #~ print( "recognized: %s" % recognized );
+        #~ print( "DBG: choice: recognized: %s" % recognized );
         if( recognized != None and len( recognized ) > 1 ):
+            print( "DBG: choice: recognized (2): %s" % recognized );
             strWord = recognized[0];
             rConfidence = recognized[1];
             if( rPreviousConf != rConfidence ):
@@ -180,9 +192,17 @@ def choice( strQuestion, listChoice, rTimeOut = 12., nDefaultSelection = -1, bUs
                 strWord = strWord.replace( "<...>", "" );
                 strWord = strWord.strip();
                 #~ print( "INF: ihmtools.choice: received after cleaning: '%s', conf: %5.3f, listChoice: %s" % ( strWord, rConfidence, str(listChoice) ) );
-                if( rConfidence > rConfidenceThreshold and strWord in listChoice ):
-                    nSelection = listChoice.index( strWord );
-                    bFinished = True;
+                if bEnableWordSpotting:
+                    for c in listChoice:
+                        print( "INF: ihmtools.choice: bEnableWordSpotting: is '%s' in '%s' ?" % (c,strWord) )
+                        if c in strWord:
+                            strWord = c
+                if( rConfidence > rConfidenceThreshold ):
+                    if strWord in listChoice:
+                        nSelection = listChoice.index( strWord );
+                        bFinished = True;
+                    else:
+                        tts.say( "Sorry, did you say yes?" );
                 else:
                     timeBegin = time.time();
             #~ time.sleep( 0.1 ); # in 1.22.x: the string is never resetted, so we enter this very often. We add this sleep to let him breath a bit (that's sad because so, we could miss some tactile event...) (but if we're there, we are in speech mode, so don't worry)
@@ -197,9 +217,10 @@ def choice( strQuestion, listChoice, rTimeOut = 12., nDefaultSelection = -1, bUs
                 bFinished = True;
 
     # while - end
-    if( bUseSpeechReco ):
+    if( bUseSpeechReco and not bUseCustomASR):
         asr.unsubscribe( strExtractorName );    
-    else:        
+        
+    if not bUseSpeechReco:
         sound.play.playSound( "bipReco14.wav" );
         sound.play.playSound( "/usr/share/naoqi/wav/end_reco.wav" );
         sound.play.playSound( "/opt/aldebaran/share/naoqi/wav/end_reco.wav" );
@@ -298,7 +319,7 @@ def askConfirmation( strQuestion, rTimeOut = 12., bAskConfirmation = False, bRep
     listChoiceWithRatio = translate.getListYesNo();
     #~ print( "listChoiceWithRatio: " % listChoiceWithRatio );
     listChoice = [ a[0] for a in listChoiceWithRatio ];
-    retVal = choice( strQuestion, listChoice, rTimeOut, bRepeatChoosenAnswer = bRepeatChoosenAnswer, listSpecificDisplay = ["oui", "non"], bUseDisplay=bUseDisplay );
+    retVal = choice( strQuestion, listChoice, rTimeOut, bRepeatChoosenAnswer = bRepeatChoosenAnswer, listSpecificDisplay = ["oui", "non"], bUseDisplay=bUseDisplay, bEnableWordSpotting = True );
     if( retVal != None ):
         rVal = listChoiceWithRatio[retVal[0]][1];
         print( "INF: ihmtools.askConfirmation: get idx: %s='%s' => val: %s" % (retVal[0], retVal[1], rVal ) );

@@ -28,6 +28,14 @@ import system
 import test
 import tracking # to use tracking initialisation, without copy/paste the code, but we won't use the tracking update method!
 
+def prorateMinMax( rVar, arRange ):
+    """
+    compute a variable from a range
+    rVar: [-1, +1], -1 => arRange[0], 1=> arRange[1]
+    """
+    return arRange[0] + ( (arRange[1]-arRange[0])*(rVar+1)/2 )
+    
+
 class BodyTalk:
     """
     Make the body moves, randomly related to some imaginated speech.
@@ -66,8 +74,9 @@ class BodyTalk:
         self.strFacePositionMemoryName = "Tracking/FacePosition";
         
         
-        self.nSayID = -1; # optionnal thread to watch for autostop
+        self.nSayID = -1; # optionnal thread to watch for autostop (either a tts thread or a playfile in case of CacheAndSay method)
         self.tts = None;
+        self.ap = None;
         
         self.rFaceTrackTimeBeforeLostFace = 4.; # after this time, if we haven't see face, raz head to center
         
@@ -242,7 +251,7 @@ class BodyTalk:
             motiontools.filterTimeline( headMoveOnTheFly, astrJointsToExclude );
             if( len(headMoveOnTheFly[0]) > 0 ):
                 print( "headMoveOnTheFly: %s" % headMoveOnTheFly )
-                self.motion.setAngles( headMoveOnTheFly[0], headMoveOnTheFly[2], headMoveOnTheFly[1] );
+                self.motion.setAngles( headMoveOnTheFly[0], headMoveOnTheFly[2], 0.2 ); # 19-02-06: Alma change headMoveOnTheFly[1] by 0.2 (fractionMaxSpeed)
         self.mutex.unlock();
     # prepare - end
     
@@ -269,13 +278,15 @@ class BodyTalk:
         self.nSayID = nSayID;
         if( self.nSayID != -1 and self.tts == None ):
             self.tts = naoqitools.myGetProxy( "ALTextToSpeech" );
+        if( self.nSayID != -1 and self.ap == None ):
+            self.ap = naoqitools.myGetProxy( "ALAudioPlayer" );
         if( self.nSayID != -1 ): #(so we don't use a say with light)
             if( self.bUseMouth ):
-                if leds.ledsDcm: leds.ledsDcm.setMouthColor( 1., 0xFF );
+                leds.ledsDcm.setMouthColor( 1., 0xFF );
             else:
                 # light leds
-                if leds.ledsDcm: leds.ledsDcm.setBrainLedsIntensity( 1., 100, bDontWait = True );
-                if leds.ledsDcm: leds.ledsDcm.setEarsLedsIntensity( 1., 100, bDontWait = True );
+                leds.ledsDcm.setBrainLedsIntensity( 1., 100, bDontWait = True );
+                leds.ledsDcm.setEarsLedsIntensity( 1., 100, bDontWait = True );
                 rPeriod = 0.1;
                 leds.setFavoriteColorEyes( True );
         self.initProxy();
@@ -303,25 +314,25 @@ class BodyTalk:
             try:
                 self.motion.stop( self.motion_id_head );
             except BaseException, err:
-                self.log( "DBG: should be normal error (1): %s" % str( err ) );
+                self.log( "DBG: stopCurrentMovements: should be normal error (1): %s" % str( err ) );
 
         if( self.motion.isRunning( self.motion_id_arms ) ):
             try:            
                   self.motion.stop( self.motion_id_arms );
             except BaseException, err:
-                self.log( "DBG: should be normal error (2): %s" % str( err ) );            
+                self.log( "DBG: stopCurrentMovements: should be normal error (2): %s" % str( err ) );            
                 
         if( self.motion.isRunning( self.motion_id_legs )  and self.bHasRightToUseLegs ):
             try:
                 self.motion.stop( self.motion_id_legs );
             except BaseException, err:
-                self.log( "DBG: should be normal error (3): %s" % str( err ) );            
+                self.log( "DBG: stopCurrentMovements: should be normal error (3): %s" % str( err ) );            
 
         if( self.motion_id_trunk != -1 and self.motion.isRunning( self.motion_id_trunk )  and self.bHasRightToUseLegs ):
             try:
                 self.motion.stop( self.motion_id_trunk );
             except BaseException, err:
-                self.log( "DBG: should be normal error (4): %s" % str( err ) );            
+                self.log( "DBG: stopCurrentMovements: should be normal error (4): %s" % str( err ) );            
     
     def stop( self, bWaitEndOfRestMovement = True ):
         while( self.mutex.testandset() == False ):
@@ -334,6 +345,11 @@ class BodyTalk:
                     self.tts.stop( self.nSayID );
                 except BaseException, err:
                     print( "DBG: abcdk.bodytalk.stop: tts err: %s" % str(err) );
+                try:
+                    self.ap.stop( self.nSayID );
+                except BaseException, err:
+                    print( "DBG: abcdk.bodytalk.stop: ap err: %s" % str(err) );
+                    
             self.bPrepared = False;
             self.bRunning = False;
             nIdxAnimation = 1;
@@ -349,11 +365,11 @@ class BodyTalk:
                 except: pass
             if( self.nSayID != -1 ): #(so we don't use a say with light)
                 # shut leds
-                if leds.ledsDcm: leds.ledsDcm.setBrainLedsIntensity( 0., 100, bDontWait = True );
-                if leds.ledsDcm: leds.ledsDcm.setEarsLedsIntensity( 0., 100, bDontWait = True );
-                if leds.ledsDcm: leds.setFavoriteColorEyes( False );
+                leds.ledsDcm.setBrainLedsIntensity( 0., 100, bDontWait = True );
+                leds.ledsDcm.setEarsLedsIntensity( 0., 100, bDontWait = True );
+                leds.setFavoriteColorEyes( False );
                 if( self.bUseMouth ):
-                    if leds.ledsDcm: leds.ledsDcm.ledsDcm.setMouthColor( 0.4, 0 );
+                    leds.ledsDcm.ledsDcm.setMouthColor( 0.4, 0 );
             
             if( self.eyesMover != None and not self.bTrackFace ):
                 self.eyesMover.lookAt3D( [0.,0.], random.random()/2 );
@@ -412,7 +428,7 @@ class BodyTalk:
         self.leds.post.fadeRGB( "FaceLeds", nColor, rDuration );       
     # blinkEyes - end
     
-    def update( self, rSide = 0., rElevation = 0. ):
+    def update( self, rSide = 0., rElevation = 0., rTimeModifier = 1. ):
         """
         rSide: side to direct the body talk, nb: it could be overriden if bTrackFace is on and there's a face seen.
         rElevation: elvation "" "" ""
@@ -478,7 +494,7 @@ class BodyTalk:
                 if( self.motion.isRunning( self.motion_id_head ) ):
                     self.motion.stop( self.motion_id_head );
             except BaseException, err:
-                self.log( "DBG: should be normal error: %s" % str( err ) );
+                self.log( "DBG: abcdk.BodyTalk.update: should be normal error: %s" % str( err ) );
             nIdxAnimation = numeric.randomDifferent( 0, len(self.movement_head)-1 ); # error: head are beginning from the first animation (not the second one)
             self.debug( "DBG: abcdk.BodyTalk.update: launching head animation: %d" % ( nIdxAnimation - 0 ) );
             #TODO: a gerer directement dans transformTimeLine !!!
@@ -490,6 +506,7 @@ class BodyTalk:
                 aMoveOnTheFly = motiontools.transformTimeline( self.movement_head[nIdxAnimation][0], self.movement_head[nIdxAnimation][1], self.movement_head[nIdxAnimation][2], listModif );
             else:
                 aMoveOnTheFly = [  self.movement_head[nIdxAnimation][0], self.movement_head[nIdxAnimation][1], self.movement_head[nIdxAnimation][2]   ];
+            aMoveOnTheFly[1] = motiontools.stretchTimelineTimes( aMoveOnTheFly[1], rTimeModifier )
             self.motion_id_head = self.motion.post.angleInterpolationBezier( aMoveOnTheFly[0], aMoveOnTheFly[1], aMoveOnTheFly[2] );
             self.aLastHeadAngle[0] = rSide;
             self.aLastHeadAngle[1] = rElevation;
@@ -504,6 +521,7 @@ class BodyTalk:
                 if( self.bUseTrunkYaw ):            
                     rSideToUse *= (1.-rCoefTrunk);
                 aMoveOnTheFly = motiontools.transformTimeline( self.movement_arms[nIdxAnimation][0], self.movement_arms[nIdxAnimation][1], self.movement_arms[nIdxAnimation][2], { self.strShoulderRoll: rSideToUse, self.strShoulderPitch: rElevation } );
+                aMoveOnTheFly[1] = motiontools.stretchTimelineTimes( aMoveOnTheFly[1], rTimeModifier )
                 self.motion_id_arms = self.motion.post.angleInterpolationBezier( aMoveOnTheFly[0], aMoveOnTheFly[1], aMoveOnTheFly[2] );
                 
         if( random.random() > 0.6 ): # do it frequently!
@@ -526,11 +544,12 @@ class BodyTalk:
                 nColor = 0;
             else:
                 nColor = random.randint(10,0xFF)
-            if leds.ledsDcm: leds.ledsDcm.setMouthColor( rPeriod, nColor );
+            leds.ledsDcm.setMouthColor( rPeriod, nColor );
             
         if( self.nSayID != -1 ):
-            bRunning = self.tts.isRunning( self.nSayID );
+            bRunning = self.tts.isRunning( self.nSayID ) or self.ap.isRunning( self.nSayID )
             if( not bRunning ):
+                print( "DBG: abcdk.BodyTalk.update: tts or ap task %d is finished..." % self.nSayID )
                 return False;
         
         return True;
@@ -551,16 +570,23 @@ class BodyTalk:
     # setDebugMode - end
     
     
-    def run( self, strTxt, bUseHead = True, bTrackFace = False, rSide = 0., rElevation = 0., astrJointsToExclude = [], astrObstacles = [], bWaitEndOfRestMovement = True ):
+    def run( self, strTxt, bUseHead = True, bTrackFace = False, rSide = 0., rElevation = 0., astrJointsToExclude = [], astrObstacles = [], bWaitEndOfRestMovement = True, strLangForCacheAndSay = "" ):
         """
         launch an automatic body talk related to some text
         """
+        
+        bUseCacheAndSay = strLangForCacheAndSay != None and strLangForCacheAndSay != ""
         
         if( self.tts == None ):
             self.tts = naoqitools.myGetProxy( "ALTextToSpeech" );
           
         self.prepare( bUseHead = bUseHead, rSide = rSide, rElevation = rElevation, bTrackFace = bTrackFace, astrJointsToExclude = astrJointsToExclude, astrObstacles = astrObstacles );
-        nSayID = self.tts.post.say( "\\PAU=700\\ " + speech.getTextWithCurrentSpeed( strTxt ) );        
+        
+        if bUseCacheAndSay:
+            # prepare sound
+            nSayID = speech.sayAndCache_launchBackgroundPlay( strTxt, bJustPrepare = False, nUseLang = strLangForCacheAndSay )
+        else:
+            nSayID = self.tts.post.say( "\\PAU=700\\ " + speech.getTextWithCurrentSpeed( strTxt ) );        
         self.start( bUseHead = bUseHead, bTrackFace = bTrackFace,  nSayID = nSayID, astrJointsToExclude = astrJointsToExclude, astrObstacles = astrObstacles );
         rPeriod = 0.5;
         bMustStop = False;
@@ -571,7 +597,64 @@ class BodyTalk:
             time.sleep( rPeriod );
         # end while
         self.stop( bWaitEndOfRestMovement );
-    # run - end        
+    # run - end
+    
+    def sayWithEmotion( self, strText, rHappiness, rConfidence, rEngagement = 0., bWaitEndOfRestMovement = True, astrJointsToExclude = [], astrObstacles = [] ):
+        """
+        use bodytalk to express an emotion.
+        - rHappiness: -1: sad, 0: neutral, 1: happy.
+        - rConfidence: -1: lack of , 0: neutral, 1: highly confident.
+        - rEngagement: 0: not interested, 1: interested
+        """
+        print( "INF: BodyTal.sayWithEmotion( '%s',%5.1f, %5.1f, %5.1f ): entering" % (strText, rHappiness, rConfidence, rEngagement) )
+        self.rHappiness = rHappiness
+        
+        
+        if( self.tts == None ):
+            self.tts = naoqitools.myGetProxy( "ALTextToSpeech" )
+          
+        #self.prepare( bUseHead = bUseHead, rSide = rSide, rElevation = rElevation, bTrackFace = bTrackFace, astrJointsToExclude = astrJointsToExclude, astrObstacles = astrObstacles );
+        
+        # bug current: you can't sayAndCache when running script from a remote computer (mismatch copy of file between local and remote)
+        bExecutedLocally = False
+        if bExecutedLocally:
+            # prepare sound
+            nSayID = speech.sayAndCache_launchBackgroundPlay( strText, bJustPrepare = False, nUseLang = -1 )
+        else:
+            strText = "\\PAU=700\\ " + speech.getTextWithCurrentSpeed( strText )
+            print( "DBG: start: %s" % strText )
+            nSayID = self.tts.post.say( strText )
+        
+        arHipHappinessRange = [-0.5, 0.05]
+        arHeadHappinessRange = [0.3, -0.3]        
+        rHipHappiness = prorateMinMax( self.rHappiness, arHipHappinessRange )
+        print( "DBG: rHipHappiness: %f" % rHipHappiness )
+        rHeadHappiness = prorateMinMax( self.rHappiness, arHeadHappinessRange )
+        print( "DBG: rHeadHappiness: %f" % rHeadHappiness )
+        rSadness = 0. # between 0 and 1
+        if self.rHappiness < 0.:
+            rSadness = -self.rHappiness
+        
+        self.start( bUseHead = True, bTrackFace = False,  nSayID = nSayID, astrJointsToExclude = astrJointsToExclude, astrObstacles = astrObstacles );
+        
+        
+        rTimeModifier = 1.+rSadness*2.
+        rTimeModifier = 1.55-self.rHappiness
+        print( "rTimeModifier: %5.3f" % rTimeModifier )
+
+        self.motion.post.angleInterpolationWithSpeed( "HipPitch", rHipHappiness, 0.2/rTimeModifier ) # burk, should be into the method.
+        
+        rPeriod = 0.5;
+        bMustStop = False
+        rFlipFlopSide = -1
+        while( not bMustStop ):            
+            bRet = self.update( rElevation=rHeadHappiness, rSide=rFlipFlopSide*rSadness*0.2, rTimeModifier = rTimeModifier )
+            rFlipFlopSide *= -1
+            if( not bRet ):
+                bMustStop = True
+            time.sleep( rPeriod )
+        # end while
+        self.stop( bWaitEndOfRestMovement );        
     
 
 # class BodyTalk - end

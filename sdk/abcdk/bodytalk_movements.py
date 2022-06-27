@@ -540,6 +540,86 @@ stand_legs = [
 
 stand_arms_table = [ None, None, None ]; # for romeo compatibility
 
+# stand_arms_table new for pepper alzheimer/sombrero
+
+# rapidement inspiré de RomeoTableBar mais surélevé (-0.40 sur les shoulder pitchs (a la main))
+rIncShoulderPitchForSombrero = -0.4
+rIncSP = rIncShoulderPitchForSombrero
+rIncSP_RB = rIncSP - 0.0 # bonus for returnToBar
+
+animation_BT_ReturnBar=[
+    # duration:  2.40s
+    # Names (33 joint(s)):
+     ['HeadPitch', 'HeadRoll', 'LElbowRoll', 'LElbowYaw', 'LHand', 'LShoulderPitch', 'LShoulderYaw', 'LWristPitch', 'LWristRoll', 'LWristYaw', 'NeckPitch', 'NeckYaw', 'RElbowRoll', 'RElbowYaw', 'RHand', 'RShoulderPitch', 'RShoulderYaw', 'RWristPitch', 'RWristRoll', 'RWristYaw'],
+    # Times:
+    # KeyInfo: HeadPitch: 3 key(s), from:  0.92s to  2.40s; HeadRoll: 2 key(s), from:  1.60s to  2.40s; LAnklePitch: 2 key(s), from:  1.60s to  2.40s; LAnkleRoll: 2 key(s), from:  1.60s to  2.40s; LElbowRoll: 2 key(s), from:  1.60s to  2.40s; LElbowYaw: 3 key(s), from:  0.92s to  2.40s; LHand: 3 key(s), from:  0.92s to  2.40s; LHipPitch: 2 key(s), from:  1.60s to  2.40s; LHipRoll: 2 key(s), from:  1.60s to  2.40s; LHipYaw: 2 key(s), from:  1.60s to  2.40s; LKneePitch: 2 key(s), from:  1.60s to  2.40s; LShoulderPitch: 2 key(s), from:  1.60s to  2.40s; LShoulderYaw: 2 key(s), from:  1.60s to  2.40s; LWristPitch: 3 key(s), from:  0.92s to  2.40s; LWristRoll: 2 key(s), from:  1.60s to  2.40s; LWristYaw: 3 key(s), from:  0.92s to  2.40s; NeckPitch: 3 key(s), from:  0.92s to  2.40s; NeckYaw: 2 key(s), from:  1.60s to  2.40s; RAnklePitch: 2 key(s), from:  1.60s to  2.40s; RAnkleRoll: 2 key(s), from:  1.60s to  2.40s; RElbowRoll: 2 key(s), from:  1.60s to  2.40s; RElbowYaw: 3 key(s), from:  0.92s to  2.40s; RHand: 3 key(s), from:  0.92s to  2.40s; RHipPitch: 2 key(s), from:  1.60s to  2.40s; RHipRoll: 2 key(s), from:  1.60s to  2.40s; RHipYaw: 2 key(s), from:  1.60s to  2.40s; RKneePitch: 2 key(s), from:  1.60s to  2.40s; RShoulderPitch: 2 key(s), from:  1.60s to  2.40s; RShoulderYaw: 2 key(s), from:  1.60s to  2.40s; RWristPitch: 3 key(s), from:  0.92s to  2.40s; RWristRoll: 2 key(s), from:  1.60s to  2.40s; RWristYaw: 3 key(s), from:  0.92s to  2.40s; TrunkYaw: 2 key(s), from:  1.60s to  2.40s;
+     [ [ 0.92, 1.60, 2.40], [ 1.60, 2.40], [ 1.60, 2.40], [ 0.92, 1.60, 2.40], [ 0.92, 1.60, 2.40], [ 1.60, 2.40], [ 1.60, 2.40], [ 0.92, 1.60, 2.40], [ 1.60, 2.40], [ 0.92, 1.60, 2.40], [ 0.92, 1.60, 2.40], [ 1.60, 2.40], [ 1.60, 2.40], [ 0.92, 1.60, 2.40], [ 0.92, 1.60, 2.40], [ 1.60, 2.40], [ 1.60, 2.40], [ 0.92, 1.60, 2.40], [ 1.60, 2.40], [ 0.92, 1.60, 2.40]],
+    # Values:
+     [ [ 0.04, 0.01, 0.00], [ 0.00, 0.00], [ -1.92, -1.92], [ -1.27, -1.19, -1.17], [ 0.02, 0.02, 0.02], [ 1.71+rIncSP_RB, 1.71+rIncSP_RB], [ 0.36, 0.36], [ -0.06, 0.11, 0.16], [ -0.01, -0.01], [ -0.34, -0.27, -0.25], [ 0.04, 0.01, 0.00], [ 0.00, 0.00], [ 1.87, 1.87], [ 1.27, 1.16, 1.13], [ 0.02, 0.02, 0.02], [ 1.70+rIncSP_RB, 1.70+rIncSP_RB], [ -0.42, -0.42], [ -0.06, 0.08, 0.11], [ 0.13, 0.13], [ 0.34, 0.26, 0.24]],
+];
+
+animation_BT_TableArm1=[
+    # duration:  1.80s
+    # Names (16 joint(s)):
+     ['LElbowRoll', 'LElbowYaw', 'LHand', 'LShoulderPitch', 'LShoulderYaw', 'LWristPitch', 'LWristRoll', 'LWristYaw', 'RElbowRoll', 'RElbowYaw', 'RHand', 'RShoulderPitch', 'RShoulderYaw', 'RWristPitch', 'RWristRoll', 'RWristYaw'],
+    # Times:
+    # KeyInfo: LElbowRoll: 3 key(s), from:  0.64s to  1.80s; LElbowYaw: 3 key(s), from:  0.64s to  1.80s; LHand: 3 key(s), from:  0.64s to  1.80s; LShoulderPitch: 2 key(s), from:  1.20s to  1.80s; LShoulderYaw: 2 key(s), from:  1.20s to  1.80s; LWristPitch: 3 key(s), from:  0.64s to  1.80s; LWristRoll: 3 key(s), from:  0.64s to  1.80s; LWristYaw: 3 key(s), from:  0.64s to  1.80s; RElbowRoll: 3 key(s), from:  0.64s to  1.80s; RElbowYaw: 3 key(s), from:  0.64s to  1.80s; RHand: 3 key(s), from:  0.64s to  1.80s; RShoulderPitch: 2 key(s), from:  1.20s to  1.80s; RShoulderYaw: 2 key(s), from:  1.20s to  1.80s; RWristPitch: 3 key(s), from:  0.64s to  1.80s; RWristRoll: 3 key(s), from:  0.64s to  1.80s; RWristYaw: 3 key(s), from:  0.64s to  1.80s;
+     [ [ 0.64, 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 1.20, 1.80], [ 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 1.20, 1.80], [ 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 0.64, 1.20, 1.80], [ 0.64, 1.20, 1.80]],
+    # Values:
+     [ [ -2.00, -1.38, -1.38], [ -0.87, -1.35, -1.36], [ 0.01, 0.01, 0.01], [ 0.72+rIncSP, 0.72+rIncSP], [ -0.05, -0.05], [ -0.33, -0.21, -0.21], [ -0.71, -0.29, -0.28], [ 0.12, 0.05, 0.05], [ 2.00, 1.38, 1.38], [ 0.87, 1.35, 1.36], [ 0.01, 0.01, 0.01], [ 0.72+rIncSP, 0.72+rIncSP], [ 0.05, 0.05], [ -0.33, -0.21, -0.21], [ 0.71, 0.29, 0.28], [ -0.12, -0.05, -0.05]],
+];
+animation_BT_TableArm3=[
+    # duration:  3.00s
+    # Names (16 joint(s)):
+     ['LElbowRoll', 'LElbowYaw', 'LHand', 'LShoulderPitch', 'LShoulderYaw', 'LWristPitch', 'LWristRoll', 'LWristYaw', 'RElbowRoll', 'RElbowYaw', 'RHand', 'RShoulderPitch', 'RShoulderYaw', 'RWristPitch', 'RWristRoll', 'RWristYaw'],
+    # Times:
+    # KeyInfo: LElbowRoll: 4 key(s), from:  0.72s to  3.00s; LElbowYaw: 4 key(s), from:  0.72s to  3.00s; LHand: 4 key(s), from:  0.72s to  3.00s; LShoulderPitch: 4 key(s), from:  0.72s to  3.00s; LShoulderYaw: 3 key(s), from:  0.72s to  3.00s; LWristPitch: 4 key(s), from:  0.72s to  3.00s; LWristRoll: 4 key(s), from:  0.72s to  3.00s; LWristYaw: 3 key(s), from:  1.40s to  3.00s; RElbowRoll: 4 key(s), from:  0.68s to  2.96s; RElbowYaw: 4 key(s), from:  0.68s to  2.96s; RHand: 4 key(s), from:  0.68s to  2.96s; RShoulderPitch: 4 key(s), from:  0.68s to  2.96s; RShoulderYaw: 3 key(s), from:  0.68s to  2.96s; RWristPitch: 4 key(s), from:  0.68s to  2.96s; RWristRoll: 4 key(s), from:  0.68s to  2.96s; RWristYaw: 3 key(s), from:  1.36s to  2.96s;
+     [ [ 0.72, 1.40, 2.20, 3.00], [ 0.72, 1.40, 2.20, 3.00], [ 0.72, 1.40, 2.20, 3.00], [ 0.72, 1.40, 2.20, 3.00], [ 0.72, 2.20, 3.00], [ 0.72, 1.40, 2.20, 3.00], [ 0.72, 1.40, 2.20, 3.00], [ 1.40, 2.20, 3.00], [ 0.68, 1.36, 2.16, 2.96], [ 0.68, 1.36, 2.16, 2.96], [ 0.68, 1.36, 2.16, 2.96], [ 0.68, 1.36, 2.16, 2.96], [ 0.68, 2.16, 2.96], [ 0.68, 1.36, 2.16, 2.96], [ 0.68, 1.36, 2.16, 2.96], [ 1.36, 2.16, 2.96]],
+    # Values:
+     [ [ -1.30, -1.52, -2.03, -2.09], [ -1.24, -1.44, -1.06, -1.00], [ 0.01, 0.01, 0.02, 0.02], [ 0.94+rIncSP, 0.75+rIncSP, 1.08+rIncSP, 1.16+rIncSP], [ 0.26, 0.12, 0.12], [ 0.53, 0.40, -0.15, -0.16], [ -0.30, 0.02, -0.71, -0.87], [ 0.10, -0.01, -0.01], [ 1.30, 1.52, 2.03, 2.09], [ 1.24, 1.44, 1.06, 1.00], [ 0.01, 0.01, 0.02, 0.02], [ 0.94+rIncSP, 0.75+rIncSP, 1.08+rIncSP, 1.16+rIncSP], [ -0.26, -0.12, -0.12], [ 0.53, 0.40, -0.15, -0.16], [ 0.30, -0.02, 0.71, 0.87], [ -0.10, 0.01, 0.01]],
+];
+animation_BT_TableArm5=[
+    # duration:  1.84s
+    # Names (16 joint(s)):
+     ['LElbowRoll', 'LElbowYaw', 'LHand', 'LShoulderPitch', 'LShoulderYaw', 'LWristPitch', 'LWristRoll', 'LWristYaw', 'RElbowRoll', 'RElbowYaw', 'RHand', 'RShoulderPitch', 'RShoulderYaw', 'RWristPitch', 'RWristRoll', 'RWristYaw'],
+    # Times:
+    # KeyInfo: LElbowRoll: 3 key(s), from:  0.72s to  1.84s; LElbowYaw: 3 key(s), from:  0.72s to  1.84s; LHand: 3 key(s), from:  0.72s to  1.84s; LShoulderPitch: 2 key(s), from:  1.44s to  1.84s; LShoulderYaw: 2 key(s), from:  1.44s to  1.84s; LWristPitch: 3 key(s), from:  0.72s to  1.84s; LWristRoll: 3 key(s), from:  0.72s to  1.84s; LWristYaw: 3 key(s), from:  0.72s to  1.84s; RElbowRoll: 2 key(s), from:  1.40s to  1.80s; RElbowYaw: 3 key(s), from:  0.68s to  1.80s; RHand: 3 key(s), from:  0.68s to  1.80s; RShoulderPitch: 2 key(s), from:  1.40s to  1.80s; RShoulderYaw: 2 key(s), from:  1.40s to  1.80s; RWristPitch: 3 key(s), from:  0.68s to  1.80s; RWristRoll: 3 key(s), from:  0.68s to  1.80s; RWristYaw: 2 key(s), from:  0.68s to  1.40s;
+     [ [ 0.72, 1.44, 1.84], [ 0.72, 1.44, 1.84], [ 0.72, 1.44, 1.84], [ 1.44, 1.84], [ 1.44, 1.84], [ 0.72, 1.44, 1.84], [ 0.72, 1.44, 1.84], [ 0.72, 1.44, 1.84], [ 1.40, 1.80], [ 0.68, 1.40, 1.80], [ 0.68, 1.40, 1.80], [ 1.40, 1.80], [ 1.40, 1.80], [ 0.68, 1.40, 1.80], [ 0.68, 1.40, 1.80], [ 0.68, 1.40]],
+    # Values:
+     [ [ -1.68, -2.07, -2.09], [ -0.98, -0.83, -0.82], [ 0.01, 0.02, 0.02], [ 0.83+rIncSP, 0.83+rIncSP], [ 0.21, 0.19], [ 0.49, -0.14, -0.19], [ 0.33, -0.43, -0.52], [ -0.03, -0.03, -0.03], [ 2.05, 2.06], [ 1.02, 0.83, 0.81], [ 0.01, 0.02, 0.02], [ 1.05+rIncSP, 1.08+rIncSP], [ -0.22, -0.24], [ 0.22, -0.09, -0.12], [ 0.62, 1.19, 1.22], [ -0.15, -0.15]],
+];
+animation_BT_TableArm4=[
+    # duration:  1.84s
+    # Names (16 joint(s)):
+     ['LElbowRoll', 'LElbowYaw', 'LHand', 'LShoulderPitch', 'LShoulderYaw', 'LWristPitch', 'LWristRoll', 'LWristYaw', 'RElbowRoll', 'RElbowYaw', 'RHand', 'RShoulderPitch', 'RShoulderYaw', 'RWristPitch', 'RWristRoll', 'RWristYaw'],
+    # Times:
+    # KeyInfo: LElbowRoll: 3 key(s), from:  0.68s to  1.84s; LElbowYaw: 3 key(s), from:  0.68s to  1.84s; LHand: 3 key(s), from:  0.68s to  1.84s; LShoulderPitch: 3 key(s), from:  0.68s to  1.84s; LShoulderYaw: 2 key(s), from:  1.16s to  1.84s; LWristPitch: 3 key(s), from:  0.68s to  1.84s; LWristRoll: 3 key(s), from:  0.68s to  1.84s; LWristYaw: 2 key(s), from:  1.16s to  1.84s; RElbowRoll: 1 key(s), from:  1.12s to  1.12s; RElbowYaw: 2 key(s), from:  0.64s to  1.12s; RHand: 1 key(s), from:  1.12s to  1.12s; RShoulderPitch: 1 key(s), from:  1.12s to  1.12s; RShoulderYaw: 1 key(s), from:  1.12s to  1.12s; RWristPitch: 1 key(s), from:  1.12s to  1.12s; RWristRoll: 1 key(s), from:  1.12s to  1.12s; RWristYaw: 1 key(s), from:  1.12s to  1.12s;
+     [ [ 0.68, 1.16, 1.84], [ 0.68, 1.16, 1.84], [ 0.68, 1.16, 1.84], [ 0.68, 1.16, 1.84], [ 1.16, 1.84], [ 0.68, 1.16, 1.84], [ 0.68, 1.16, 1.84], [ 1.16, 1.84], [ 1.12], [ 0.64, 1.12], [ 1.12], [ 1.12], [ 1.12], [ 1.12], [ 1.12], [ 1.12]],
+    # Values:
+     [ [ -2.00, -1.78, -1.75], [ -0.88, -1.28, -1.36], [ 0.01, 0.00, 0.00], [ 1.16+rIncSP, 1.16+rIncSP, 1.14+rIncSP], [ -0.06, -0.06], [ -0.19, 0.15, 0.21], [ -1.03, -0.65, -0.65], [ 0.00, 0.00], [ 1.92], [ 1.31, 1.17], [ 0.02], [ 1.71+rIncSP], [ -0.36], [ 0.16], [ 0.01], [ 0.25]],
+];
+animation_BT_TableArm6=[
+    # duration:  1.16s
+    # Names (16 joint(s)):
+     ['LElbowRoll', 'LElbowYaw', 'LHand', 'LShoulderPitch', 'LShoulderYaw', 'LWristPitch', 'LWristRoll', 'LWristYaw', 'RElbowRoll', 'RElbowYaw', 'RHand', 'RShoulderPitch', 'RShoulderYaw', 'RWristPitch', 'RWristRoll', 'RWristYaw'],
+    # Times:
+    # KeyInfo: LElbowRoll: 1 key(s), from:  1.16s to  1.16s; LElbowYaw: 1 key(s), from:  1.16s to  1.16s; LHand: 1 key(s), from:  1.16s to  1.16s; LShoulderPitch: 1 key(s), from:  1.16s to  1.16s; LShoulderYaw: 1 key(s), from:  1.16s to  1.16s; LWristPitch: 1 key(s), from:  1.16s to  1.16s; LWristRoll: 1 key(s), from:  1.16s to  1.16s; LWristYaw: 1 key(s), from:  1.16s to  1.16s; RElbowRoll: 1 key(s), from:  1.16s to  1.16s; RElbowYaw: 2 key(s), from:  0.68s to  1.16s; RHand: 2 key(s), from:  0.68s to  1.16s; RShoulderPitch: 1 key(s), from:  1.16s to  1.16s; RShoulderYaw: 1 key(s), from:  1.16s to  1.16s; RWristPitch: 2 key(s), from:  0.68s to  1.16s; RWristRoll: 2 key(s), from:  0.68s to  1.16s; RWristYaw: 1 key(s), from:  1.16s to  1.16s;
+     [ [ 1.16], [ 1.16], [ 1.16], [ 1.16], [ 1.16], [ 1.16], [ 1.16], [ 1.16], [ 1.16], [ 0.68, 1.16], [ 0.68, 1.16], [ 1.16], [ 1.16], [ 0.68, 1.16], [ 0.68, 1.16], [ 1.16]],
+    # Values:
+     [ [ -1.92], [ -1.17], [ 0.02], [ 1.71+rIncSP], [ 0.36], [ 0.16], [ -0.01], [ -0.25], [ 1.84], [ 0.84, 0.83], [ 0.02, 0.02], [ 0.83+rIncSP], [ -0.29], [ -0.07, 0.10], [ 1.32, 1.28], [ -0.03]],
+];
+animation_BT_TableArm2=[
+    # duration:  2.44s
+    # Names (16 joint(s)):
+     ['LElbowRoll', 'LElbowYaw', 'LHand', 'LShoulderPitch', 'LShoulderYaw', 'LWristPitch', 'LWristRoll', 'LWristYaw', 'RElbowRoll', 'RElbowYaw', 'RHand', 'RShoulderPitch', 'RShoulderYaw', 'RWristPitch', 'RWristRoll', 'RWristYaw'],
+    # Times:
+    # KeyInfo: LElbowRoll: 2 key(s), from:  1.68s to  2.44s; LElbowYaw: 3 key(s), from:  1.04s to  2.44s; LHand: 2 key(s), from:  1.68s to  2.44s; LShoulderPitch: 2 key(s), from:  1.68s to  2.44s; LShoulderYaw: 2 key(s), from:  1.68s to  2.44s; LWristPitch: 2 key(s), from:  1.68s to  2.44s; LWristRoll: 2 key(s), from:  1.68s to  2.44s; LWristYaw: 2 key(s), from:  1.68s to  2.44s; RElbowRoll: 2 key(s), from:  1.60s to  2.36s; RElbowYaw: 3 key(s), from:  0.96s to  2.36s; RHand: 3 key(s), from:  0.96s to  2.36s; RShoulderPitch: 3 key(s), from:  0.96s to  2.36s; RShoulderYaw: 2 key(s), from:  1.60s to  2.36s; RWristPitch: 3 key(s), from:  0.96s to  2.36s; RWristRoll: 3 key(s), from:  0.96s to  2.36s; RWristYaw: 2 key(s), from:  1.60s to  2.36s;
+     [ [ 1.68, 2.44], [ 1.04, 1.68, 2.44], [ 1.68, 2.44], [ 1.68, 2.44], [ 1.68, 2.44], [ 1.68, 2.44], [ 1.68, 2.44], [ 1.68, 2.44], [ 1.60, 2.36], [ 0.96, 1.60, 2.36], [ 0.96, 1.60, 2.36], [ 0.96, 1.60, 2.36], [ 1.60, 2.36], [ 0.96, 1.60, 2.36], [ 0.96, 1.60, 2.36], [ 1.60, 2.36]],
+    # Values:
+     [ [ -1.92, -1.92], [ -1.34, -1.18, -1.17], [ 0.02, 0.02], [ 1.71+rIncSP, 1.71+rIncSP], [ 0.36, 0.36], [ 0.16, 0.16], [ -0.01, -0.01], [ -0.25, -0.25], [ 1.77, 1.78], [ 1.25, 1.25, 1.25], [ 0.01, 0.01, 0.01], [ 0.78+rIncSP, 0.83+rIncSP, 0.86+rIncSP], [ -0.12, -0.13], [ 0.37, -0.01, -0.04], [ 1.13, 1.17, 1.19], [ -0.01, -0.01]],
+];
+stand_arms_table = [ None, animation_BT_ReturnBar, animation_BT_TableArm1, animation_BT_TableArm3, animation_BT_TableArm5, animation_BT_TableArm4, animation_BT_TableArm6, animation_BT_TableArm2,];
+
 # to generate position, export animation in python splined format, then launch this script parts:
 """
 print("");

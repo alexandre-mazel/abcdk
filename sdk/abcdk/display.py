@@ -12,6 +12,7 @@
 
 print( "importing abcdk.display" );
 
+import cv2
 import filetools
 try: import minttu.minttu_manager
 except: print( "WRN: abcdk.display: minttu not found..." )
@@ -23,8 +24,10 @@ import time
 class Display():
     """
     For the tablet, we need to have a tmp directory with some web access, so you should do sth like:
+        su
         sudo mount / -o remount,rw
         mkdir /tmp/www
+        chown nao:nao /tmp/www
         su -c "ln -s /tmp/www /var/www/tmp"
         su -c "ln -s /home/nao/.local/lib/python2.7/site-packages/abcdk/data /var/www/abcdk_data"
     
@@ -51,7 +54,17 @@ class Display():
         import system
         if( not system.isOnPepper() ):
             self.bDeactivate = True;
+        self.astrTempFileToErase = [] # each showing, we erase some temporary file of the previous moment...
     # __init__ - end
+    
+    def erasePreviousTempFile( self, bVerbose = False ):
+        """
+        we don't know when the file has been drawed on the tablet, so let's erase next time we're called...
+        """
+        for f in self.astrTempFileToErase:
+            if bVerbose: print( "INF: abcdk.display.showImage.erasePreviousTempFile: unlinking %s" % f );
+            os.unlink( f );
+        self.astrTempFileToErase = []
 
     def prepare( self ):
         """
@@ -80,21 +93,25 @@ class Display():
         """
         if( self.bDeactivate ):
             return;
+            
+        self.erasePreviousTempFile()
+        
         dummy, strExt = os.path.splitext(strPathAndFilename)
-        if( not strExt.lower() in ["jpg", "png", "gif"] ):
+        if( not strExt.lower() in [".jpg", ".png", ".gif"] ):
             # convert on the fly
-            import cv2
+            if bVerbose: print( "DBG: showImage: strExt: %s => converting strPathAndFilename on the fly" % (strExt) )
             img = cv2.imread( strPathAndFilename )
             strDest = "/tmp/temp.jpg"
             cv2.imwrite( strDest, img )
-            strPathAndFilename = strDest
             if( bDeleteFileJustAfter ):
-                os.unlink( strPathAndFilename );
+                self.astrTempFileToErase.append(strPathAndFilename)
+            strPathAndFilename = strDest                
             
         bCheckSize = 1
         if( bCheckSize ):
             nRequiredW = 800
             nRequiredH = 480
+            if bVerbose: print( "DBG: showImage: reading: %s" % (strPathAndFilename) )
             img = cv2.imread( strPathAndFilename )
             h,w,p = img.shape
             if( h > nRequiredH or w > nRequiredW ):
@@ -107,7 +124,7 @@ class Display():
                 cv2.imwrite( strDest, img )
                 strPathAndFilename = strDest
                 if( bDeleteFileJustAfter ):
-                    os.unlink( strPathAndFilename );
+                    self.astrTempFileToErase.append(strPathAndFilename)
                 
                 
         self.prepare();
@@ -139,12 +156,10 @@ class Display():
         self.tabletService.showImageNoCache( strRemoteFile ); # showImage => showImageNoCache
         if( bDeleteFileJustAfter and not bUrl ):
             time.sleep( 0.2 );
-            if bVerbose: print( "INF: abcdk.display.showImage: unlinking: %s" % strPathAndFilename );
-            os.unlink( strPathAndFilename );
+            self.astrTempFileToErase.append(strPathAndFilename)
             if( bCopiedToTmp ):
                 strFileNameToUnlink = self.strWebLocalPath + strFilename;
-                if bVerbose: print( "INF: abcdk.display.showImage: unlinking-2: %s" % strFileNameToUnlink );
-                os.unlink( strFileNameToUnlink );
+                self.astrTempFileToErase.append(strFileNameToUnlink)
         return True;
     # showImage - end
 
@@ -158,6 +173,7 @@ class Display():
 display = Display();
 
 global_lastDisplayedMessageFullScreen = None
+global_lastDisplayedMessageFullScreen_time = time.time()
 def writeMessageFullScreen( strMessage, color = (255,255,255), bDeleteFileJustAfter = True, nOffsetY = 0, strBackgroundImage = None ):
     """
     Write a message on the tablet - for debug or demo or ...
@@ -167,9 +183,11 @@ def writeMessageFullScreen( strMessage, color = (255,255,255), bDeleteFileJustAf
     nTabletX = 800
     nTabletY = 480
     global global_lastDisplayedMessageFullScreen
-    if( global_lastDisplayedMessageFullScreen == strMessage ):
+    global global_lastDisplayedMessageFullScreen_time
+    if( global_lastDisplayedMessageFullScreen == strMessage and time.time() - global_lastDisplayedMessageFullScreen_time < 2. ):
         return;
     global_lastDisplayedMessageFullScreen = strMessage
+    global_lastDisplayedMessageFullScreen_time = time.time()
         
     import numpy as np
     import cv2
@@ -200,9 +218,10 @@ def writeMessageFullScreen( strMessage, color = (255,255,255), bDeleteFileJustAf
         
     import random
     import filetools
-    strfilename = "/tmp/%s_tablet.jpg" % filetools.getFilenameFromTime();
+    strfilename = "/tmp/www/%s_tablet.jpg" % filetools.getFilenameFromTime();
     cv2.imwrite( strfilename, img );
-    display.showImage( strfilename, bDeleteFileJustAfter = bDeleteFileJustAfter );
+    #~ bDeleteFileJustAfter = False
+    display.showImage( strfilename, bDeleteFileJustAfter = bDeleteFileJustAfter, bVerbose = True );
 # writeMessageFullScreen - end
 
 class MinttuSimpleDisplay:

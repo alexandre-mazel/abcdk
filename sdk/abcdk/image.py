@@ -285,7 +285,7 @@ def getImageSharpness(  bufferImage, nMethod = 0 ):
     bufferImage: opencv image buffer
     nMethod: type of computation method: 0: average on Sobel, 1: average on Laplacien, 2: maxLocal on Laplacien, 3: max-min on Laplacien
     """
-    
+
     if( not hasattr( bufferImage, "width" ) ):
         # image is a numpy array - opencv2
         rSharpness = cv2.Laplacian( bufferImage, cv2.CV_64F).var()
@@ -298,7 +298,7 @@ def getImageSharpness(  bufferImage, nMethod = 0 ):
             rSharpness = max(v1,v2,v3,v4)
         rLuminosity = numpy.mean( bufferImage );
         # to have the 3
-        return [rSharpness, rLuminosity]
+        return [rSharpness, rLuminosity]# TODO: sharpness !!!
 
     # print( "DBG: getImageSharpness: nMethod: %d" % nMethod );
 
@@ -3641,11 +3641,269 @@ def sortImageByBlurness( strSrcFolder, strDstFolder ):
      # 18h27m12
     classifyImages(strSrcFolder, strDstFolder, getSharpnessValue, [100.], ["blurred", "not_blurred"], bForceToGrey=False)
 
-if( __name__ == "__main__" ):
-    #~ autotest_foundVehicle()
-    sortImageByBlurness( "c:/2018_recording_franprix", "c:/tmpClassify")
+    
+def generateInterval( strPathSrc, strPathDst, rFramerate = 25. ):
+    """
+    takes timestamped images in a folder and generate all missing images to produce a constant flow of x im/sec
+    - currently work mainly with file looking like: "1538747187.7798872.jpg"
+    """
+    try: os.makedirs(strPathDst)
+    except: pass
+    timePerImage = 1./rFramerate
+    files = sorted(os.listdir( strPathSrc ))
+    rLastTime = -1
+    nCount = 0
+    strFilenamePrev = None
+    nCountOutput = 0
+    for strFilename in files:
+        strExt = "." + strFilename.split(".")[-1]
+        timeImage = float( strFilename.replace(strExt,"") )
+        print( "\nINF: generateInterval: next image time: %5.3fs (%d/%d) (filename:%s)" % (timeImage, nCount, len(files), strFilename ) )
+        if rLastTime == -1:
+            # first image
+            rLastTime = timeImage
+        while( rLastTime < timeImage ):
+            print( "INF: duplicating previous image to match required framerate, at time %5.2fs" % rLastTime )
+            strNewName = ("%06d_" % nCountOutput )+ strFilenamePrev.replace(strExt,"") + ("_simtimed_%5.2f" % rLastTime) + strExt # %06d: to be sure all files will be alphabetically explicitly well sorted
+            print( "DBG: copying %s to %s" % (strFilenamePrev,strNewName) )
+            shutil.copyfile( strPathSrc + strFilenamePrev, strPathDst + strNewName )
+            rLastTime += timePerImage
+            nCountOutput += 1
+        strFilenamePrev = strFilename
+        nCount += 1
+    print( "INF: generateInterval: done!" )
+# generateInterval - end    
+
+if 0:
+    generateInterval( "F:/montagevideo9/2018-10-5_-_FunQuizz/skels/good/", "F:/montagevideo9/2018-10-5_-_FunQuizz/skels/good_intervaled/" )
+    exit(1)
+    
+def removeStaticPixelsInFolder( strPathSrc, anNewColor = (255,255,255) ):
+    """
+    take a folder and remove all not changing pixels (for batch acquisition or ...)
+    """
+    aListImages = []
+    files = sorted(os.listdir( strPathSrc ))
+    aMask = None
+    nCount = 0
+    imPred = None
+    imMask = None
+    
+    complementaryImages = []    
+    complementaryImageFiles = ["bricks.jpg","concrete.jpg","grass.jpg"]
+    for comp in complementaryImageFiles:        
+        complementaryImages.append(cv2.imread("../../../datas/images/"+comp))
         
-    exit(0)
+    for strFilename in files:
+        im = cv2.imread(strPathSrc+strFilename)
+        if 0:
+            if imPred == None:
+                imMask = np.zeros(im.shape,numpy.uint32)
+                imPred = im
+                continue
+            diff = abs(im-imPred)
+            imMask = imMask + diff
+            imPred=im
+            
+        #~ aListImages.append(im)
+
+        imDest = np.copy(im)
+        
+        if 1:
+            nBorderL = 80
+            nBorderR = 80
+            nBorderTop = 60
+            nBorderBottom = 100
+            if 0:
+                # apply white border            
+                newColor = (255,255,255)
+                imDest[:,0:nBorderL] = newColor
+                imDest[:,640-nBorderR:640] = newColor
+                imDest[0:nBorderTop,:] = newColor
+                imDest[480-nBorderBottom:480,:] = newColor
+            if 1:
+                # crop (better for caltech/inception)
+                imDest = im[nBorderTop:480-nBorderBottom,nBorderL:640-nBorderR]
+                
+            if 1:
+                # circle
+                maskCircle = np.zeros(imDest.shape, np.uint8 )
+                #~ maskCircle = np.zeros((imDest.shape[0],imDest.shape[1],1), np.uint8 )
+                nSize = 240 # 200
+                cv2.circle(  maskCircle, (imDest.shape[1]/2,imDest.shape[0]/2+60), nSize, (255,255,255), -1 ) # once I knew how to write it using where...
+                #~ maskCircle = cv2.bitwise_not( maskCircle)
+                #~ imDest = cv2.bitwise_or(imDest, imDest,mask=maskCircle)
+                #~ imDest[maskCircle>0]=127
+                imDest[np.where((maskCircle == [0,0,0]).all(axis = 2))] = [0,255,0]
+                
+                
+            
+            #~ maskGreen = cv2.inRange(imDest,  np.array([0,0,0]), np.array([255,230,255]) )
+            # we want to erase all that have G > 230 and B < 153(190) and R < 8(35)
+            nLimitR = 60
+            nLimitG = 210
+            nLimitB = 200
+            colorReplacement= [0,255,0]
+            if 1:
+                # agressive cut
+                nLimitR = 60
+                nLimitG = 160 # 160
+                nLimitB = 200                
+            if 1:
+                # playing with mask and spending lot of time to think...
+                
+                maskR = cv2.inRange(imDest, np.array([0,0,0]), np.array([255,255,nLimitR]) )
+                maskG = cv2.inRange(imDest, np.array([0,nLimitG,0]), np.array([255,255,255]) )
+                #~ maskR = cv2.inRange(imDest,  np.array([255,255,255]), np.array([255,255,255]) )
+                #~ maskG = cv2.inRange(imDest,  np.array([255,255,255]), np.array([255,255,255]) )            
+                maskB = cv2.inRange(imDest,  np.array([0,0,0]), np.array([nLimitB,255,255]) )
+                
+                maskGreen = cv2.bitwise_and( maskR, maskG )
+                maskGreen = cv2.bitwise_and( maskGreen, maskB )                
+                #~ maskGreen = cv2.inRange(imDest,  np.array([0,0,0]), np.array([255,255,255]) )                
+                maskGreen = cv2.bitwise_not( maskGreen) # pixels in mask are inverted
+                # pixels in mask are keeped
+                imDest[np.where((maskGreen == 0))] = colorReplacement
+                
+                #
+                # other masks on dark green
+                #
+                color = [255,255,0]
+                color = [0,255,255]
+                color = colorReplacement
+                maskR = cv2.inRange(imDest, np.array([0,0,0]), np.array([255,255,50]) )
+                maskG = cv2.inRange(imDest, np.array([0,100,0]), np.array([255,255,255]) )
+                maskB = cv2.inRange(imDest,  np.array([0,0,0]), np.array([50,255,255]) )
+                
+                maskGreen = cv2.bitwise_and( maskR, maskG )
+                maskGreen = cv2.bitwise_and( maskGreen, maskB )                
+                maskGreen = cv2.bitwise_not( maskGreen) # pixels in mask are inverted
+                # pixels in mask are keeped
+                imDest[np.where((maskGreen == 0))] = color
+                
+                maskR = cv2.inRange(imDest, np.array([0,0,0]), np.array([255,255,90]) )
+                maskG = cv2.inRange(imDest, np.array([0,100,0]), np.array([255,255,255]) )
+                maskB = cv2.inRange(imDest,  np.array([0,0,0]), np.array([30,255,255]) )
+                
+                maskGreen = cv2.bitwise_and( maskR, maskG )
+                maskGreen = cv2.bitwise_and( maskGreen, maskB )                
+                maskGreen = cv2.bitwise_not( maskGreen) # pixels in mask are inverted
+                # pixels in mask are keeped
+                imDest[np.where((maskGreen == 0))] = color
+                
+                maskR = cv2.inRange(imDest, np.array([0,0,0]), np.array([255,255,30]) )
+                maskG = cv2.inRange(imDest, np.array([0,100,0]), np.array([255,255,255]) )
+                maskB = cv2.inRange(imDest,  np.array([0,0,0]), np.array([90,255,255]) )
+                
+                maskGreen = cv2.bitwise_and( maskR, maskG )
+                maskGreen = cv2.bitwise_and( maskGreen, maskB )                
+                maskGreen = cv2.bitwise_not( maskGreen) # pixels in mask are inverted
+                # pixels in mask are keeped
+                imDest[np.where((maskGreen == 0))] = color
+                
+                # green vert litten
+                maskR = cv2.inRange(imDest, np.array([0,0,0]), np.array([255,255,80]) )
+                maskG = cv2.inRange(imDest, np.array([0,246,0]), np.array([255,255,255]) )
+                maskB = cv2.inRange(imDest,  np.array([0,0,0]), np.array([170,255,255]) )
+                
+                maskGreen = cv2.bitwise_and( maskR, maskG )
+                maskGreen = cv2.bitwise_and( maskGreen, maskB )                
+                maskGreen = cv2.bitwise_not( maskGreen)
+                # pixels in mask are keeped
+                imDest[np.where((maskGreen == 0))] = color                
+                
+            else:
+                print imDest[93,300]
+                print imDest[300,300]
+                # bourrin (but VERY long, like 4s per image)
+                for j in range(imDest.shape[0]):
+                    for i in range(imDest.shape[1]):
+                        color = imDest[j,i]
+                        #~ print("color: %s" % color )
+                        #~ if color[0] > 9 and color[1] > 230 and color[2] < 153:
+                        if color[0] < 190 and color[1] > 220 and color[2] < 35:
+                            imDest[j,i] = [0,255,255]
+            
+            cv2.imshow("im", imDest )
+            #~ cv2.imwrite("/t.jpg", imDest )
+            cv2.waitKey(10)            
+            
+        if 1:
+            # if np.bitwise_xor(im,imDest).any(): # jpg is always a bit different!
+
+            strDirDest = strPathSrc + '/tmp/'
+            try: os.makedirs(strDirDest)
+            except: pass # Exception as err: print(err)
+            strFilenameDest = strDirDest + '/' + strFilename            
+            if 0:
+                print( "Write image %s" % strFilenameDest )
+                # rewrite images!
+                cv2.imwrite( strFilenameDest, imDest )
+            else:
+                if len(complementaryImages) > 0:
+                    # adding complementary backgound and saving files
+                    for idx,comp in enumerate(complementaryImages):
+                        compMasked = comp[:]
+                        if compMasked.shape != imDest.shape:
+                            compMasked = cv2.resize(compMasked, (imDest.shape[1],imDest.shape[0]) )
+                        imNew = imDest[:]
+                        mask = cv2.inRange(imNew, np.array([0,254,0]), np.array([1,255,1]) )
+                        #~ mask = cv2.bitwise_not( mask)
+                        compMasked = cv2.bitwise_or( compMasked, compMasked, mask=mask )
+                        mask = cv2.bitwise_not( mask)
+                        imNew = cv2.bitwise_or( imNew, imNew, mask=mask )
+                        
+                        imNew = cv2.bitwise_or( imNew, compMasked )
+                        strFilenameDestNew = strFilenameDest.replace(".jpg", '_'+str(idx)+'.jpg')
+                        print( "Write image %s" % strFilenameDestNew )
+                        cv2.imwrite( strFilenameDestNew, imNew )
+        
+        nCount += 1
+        print( "nCount: %d/%d" % (nCount, len(files)) )
+        #~ if nCount > 20:
+            #~ break
+    # end loop
+    
+    if 0:
+        imMask = imMask / nCount
+        #~ imMask = np.reshape( imMask, imMask.shape, dtype=numpy.uint8 )
+        imMask = imMask.astype( numpy.uint8 )
+        print( "shape imMask: %s" % str(imMask.shape) )
+        print( "type imMask: %s" % str(imMask.dtype) )
+        cv2.imshow("imMask", imMask)
+        
+        mask = cv2.cvtColor(imMask, cv2.COLOR_BGR2GRAY)
+        ret,mask = cv2.threshold( mask, 127, 255, cv2.THRESH_BINARY)
+        cv2.imshow("mask", mask)
+        
+        kernel = np.ones((3,3),np.uint8)
+        mask = cv2.erode(mask, kernel, iterations = 1)
+        mask = cv2.dilate(mask, kernel, iterations = 5)
+        cv2.imshow("maskerode", mask)
+
+        mask[:] = 255
+        nBorderL = 80
+        nBorderR = 80
+        nBorderTop = 20
+        nBorderBottom = 80
+        newColor = (255,255,255)
+        imPred[:,0:nBorderL] = newColor
+        imPred[:,640-nBorderR:640] = newColor
+        imPred[0:nBorderTop,:] = newColor
+        imPred[480-nBorderBottom:480,:] = newColor
+        
+        cv2.imshow("imPred", imPred)
+        
+        cv2.waitKey(0)
+    
+# removeStaticPixelsInFolder - end
+        
+if 0:
+    #~ removeStaticPixelsInFolder( "/tmpClass/258.glasses/" )
+    #~ removeStaticPixelsInFolder( "/tmpClass/259.keys/" )
+    removeStaticPixelsInFolder( "/tmpClass/258.glasses_green/" )
+    
+    exit(1)
 
 
 def autoTest():
@@ -3705,7 +3963,10 @@ if( __name__ == "__main__" ):
     #autotest_detectLine();
     #autotest_detectChessboard()
     #~ autotest_cameraCalibration()
-    pass
+    #~ autotest_foundVehicle()
+    sortImageByBlurness( "c:/2018_recording_franprix", "c:/tmpClassify")
+        
+    exit(0)    
 
 # numpy.std( [[13,15,11],[3,5,1]] ) == numpy.std( [13,15,11,3,5,1] )
 #~ std = numpy.std( [[13,15,11],[3,5,1]], 0 ); # => ok

@@ -97,6 +97,9 @@ except :
 	print "WRG : html_manager.py : tabletService doesn't exist, so do nothing with the tablet"
 	tabletService = None
 
+# disable all tablet management ! # $$$$ Alma 2018-11-22:  something has been lost and this file produce a lot of error:  html_manager : sendToHTML : wait HTMLWrite. Time 
+tabletService = None
+
 try:
     memory = naoqitools.myGetProxy( "ALMemory" )
     memory.insertData( "isLoaded", "" ); 
@@ -108,9 +111,10 @@ except BaseException, err:
 # Tablet functions
 
 def cleanTablet():
-	global tabletService
-	# we need to do this for cleaning the memory, activities ... of the tablet for watching video
-	tabletService.resetTablet()
+    global tabletService
+    # we need to do this for cleaning the memory, activities ... of the tablet for watching video
+    if tabletService != None :
+        tabletService.resetTablet()
 # end - Tablet functions
 
 # Show HTML functions
@@ -282,6 +286,8 @@ def showHTMLWrite(text = None, position = None, mode = None, speechMode = False,
 def sendToHTML(command):
 	global eventName
 	global memory
+	if tabletService == None:
+		return
 	cpt = 0 
 	# we must verify if the page is loaded or not
 	if memory.getData("isLoaded") == "" :

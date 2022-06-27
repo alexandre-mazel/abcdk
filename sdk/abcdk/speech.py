@@ -25,9 +25,11 @@ import leds
 import naoqitools
 import pathtools
 import sound
+import sound.analyse
 import stringtools
 import system
 import test
+import typetools
 
 import mutex
 
@@ -40,6 +42,90 @@ else:
     print( "WRN: ALMemory not found, auto speech recognition won't pause (perhaps)" );
 
 # 18-01-25 Alma: put back lost getSpeakLanguage (todo: find why it disappears)
+def getDefaultSpeakLanguage():
+  "return the default speak language"
+  #return constants.LANG_EN; # TODO: better things ! # CB : gets the real language
+  if( not system.isOnNao() ):
+    return 0;
+  try:
+    tts = naoqitools.myGetProxy("ALTextToSpeech");
+  except:
+    # no tts => anglais
+    debug.debug( "WRN: speech.getDefaultSpeakLanguage: no tts found" );
+    return constants.LANG_EN;
+  if( tts == None ):
+    return constants.LANG_EN;
+  lang =  tts.getLanguage()
+  if lang == "French":
+    return constants.LANG_FR;
+  else:
+    return constants.LANG_EN;  
+# getDefaultSpeakLanguage - end
+
+def setSpeakLanguage( nNumLang = getDefaultSpeakLanguage(), proxyTts = False, bChangeAsrAlso = False ):
+    """
+    change the tts and asr speak language
+    Return True or False according to the result of the task
+    """
+    print( "SetSpeakLanguage to: %d" % nNumLang );
+    if( not proxyTts ):
+        proxyTts = naoqitools.myGetProxy( "ALTextToSpeech" );
+    if( not proxyTts ):
+        debug.debug( "ERR: setSpeakLanguage: can't connect to tts" );
+        return False;
+
+    try:
+        if( nNumLang == constants.LANG_FR ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceFrench" );            
+        elif ( nNumLang == constants.LANG_EN ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceEnglish" );
+        elif ( nNumLang == constants.LANG_SP ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceSpanish" );
+        elif ( nNumLang == constants.LANG_IT ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceItalian" );
+        elif ( nNumLang == constants.LANG_GE ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceGerman" );
+        elif ( nNumLang == constants.LANG_CH ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceChinese" );
+        elif ( nNumLang == constants.LANG_JP ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceJapanese" );            
+        elif ( nNumLang == constants.LANG_PO ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoicePolish" );
+        elif ( nNumLang == constants.LANG_KO ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceKorean" );
+        elif ( nNumLang == constants.LANG_BR ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceBrazilian" );            
+        elif ( nNumLang == constants.LANG_TU ):
+            proxyTts.setLanguage( "Turkish" );
+        elif ( nNumLang == constants.LANG_PT ):
+            proxyTts.loadVoicePreference( "NaoOfficialVoicePortuguese" );
+        else:
+            proxyTts.loadVoicePreference( "NaoOfficialVoiceEnglish" );
+    except BaseException, err:
+        print( "WRN: speech.setSpeakLanguage: current lang number %s is unknown???" % str( nNumLang ) );
+        print( "ERR: speech.setSpeakLanguage: loadVoicePreference error: %s" % str(err) );
+        print( "INF: speech.setSpeakLanguage: trying a setLanguage" );
+        try:
+            proxyTts.setLanguage( toSpeakLanguage( nNumLang ) );
+        except BaseException, err:
+            print( "ERR: speech.setSpeakLanguage: setLanguage, error: %s" % str(err) );
+            return False
+        
+        
+    if( bChangeAsrAlso ):
+        asr = naoqitools.myGetProxy( "ALSpeechRecognition" );
+        if( nNumLang == constants.LANG_BR or nNumLang == constants.LANG_PT or nNumLang == constants.LANG_TU ):
+            strLang = toSpeakLanguage( nNumLang );
+            if( not strLang in asr.getAvailableLanguages() ):
+                print( "WRN: speech.setSpeakLanguage: the asr for lang %d (%s) is not installed, emulating it with french!" % ( nNumLang, strLang ) );
+                nNumLang = constants.LANG_FR; # try to emulate them !
+        try:
+            asr.setLanguage( toSpeakLanguage( nNumLang ) );
+        except BaseException, err:
+            print( "ERR: speech.setSpeakLanguage: asr.setLanguage, error: %s" % str(err) );
+    return True
+# setSpeakLanguage - end
+
 def getSpeakLanguage( strLang = "" ):
   "return the current speak language of the synthesis"
   if( strLang == "" ):
@@ -147,6 +233,130 @@ def fromLangAbbrev( strLangAbbrev ):
 # fromLangAbbrev - end
 #print fromLangAbbrev( "it" );
 
+def toSpeakLanguage( nNumLang ):
+    "return the language name from a lang number"
+    if( nNumLang == constants.LANG_FR ):
+        return 'French';
+    if( nNumLang == constants.LANG_EN ):
+        return 'English';
+    if( nNumLang == constants.LANG_SP ):
+        return 'Spanish';
+    if( nNumLang == constants.LANG_IT ):
+        return 'Italian';
+    if( nNumLang == constants.LANG_GE ):
+        return 'German';
+    if( nNumLang == constants.LANG_CH ):
+        return 'Chinese';
+    if( nNumLang == constants.LANG_JP ):
+        return 'Japanese';        
+    if( nNumLang == constants.LANG_PO ):
+        return 'Polish';
+    if( nNumLang == constants.LANG_KO ):
+        return 'Korean';
+    if( nNumLang == constants.LANG_BR ):
+        return 'Brazilian';
+    if( nNumLang == constants.LANG_TU ):
+        return 'Turkish';
+    if( nNumLang == constants.LANG_PT ):
+        return 'Portuguese';
+    print( "WRN: speech.toSpeakLanguage: language number %s is unknown" % str( nNumLang ) );
+    return 'English'; # default ?
+# toSpeakLanguage - end
+# print toSpeakLanguage( 3 );
+
+def getSpeakLanguageAnsiCode( nNumLang ):
+    """
+    return the ansi code relative to some ansi code.
+    eg: fr => "fr-FR"
+    """
+    if( nNumLang == constants.LANG_FR ):
+        return 'fr-FR';
+    if( nNumLang == constants.LANG_EN ):
+        return 'en-UK';
+    return 'en-UK'; # default ?
+# getSpeakLanguageAnsiCode - end    
+    
+
+def isLangPresent( nNumLang ):
+    "Is lang present in the system"
+    strLang = toSpeakLanguage( nNumLang );
+    print( "isLangPresent( %s => '%s' ) - called" % (str(nNumLang), strLang ) );
+    tts = naoqitools.myGetProxy( "ALTextToSpeech" );
+    if( tts != None ):
+        if strLang in tts.getAvailableLanguages():
+            return True;
+    return False;
+# isLangPresent - en
+
+def isLangFrench():
+  return getSpeakLanguage() == constants.LANG_FR;
+
+def isLangEnglish():
+  return getSpeakLanguage() == constants.LANG_EN;
+
+def isLangSpanish():
+  return getSpeakLanguage() == constants.LANG_SP;
+
+def isLangItalian():
+  return getSpeakLanguage() == constants.LANG_IT;
+
+def isLangGerman():
+  return getSpeakLanguage() == constants.LANG_GE;
+
+def isLangChinese():
+  return getSpeakLanguage() == constants.LANG_CH;
+  
+def isLangJapanese():
+  return getSpeakLanguage() == constants.LANG_JP; 
+
+def isLangPolish():
+  return getSpeakLanguage() == constants.LANG_PO;
+
+def isLangKorean():
+  return getSpeakLanguage() == constants.LANG_KO;
+
+def isLangBrazilian():
+  return getSpeakLanguage() == constants.LANG_BR;
+
+def isLangTurkish():
+  return getSpeakLanguage() == constants.LANG_TU;
+
+def setLangFrench():
+  setSpeakLanguage( constants.LANG_FR );
+
+def setLangEnglish():
+  setSpeakLanguage( constants.LANG_EN );
+
+def setLangSpanish():
+  setSpeakLanguage( constants.LANG_SP );
+
+def setLangItalian():
+  setSpeakLanguage( constants.LANG_IT );
+
+def setLangGerman():
+  setSpeakLanguage( constants.LANG_GE );
+
+def setLangChinese():
+  setSpeakLanguage( constants.LANG_CH );
+  
+def setLangJapanese():
+  setSpeakLanguage( constants.LANG_JP );  
+
+def setLangPolish():
+  setSpeakLanguage( constants.LANG_PO );
+  
+def setLangKorean():
+  setSpeakLanguage( constants.LANG_KO );
+
+def setLangBrazilian():
+  setSpeakLanguage( constants.LANG_BR );
+  
+def setLangTurkish():
+  setSpeakLanguage( constants.LANG_TU );
+
+def setLangPortuguese():
+  setSpeakLanguage( constants.LANG_PT );
+
 def changeLang():
 #  if( config.nNumLang == constants.LANG_FR ):
 #    config.nNumLang = constants.LANG_EN;
@@ -155,6 +365,11 @@ def changeLang():
     print( "speech.changeLang: TODO reecrire sans utiliser nNumLang" ); # TODO
 # changeLang - end
 
+def getVoice():
+  "return the current voice of the synthesis"
+  tts = naoqitools.myGetProxy( "ALTextToSpeech" );
+  strLang = tts.getVoice();
+  return strLang;
 # getVoice - end
 
 def assumeTextHasDefaultSettings( strTextToSay, nUseLang = -1 ):
@@ -286,7 +501,10 @@ def sayAndCache_internal( strTextToSay, bJustPrepare = False, bStoreToNonVolatil
     if( nUseLang != -1 ):
         nPreviousLanguage = getSpeakLanguage();        
         # change the language to the wanted one
-        setSpeakLanguage( nUseLang );
+        bRet = setSpeakLanguage( nUseLang );
+        if not bRet:
+            print( "WRN: sayAndCache_internal: changing lang fail, text won't be said..." )
+            return None
     if( len( strTextToSay ) > 150 and ( not bJustPrepare or bCalledFromSayAndCacheFromLight ) ):
         # if it's a long text, we had a blabla to tell the user we will wait (if it's a just prepare from inner, we don't use it)
         sayAndCache_InformPrepare( strUseVoice = strUseVoice );
@@ -306,14 +524,15 @@ def sayAndCache_internal( strTextToSay, bJustPrepare = False, bStoreToNonVolatil
     debug.debug( "sayAndCache: generating text to file - end (tts) - time: %fs" % ( time.time() - timeBegin ) );    
     timeBegin = time.time();
     
-    sound.removeBlankFromFile( szPathFilename );
+    sound.analyse.removeBlankFromFile( szPathFilename );
     debug.debug( "sayAndCache: generating text to file - end (post-process1) - time: %fs" % ( time.time() - timeBegin ) );
     timeBegin = time.time();
 
     if( bStoreToNonVolatilePath ):
       try:
         os.makedirs( pathtools.getCachePath() + "generatedvoices" + pathtools.getDirectorySeparator());
-      except:
+      except Exception as err:
+        print( "DBG: sayAndCache_internal: when trying to create folder, error: %s" % err )
         pass
       szAlternatePathFilename = pathtools.getCachePath() + "generatedvoices" + pathtools.getDirectorySeparator() + szFilename + ".raw"; # a non volatile path
       filetools.copyFile( szPathFilename, szAlternatePathFilename );
@@ -384,9 +603,6 @@ def sayAndCache( strTextToSay, bJustPrepare = False, bStoreToNonVolatilePath = F
     global_mutexSayAndCache.unlock();
     return ret;
 # sayAndCache - end
-
-
-
 
 def sayAndCacheAndLight( strTextToSay, bJustPrepare = False, bStoreToNonVolatilePath = False, nEyesColor = 0, nUseLang = -1, strUseVoice = None ):
     "say a cached text with light animation"
@@ -591,6 +807,33 @@ def sayAndCache_InformProcess_end():
 # sayAndCache_InformProcess - end
     
 
+def sayAndCache_launchBackgroundPlay( strTextToSay, bJustPrepare = False, nUseLang = -1 ):
+    """
+    updated version to be used with bodytalk
+    return an ID of AudioPlay task or 0 if just prepared
+    nUseLang: an number as a lang constant or a "xx" country code
+    """
+    
+    strTextToSay = assumeTextHasDefaultSettings( strTextToSay, nUseLang );
+    
+    if typetools.isString(nUseLang):
+        if nUseLang == "":
+            nUseLang = -1
+        else:
+            nUseLang = fromLangAbbrev( nUseLang )
+    
+    
+    rRet = sayAndCache( strTextToSay = strTextToSay, bJustPrepare = True, nUseLang = nUseLang, bStoreToNonVolatilePath = True )
+    print( "INF: sayAndCache_launchBackgroundPlay: sayAndCache success: %s" % str(rRet) )
+    if  bJustPrepare or rRet == None:
+        return 0
+    ap = naoqitools.myGetProxy("ALAudioPlayer")
+    filename = sayAndCache_getFilename( strTextToSay, nUseLang = nUseLang )
+    completename = pathtools.getCachePath() + "generatedvoices" + pathtools.getDirectorySeparator() + filename + ".raw"
+    print( "INF: sayAndCache_launchBackgroundPlay: playing file %s" % completename )
+    id = ap.post.playFile( completename )
+    return id
+
 def sayMumbled( strText ):
     sayAndCache( strText, bJustPrepare = True );
     strText = assumeTextHasDefaultSettings( strText );
@@ -724,8 +967,8 @@ def sayAndLight( strText, nLightType = 0 , bUseDisplay = True):
     if tts != None:
         id = tts.post.say( strText );
     if( nLightType > 0 ):
-        leds.setBrainLedsIntensity( 1., 100, bDontWait = True );
-        leds.setEarsLedsIntensity( 1., 100, bDontWait = True );
+        leds.ledsDcm.setBrainLedsIntensity( 1., 100, bDontWait = True );
+        leds.ledsDcm.setEarsLedsIntensity( 1., 100, bDontWait = True );
     rPeriod = 0.2;
     bStop = False;
     global global_bMustStopSay;
@@ -746,9 +989,9 @@ def sayAndLight( strText, nLightType = 0 , bUseDisplay = True):
                     nColor = 0;
                 else:
                     nColor = random.randint(10,0xFF)
-                leds.dcmMethod.setMouthColor( rPeriod, nColor );
+                leds.ledsDcm.setMouthColor( rPeriod, nColor );
             else:            
-                leds.dcmMethod.setEyesColor( rPeriod, nColor );
+                leds.ledsDcm.setEyesColor( rPeriod, nColor );
         time.sleep( rPeriod );
         if( global_bMustStopSay ):
             try:
@@ -768,12 +1011,12 @@ def sayAndLight( strText, nLightType = 0 , bUseDisplay = True):
             tts.stopAll(); # brutal request!
     # while - end
     if( nLightType > 0 ):
-        leds.setBrainLedsIntensity( 0., 100, bDontWait = True );
-        leds.setEarsLedsIntensity( 0., 100, bDontWait = True );
+        leds.ledsDcm.setBrainLedsIntensity( 0., 100, bDontWait = True );
+        leds.ledsDcm.setEarsLedsIntensity( 0., 100, bDontWait = True );
     if( nLightType < 2 ):
         leds.setFavoriteColorEyes( False );
     if( bOnRomeo ):
-        leds.dcmMethod.setMouthColor( 0.4, 0 );
+        leds.ledsDcm.setMouthColor( 0.4, 0 );
     mem.raiseMicroEvent( "Speaking", 0 )
     global_mutexSayAndLight.unlock();
     return not bAborted;
@@ -1502,10 +1745,22 @@ class LocalizedText:
     self.setCurrentLang( getDefaultSpeakLanguage() );
   # changeCurrentLangToDefault - end
 
+  def setCurrentLang( self, nNumCurrentLang ):
+    "change the language, the text will then be prepared for the current lang"
+    print( "LocalizedText.setCurrentLang: changing to lang %d" % nNumCurrentLang );
+    self.nCurrentLanguage = nNumCurrentLang;
+    setSpeakLanguage( self.nCurrentLanguage );
+    self.prepareTextOneLang( self.nCurrentLanguage );
+  # setCurrentLang - end
+
   def setStoreToNonVolatile( self, bNewVal ):
     "Set or unset the StoreToNonVolatile option"
     self.bStoreToNonVolatile = bNewVal;
   # setStoreToNonVolatile - end
+
+  def getCurrentLang( self ):
+    return self.nCurrentLanguage;
+  # getCurrentLang - end
 
   # add a new sentence of the form ["hello", "bonjour"];
   # return the ID of the new created text

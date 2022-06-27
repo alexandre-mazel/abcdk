@@ -6,8 +6,6 @@
     #~ file.write(s)
     #~ file.close()
     
-
-
 ###########################################################
 # Aldebaran Behavior Complementary Development Kit
 # String tools
@@ -18,6 +16,9 @@
 """Tools to work with string."""
 
 print( "importing abcdk.stringtools" );
+
+import datetime
+
 
 
 def findNumber( strText, nMinValue = -99999999, bFindLast = False ): # todo: int_min
@@ -841,6 +842,33 @@ def srtStyleToTimeMs( strTimeSrt ):
     return ((nHour*60+nMin)*60+nSec)*1000+nMs
     
 assert(srtStyleToTimeMs(timeMsToSrtStyle(154634))==154634)
+
+def getTodayString():
+    """
+    return the today string value like: "1974_08_19"
+    """
+    datetimeObject = datetime.datetime.now()
+    strTimeStamp = datetimeObject.strftime( "%Y_%m_%d")
+    return strTimeStamp
+#~ print("getTodayString(): %s" % getTodayString() )
+
+
+def convertForFilename( strTxt ):
+    """
+    convert a text to be usable as filename
+    "toto est content" => "toto_est_content"
+    """
+    s = strTxt
+    s = s.replace( " ", "_" )
+    s = s.replace( "'", "_" )
+    s = s.replace( "\"", "_" )
+    s = s.replace( ",", "_" )
+    s = s.replace( ":", "_" )
+    s = s.replace( "/", "_" )
+    s = s.replace( "\\", "_" )
+    s = s.replace( "-", "_" )
+    return s
+# convertForFilename - end
 
 
 def autoTest():

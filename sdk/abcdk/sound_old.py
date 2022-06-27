@@ -1669,9 +1669,9 @@ def playSound( strFilename, bWait = True, bDirectPlay = False, nSoundVolume = 10
         if bUseLedEars:
             if( system.isOnRomeo() ):
                 #leds.dcmMethod.setEyesColor();
-                leds.setBrainLedsIntensity( 1., 100, bDontWait = True );
+                leds.dcmMethod.setBrainLedsIntensity( 1., 100, bDontWait = True );
             else:
-                leds.setEarsLedsIntensity( 1., 100, bDontWait = True );
+                leds.dcmMethod.setEarsLedsIntensity( 1., 100, bDontWait = True );
         # If strFilename has an absolute path, go ahead with this path !
         if strFilename.startswith( pathtools.getDirectorySeparator() ):
             strSoundFile = strFilename

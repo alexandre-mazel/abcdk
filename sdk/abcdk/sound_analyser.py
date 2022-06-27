@@ -5,15 +5,24 @@
 # Aldebaran Robotics (c) 2010 All Rights Reserved - This file is confidential.
 ###########################################################
 
+"""
+BEWARE: don't push the mic in level too high.
+using alsamixer, 95 is fine !!!
+
+"""
+
 import logging
+
 "Sound Analyser: receive sound buffer, and handle them"
 logging.debug( "importing abcdk.sound_analyser" );
 
 import config
 import filetools
 import leds
+import long_term_memory
 import naoqitools
 import sound
+import sound.wav
 import stringtools
 import system
 
@@ -30,6 +39,33 @@ import python_speech_features
 
 global_strALMemoryKeyName__stop_process = "sound_receiver_must_stop"
 global_bSampleReceived = False
+
+# for sakes, you want somme logging ? let's print them, first.
+class LogCustom:
+    def __init__( self ):
+        self.bPrintAll = False
+        
+    def setPrintAll( self, bNewVal ):
+        self.bPrintAll = bNewVal
+        
+    def info( self, s ):
+        if self.bPrintAll: print( "INF: %s" % str(s) )
+        logging.info(s)
+
+    def warn( self, s ):
+        if self.bPrintAll: print( "WRN: %s" % str(s) )
+        logging.warn(s)
+
+    def debug( self, s ):
+        if self.bPrintAll: print( "DBG: %s" % str(s) )
+        logging.debug(s)
+
+    def error( self, s ):
+        if self.bPrintAll: print( "ERR: %s" % str(s) )
+        logging.error(s)
+# class LogCustom
+log = LogCustom()
+log.setPrintAll(True)
 
 class VAD:
     """
@@ -147,22 +183,29 @@ class SoundAnalyzer:
         
         self.bIsOnRobot = system.isOnRobot()
         
+        self.ltm = long_term_memory.ltm
+        
     def __del__( self ):
         if self.debug_fileAllSpeech != None:
             self.debug_fileAllSpeech.write( self.strDstPath + "concatenated_speechs.wav" )
+
+    def storeAnalysedDuration( self, rDuration ):
+        rTotalDuration = self.ltm.inc( "rCumulatedSoundSendToGoogleSecond_" + stringtools.getTodayString(), rDuration, 0. )
+        print("rCumulatedSoundSendToGoogleSecond (today): %5.2fs" % rTotalDuration )
+
 
     def setKeepAudioFiles( self, bNewState ):
         self.bKeepAudioFiles = bNewState
         
     def _writeBufferToFile( self, datas, strFilename ):
-        wavFile = sound.Wav()
+        wavFile = sound.wav.Wav()
         wavFile.new( nSamplingRate = self.nSampleRate, nNbrChannel = 1, nNbrBitsPerSample = 16 )
         wavFile.addData( datas )
         wavFile.write( strFilename )
         
         if not self.bIsOnRobot:
             if self.debug_fileAllSpeech == None:
-                self.debug_fileAllSpeech = sound.Wav()
+                self.debug_fileAllSpeech = sound.wav.Wav()
                 self.debug_fileAllSpeech.new( nSamplingRate = self.nSampleRate, nNbrChannel = 1, nNbrBitsPerSample = 16 )
             self.debug_fileAllSpeech.addData( datas )
             self.debug_fileAllSpeech.addData( np.zeros( self.nSampleRate/2, self.datatype) )
@@ -173,18 +216,20 @@ class SoundAnalyzer:
         Send a file to the speech recognition engine.
         Return: the string of recognized text, + confidence or None if nothing recognized
         """
-        import freespeech
+        import sound.freespeech
         
-        logging.info("_sendToSpeechReco: sending to speech reco '%s'" % strFilename )
+        log.info("_sendToSpeechReco: sending to speech reco '%s'" % strFilename )
         retVal = None
         
         timeBegin = time.time()
         
-        retVal = freespeech.freeSpeech.analyse( strFilename, strUseLang=self.strUseLang )
+        retVal = sound.freespeech.freeSpeech.analyse( strFilename, strUseLang=self.strUseLang )
+        
+        if self.bVerbose: log.info( "SoundAnalyser._sendToSpeechReco: freeSpeech: retVal: %s" % str(retVal) )
                 
         rProcessDuration = time.time() - timeBegin
         
-        if self.bVerbose: logging.info( "SoundAnalyser._sendToSpeechReco: freeSpeech analysis processing takes: %5.2fs" % rProcessDuration )
+        if self.bVerbose: log.info( "SoundAnalyser._sendToSpeechReco: freeSpeech analysis processing takes: %5.2fs" % rProcessDuration )
         
         if( 0 ): # disabled
             self.rSkipBufferTime = rProcessDuration  # if we're here, it's already to zero
@@ -199,7 +244,12 @@ class SoundAnalyzer:
             newfilename = strFilename.replace( ".wav", "__%s.wav" % stringtools.convertForFilename(txtForRenameFile) )
             baseFilename = os.path.basename(strFilename)
             newBaseFilename = os.path.basename(newfilename)
-            newfilename = "/home/nao/Hopias/prevWavs/" + newBaseFilename
+            
+            newfilename = "~/recorded/prevWavs/"
+            newfilename = os.path.expanduser(newfilename)
+            try: os.makedirs(newfilename)
+            except: pass
+            newfilename += newBaseFilename
             shutil.move(  strFilename, newfilename )
             print( "INF: SoundAnalyser._sendToSpeechReco: saved wav file in " + newfilename)
         
@@ -240,18 +290,18 @@ class SoundAnalyzer:
         nNbrOfSamplesByChannel = len(aInterlacedSoundData) / self.nNbrChannel        
         rSoundDataDuration = nNbrOfSamplesByChannel / float(self.nSampleRate)
         
-        if bVerbose: logging.info( "SoundAnalyser.analyse: receiving a buffer of len: %s (equivalent to %5.3fs) (shape:%s)" % (len(aInterlacedSoundData), rSoundDataDuration, str(aInterlacedSoundData.shape)) )
+        if bVerbose: log.info( "SoundAnalyser.analyse: receiving a buffer of len: %s (equivalent to %5.3fs) (shape:%s)" % (len(aInterlacedSoundData), rSoundDataDuration, str(aInterlacedSoundData.shape)) )
         
         if time.time() > self.timeLastBufferReceived + 0.7:
             # our buffer is now to old (for instance the robot was speaking and we were inhibited)
-            logging.info( "SoundAnalyser.analyse: clearing buffer after gap of %5.2fs (after inhibition...)" % (time.time()-self.timeLastBufferReceived) )
+            log.info( "SoundAnalyser.analyse: clearing buffer after gap of %5.2fs (after inhibition...)" % (time.time()-self.timeLastBufferReceived) )
             self.bStoringSpeech = False
             self.aStoredDataSpeech = np.array( [], dtype=self.datatype ) # reset
             
         self.timeLastBufferReceived = time.time()
         
         aSoundData = np.reshape( aInterlacedSoundData, (self.nNbrChannel, nNbrOfSamplesByChannel), 'F' );
-        #~ logging.debug( "aSoundData len: %s, shape: %s" % (len(aSoundData), str(aSoundData.shape)) )
+        #~ log.debug( "aSoundData len: %s, shape: %s" % (len(aSoundData), str(aSoundData.shape)) )
 
         aRecognizedNoise = None
         aRecognizedSpeech = None
@@ -260,18 +310,23 @@ class SoundAnalyzer:
         try:
         	nEnergy = sound.computeEnergyBestNumpy(aSoundData[0]);
         except BaseException, err:
-            logging.error( "analyse: while computing energy, err: %s" % str(err) )
+            log.error( "analyse: while computing energy, err: %s" % str(err) )
             nEnergy = 0
-        if bVerbose: logging.info( "SoundAnalyser.analyse: Energy %d" % nEnergy )
+        if bVerbose: log.info( "SoundAnalyser.analyse: Energy %d" % nEnergy )
         
         # sum of two mics
-        mixedSoundData = aSoundData[0]+aSoundData[1]
-        #~ logging.debug( "mixedSoundData len: %s, shape: %s" % (len(mixedSoundData), str(mixedSoundData.shape)) )
+        if 0:
+            mixedSoundData = aSoundData[0]+aSoundData[1]
+        else:
+            # sum of four mics !!!
+            mixedSoundData = ( aSoundData[0]+aSoundData[1] + aSoundData[2]+aSoundData[3]  ) / 4
+            
+        #~ log.debug( "mixedSoundData len: %s, shape: %s" % (len(mixedSoundData), str(mixedSoundData.shape)) )
 
         computedMfcc = python_speech_features.base.mfcc( mixedSoundData, samplerate=self.nSampleRate, winstep=self.rMfccWindowStepInSec )
         
         aVadStateChange = self.vad.computeFromMfcc( computedMfcc, self.rMfccWindowStepInSec )
-        #~ if bVerbose: logging.debug( "aVadStateChange: %s" % aVadStateChange )
+        #~ if bVerbose: log.debug( "aVadStateChange: %s" % aVadStateChange )
         
         # analyse VAD analyse results
         bStoringSpeechDone = False
@@ -282,8 +337,8 @@ class SoundAnalyzer:
                     # take datas from preBuffer
                     nNbrSamples = int(-t*self.nSampleRate)
                     self.aStoredDataSpeech = self.aStoredSoundPreBuffer[-nNbrSamples:]
-                    #~ logging.debug( "pre: %s" % len( self.aStoredDataSpeech ) )
-                    #~ logging.debug( "pre: %s" % str(self.aStoredDataSpeech.shape ) )
+                    #~ log.debug( "pre: %s" % len( self.aStoredDataSpeech ) )
+                    #~ log.debug( "pre: %s" % str(self.aStoredDataSpeech.shape ) )
                     
                     t = 0.
                 # add data to next changes:
@@ -293,10 +348,10 @@ class SoundAnalyzer:
                     rDuration = rSoundDataDuration-t
                 nStart = int(t*self.nSampleRate)
                 nDuration = int(rDuration*self.nSampleRate)
-                #~ logging.debug( "%s" % len( self.aStoredDataSpeech ) )
-                #~ logging.debug( "%s" % len( mixedSoundData ) )
-                #~ logging.debug( "%s" % str(self.aStoredDataSpeech.shape) )
-                #~ logging.debug( "%s" % str(mixedSoundData.shape) )
+                #~ log.debug( "%s" % len( self.aStoredDataSpeech ) )
+                #~ log.debug( "%s" % len( mixedSoundData ) )
+                #~ log.debug( "%s" % str(self.aStoredDataSpeech.shape) )
+                #~ log.debug( "%s" % str(mixedSoundData.shape) )
                 
                 self.aStoredDataSpeech = np.concatenate( (self.aStoredDataSpeech, mixedSoundData[nStart:nStart+nDuration]) );
                 
@@ -305,9 +360,28 @@ class SoundAnalyzer:
             else:
                 self.bStoringSpeech = False
                 strFilename = self.strDstPath + filetools.getFilenameFromTime() + "_speech.wav";
-                if bVerbose: logging.info( "SoundAnalyser.analyse: outputting speech to file: '%s'" % strFilename );
-
+                if bVerbose: log.info( "SoundAnalyser.analyse: outputting speech to file: '%s'" % strFilename );
+                
+                # 2019-10-26 Alma:
+                # I got an error right now: "ERR: processRemote: err: max() arg is an empty sequence"
+                # I'm not sure it was coming from here, but like I add that part recently, why not...
+                if len(self.aStoredDataSpeech) > 4:
+                    maxSound = max(self.aStoredDataSpeech)
+                    log.info( "SoundAnalyser.analyse: max of sound is %d" %  maxSound )
+                    if maxSound > 32760:
+                        log.warn( "SoundAnalyser.analyse: sound is clipped!!!"  )
+                    elif maxSound < 2000:
+                        # let's amp by 6
+                        self.aStoredDataSpeech *= 16
+                    elif maxSound < 5000:
+                        # let's amp by 6
+                        self.aStoredDataSpeech *= 6
+                    elif maxSound < 10000:
+                        # let's amp by 3
+                        self.aStoredDataSpeech *= 3
+        
                 rDuration = len(self.aStoredDataSpeech) / float(self.nSampleRate)
+
                 self._writeBufferToFile( self.aStoredDataSpeech, strFilename  )
                 self.aStoredDataSpeech = np.array( [], dtype=self.datatype ) # reset
                 
@@ -317,6 +391,10 @@ class SoundAnalyzer:
                         aRecognizedSpeech = [ret[0], ret[1], rDuration]
                     else:
                         aRecognizedSpeech = []
+                        
+                if 1:
+                    # keep sum of amount of time sent to google per day
+                    self.storeAnalysedDuration( rDuration )                        
                         
                 if not self.bKeepAudioFiles:
                     try:
@@ -331,7 +409,7 @@ class SoundAnalyzer:
         if self.bStoringSpeech:
             if len(self.aStoredDataSpeech) > self.nSampleRate*14:
                 # if more than 14 sec, keep only 10 last sec
-                logging.warning( "SoundAnalyser.analyse: buffer too long, keeping only 10 last seconds..." )
+                log.warning( "SoundAnalyser.analyse: buffer too long, keeping only 10 last seconds..." )
                 self.aStoredDataSpeech = self.aStoredDataSpeech[self.nSampleRate*4:] # removing by chunk of 4 sec
                 
         
@@ -354,7 +432,7 @@ def analyseFile( strFilename, rPacketSliceTime = 0.170, bSimulateRealTime = True
     - strUseLang: lang to use for speech recognition, eg: "fr-FR", if leaved to "": use language currently in the tts
     """
     strFilename = os.path.expanduser( strFilename )
-    s = sound.Wav( strFilename )
+    s = sound.wav.Wav( strFilename )
 
     if not s.isOpen():
         return False
@@ -365,7 +443,7 @@ def analyseFile( strFilename, rPacketSliceTime = 0.170, bSimulateRealTime = True
     audiodata = s.data
     idx = 0
     nSizeSlice = int(rPacketSliceTime * s.nAvgBytesPerSec/2) # /2 => 16 to 8 bits
-    #~ logging.debug( s.data )
+    #~ log.debug( s.data )
     while( idx < len(s.data) ):
         sa.analyse( s.data[idx:idx+nSizeSlice], bVerbose = bVerbose )
         idx += nSizeSlice
@@ -396,15 +474,17 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
             self.leds = naoqitools.myGetProxy( "ALLeds", strNaoIp, 9559 )
 
         except BaseException, err:
-            logging.error( "abcdk.naoqitools.AbcdkSoundReceiverModule: loading error: %s" % str(err) );            
+            log.error( "abcdk.naoqitools.AbcdkSoundReceiverModule: loading error: %s" % str(err) );            
     # __init__ - end
     
     def __del__( self ):
-        logging.info( "abcdk.AbcdkSoundReceiverModule.__del__: cleaning everything" );
+        log.info( "abcdk.AbcdkSoundReceiverModule.__del__: cleaning everything" );
         self.stop();
     
     def start( self, bActivateSpeechRecognition = True ):
         if self.mem: self.mem.raiseMicroEvent( global_strALMemoryKeyName__stop_process, 0 )
+        
+        if self.mem: self.mem.raiseMicroEvent( "CustomRemoteASR_Running", True )
         
         audio = naoqi.ALProxy( "ALAudioDevice", self.strNaoIp, 9559 );
         nNbrChannelFlag = 0; # ALL_Channels: 0,  AL::LEFTCHANNEL: 1, AL::RIGHTCHANNEL: 2; AL::FRONTCHANNEL: 3  or AL::REARCHANNEL: 4.
@@ -414,7 +494,9 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
         audio.setClientPreferences( self.getName(),  self.nSampleRate, nNbrChannelFlag, nDeinterleave ); # setting same as default generate a bug !?!
         audio.subscribe( self.getName() );
         self.bStarted = True
-        logging.info( "SoundReceiver: started!" );
+        log.info( "SoundReceiver: started!" );
+        if system.getPepperVersion() == 1.78:
+            os.system( "amixer -q sset Capture 61000" ) # set good settings (for Pepper 1.8)
         # self.processRemote( 4, 128, [18,0], "A"*128*4*2 ); # for local test
         
         # on romeo, here's the current order:
@@ -439,11 +521,12 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
     
     def stop( self ):
         if( self.bStarted ):
-            logging.info( "SoundReceiver: stopping..." );
+            log.info( "SoundReceiver: stopping..." );
             audio = naoqi.ALProxy( "ALAudioDevice", self.strNaoIp, 9559 );
-            logging.info( "SoundReceiver: stopping: proxy created..." );
+            log.info( "SoundReceiver: stopping: proxy created..." );
             audio.unsubscribe( self.getName() );        
-            logging.info( "SoundReceiver: stopped." );
+            log.info( "SoundReceiver: stopped." );
+            if self.mem: self.mem.raiseMicroEvent( "CustomRemoteASR_Running", False )
             self.bStarted = False
             
     def isRunning( self ):
@@ -460,18 +543,18 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
             color = 0x0000ff
         else:
             color = 0x808080
-        leds.dcmMethod.setEyesOneLed( 0, 0.0, color )
+        leds.ledsDcm.setEyesOneLed( 0, 0.0, color )
         
         if aRecognizedSpeech != None:
             if aRecognizedSpeech == []:
                 nColor = 0xff0000
             else:
                 nColor = 0x00ff00
-            leds.dcmMethod.setEyesOneLed( 1, 0.0, nColor )
-            leds.dcmMethod.setChestColor( 0.0, nColor )
+            leds.ledsDcm.setEyesOneLed( 1, 0.0, nColor )
+            leds.ledsDcm.setChestColor( 0.0, nColor )
             
-            leds.dcmMethod.setEyesOneLed( 1, 1.0, 0x404040 )
-            leds.dcmMethod.setChestColor( 1.0, 0x404040 )
+            leds.ledsDcm.setEyesOneLed( 1, 1.0, 0x404040 )
+            leds.ledsDcm.setChestColor( 1.0, 0x404040 )
             
             
     def isAudioOutUsed( self ):
@@ -480,11 +563,11 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
             # AudioOutputChanged is of this type:
             # [['Name', 'alsa_output.PCH.output-speakers'], ['Index', 0], ['Mode', 'output'], ['HwType', 'Internal'], ['Volume', [49, 49]], ['BaseVolume', 49], ['Mute', False], ['MonitorStream', 0], ['MonitorStreamName', 'alsa_output.PCH.output-speakers.monitor'], ['State', 'suspended'], ['SampleInfo', [['Rate', 48000], ['Channels', 2], ['Positions', ['front-left', 'front-right']]]]] 
             audioOutputState = self.mem.getData( "AudioOutputChanged" )
-            #~ logging.debug( "audioOutputState: %s" % audioOutputState )
+            #~ log.debug( "audioOutputState: %s" % audioOutputState )
             # TODO: a dict to check field name
             strMode = audioOutputState[2][1]
             strState = audioOutputState[9][1]
-            #~ logging.debug( "strMode: '%s', strState: '%s'" % (strMode,strState) )
+            #~ log.debug( "strMode: '%s', strState: '%s'" % (strMode,strState) )
             if strMode == "output" and strState == "running":
                 return True
         return bText
@@ -495,8 +578,8 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
         """
         This is THE method that receives all the sound buffers from the "ALAudioDevice" module
         """
-        #~ logging.debug( "process!" );
-        #~ logging.debug( "processRemote: nbOfChannels: %s, nbrOfSamplesByChannel: %s, timestamp: %s, lendata: %s, data0: %s (0x%x), data1: %s (0x%x)" % (nbOfChannels, nbrOfSamplesByChannel, aTimeStamp, len(buffer), buffer[0],ord(buffer[0]),buffer[1],ord(buffer[1])) );
+        #~ log.debug( "process!" );
+        #~ log.debug( "processRemote: nbOfChannels: %s, nbrOfSamplesByChannel: %s, timestamp: %s, lendata: %s, data0: %s (0x%x), data1: %s (0x%x)" % (nbOfChannels, nbrOfSamplesByChannel, aTimeStamp, len(buffer), buffer[0],ord(buffer[0]),buffer[1],ord(buffer[1])) );
         
         bMustStop = self.mem.getData( global_strALMemoryKeyName__stop_process )
         if( bMustStop ):
@@ -516,7 +599,7 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
                 
             
             if( time.time() < self.inhibit_timeNextUsableAudioForSpeech ):
-                logging.debug("processRemote: inhibited => skip buffer analyse" );
+                log.debug("processRemote: inhibited => skip buffer analyse" );
                 return
         
 
@@ -538,7 +621,9 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
                 if aRecognizedSpeech == []:
                     self.mem.raiseMicroEvent( "Audio/RecognizedWords", [] )
                 else:
-                    self.mem.raiseMicroEvent( "Audio/RecognizedWords", [[aRecognizedSpeech[0], aRecognizedSpeech[1]]] )
+                    aResults = [[aRecognizedSpeech[0], aRecognizedSpeech[1]]]
+                    self.mem.raiseMicroEvent( "Audio/RecognizedWords", aResults )
+                    self.mem.raiseMicroEvent( "WordRecognized", aResults[0] ) # for compatibility with standard ASR
 
             if bNoiseDetected != self.bNoiseDetectedPrev or bSpeechDetected != self.bSpeechDetectedPrev or aRecognizedNoise !=  None or aRecognizedSpeech != None:
                 self.doVisualFeedback( bNoiseDetected, bSpeechDetected, aRecognizedNoise, aRecognizedSpeech, aRecognizedUser )
@@ -553,10 +638,12 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
         global global_bSampleReceived
         global_bSampleReceived = True
         
+        #~ log.debug( "processRemote: receving %d samples" % (nbrOfSamplesByChannel) )
+        
         try:
             return self._processRemote_( nbOfChannels, nbrOfSamplesByChannel, aTimeStamp, buffer )
         except BaseException, err:
-            logging.error( "processRemote: err: %s" % str(err) )
+            log.error( "processRemote: err: %s" % str(err) )
             
         
         
@@ -566,14 +653,14 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
 
 # global objectPoint
 abcdk_soundReceiverRef = None
-global AbcdkSoundReceiver
+AbcdkSoundReceiver = None
 
 def launchSoundReceiverStandalone( strRobotIp = "localhost", bActivateSpeechRecognition = True ):
     """
     launch a sound receiver.
     stop it when the events "sound_receiver_must_stop" is triggered in the ALMemory
     """
-    logging.info( "launchSoundReceiverStandalone( ip= '%s', speechReco=%s ) - beginning..." % (strRobotIp,bActivateSpeechRecognition) )
+    log.info( "launchSoundReceiverStandalone( ip= '%s', speechReco=%s ) - beginning..." % (strRobotIp,bActivateSpeechRecognition) )
     config.setDefaultIP( strRobotIp, bSetNotInChoregraphe = True );
     
     # We need this broker to be able to construct
@@ -596,14 +683,14 @@ def launchSoundReceiverStandalone( strRobotIp = "localhost", bActivateSpeechReco
         global_bSampleReceived = False
         time.sleep( 10. )
         if not global_bSampleReceived:
-            logging.info( "launchSoundReceiverStandalone( %s ) - no samples received, exiting..." % strRobotIp )        
+            log.info( "launchSoundReceiverStandalone( %s ) - no samples received, exiting..." % strRobotIp )        
             break
             
     AbcdkSoundReceiver.stop()
     
-    logging.info( "launchSoundReceiverStandalone( %s ) - shutdowning" % strRobotIp )
+    log.info( "launchSoundReceiverStandalone( %s ) - shutdowning" % strRobotIp )
     myBroker.shutdown()
-    logging.info( "launchSoundReceiverStandalone( %s ) - ended" % strRobotIp )
+    log.info( "launchSoundReceiverStandalone( %s ) - ended" % strRobotIp )
         
 # launchSoundReceiverStandalone - end        
     
@@ -614,57 +701,65 @@ def launchSoundReceiverStandalone_stop( strRobotIp = "localhost" ):
         AbcdkSoundReceiver.stop()
         return # don't exit there, it doesn't cost a lot to post also in the ALMemory...
     
-    logging.info( "launchSoundReceiverStandalone_stop: gentle memory demand" )
+    log.info( "launchSoundReceiverStandalone_stop: gentle memory demand" )
     config.setDefaultIP( strRobotIp, bSetNotInChoregraphe = True );
     mem = naoqitools.myGetProxy( "ALMemory", strRobotIp, 9559 )
     mem.raiseMicroEvent( global_strALMemoryKeyName__stop_process, 1 )
     return
     
-    logging.warning( "kill program sound_analyser" )
+    log.warning( "kill program sound_analyser" )
     p = os.popen('ps -ef | pgrep sound_analyser',"r")
     pid = p.readline() 
     resultat = os.system("kill %s" %(pid))
     if resultat == 0:
-        logging.debug("Kill with success sound_analyser.")
+        log.debug("Kill with success sound_analyser.")
     else :
-        logging.error("Error no process sound_analyser.")
+        log.error("Error no process sound_analyser.")
 
 def launchSoundReceiverFromShell( strRobotIp = "localhost",  bActivateSpeechRecognition = True ):
     """
     this is a usefull method to be launched directly from command line with this line:
     python -c "import abcdk.sound_analyser; abcdk.sound_analyser.launchSoundReceiverFromShell('localhost')"
     """
-    logging.info( "launchSoundReceiverFromCommandLine( %s ) - beginning..." % strRobotIp )
+    log.info( "launchSoundReceiverFromCommandLine( %s ) - beginning..." % strRobotIp )
     #~ strCommand = "python -c 'import abcdk.sound_analyser; abcdk.sound_analyser.launchSoundReceiverStandalone( \"%s\" )'" % strRobotIp # callback failed with this command
     strCommand = "python /home/nao/.local/lib/python2.7/site-packages/abcdk/sound_analyser.py %s %s" % (strRobotIp,bActivateSpeechRecognition)
-    logging.debug( "launchSoundReceiverFromCommandLine: launching: '%s'" %  strCommand )
+    log.debug( "launchSoundReceiverFromCommandLine: launching: '%s'" %  strCommand )
     os.system( strCommand )    
-    logging.info( "launchSoundReceiverFromCommandLine( %s ) - ended" % strRobotIp )
+    log.info( "launchSoundReceiverFromCommandLine( %s ) - ended" % strRobotIp )
 
-def launchFromCommandLine():
-    strIP = "localhost"
-    if len(sys.argv) > 1:
-        strIP = sys.argv[1]
+def launchFromCommandLine( strIP = "localhost", bActivateSpeechRecognition = False):
+    if hasattr( sys, "argv"):
+        if len(sys.argv) > 1:
+            strIP = sys.argv[1]
 
-    bActivateSpeechRecognition = False        
-    if len(sys.argv) > 2:
-        strSpeechReco = sys.argv[2]        
-        if strSpeechReco == "1" or strSpeechReco[0].lower() == 't':
-            bActivateSpeechRecognition = True
+        if len(sys.argv) > 2:
+            strSpeechReco = sys.argv[2]
+            if strSpeechReco == "1" or strSpeechReco[0].lower() == 't':
+                bActivateSpeechRecognition = True
         
     launchSoundReceiverStandalone( strIP, bActivateSpeechRecognition=bActivateSpeechRecognition )
+    
+def stopSoundReceiver():
+    global AbcdkSoundReceiver
+    if AbcdkSoundReceiver != None:
+        AbcdkSoundReceiver.stop()
     
 def testAnalyseFile():
     s = "~/sounds/alexandre_m__41__male__pepper__ref__1.wav"
     analyseFile( s, bVerbose = True, bSimulateRealTime = False, strUseLang="fr" )
     
 if __name__ == "__main__":
+    # syntax: scriptname <ip> 1: 1 to start the speech recognition
+    
     logging.basicConfig(filename='/home/nao/speech_reco.log',
             level=logging.DEBUG,
             format='%(levelname)s %(relativeCreated)6d %(threadName)s %(message)s (%(module)s.%(lineno)d)',
             filemode='w')
 
-    logFormatter = log_formatter.LogFormatter("/home/nao/speech_reco.log", level=log_formatter.DEBUG)
+    try: os.makedirs("/home/nao/logs/")
+    except: pass
+    logFormatter = log_formatter.LogFormatter("/home/nao/logs/speech_reco.log", level=log_formatter.DEBUG)
     logFormatter.start()
     launchFromCommandLine()
     logFormatter.stopReadingLogs()
