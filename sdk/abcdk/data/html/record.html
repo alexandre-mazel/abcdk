@@ -1,0 +1,50 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Aldebaran Project Hopias							 -->
+<!-- record.html	   									 -->
+<!-- Innovation - Protolab - mcaniot@aldebaran.com	   	 -->
+<!-- Aldebaran Robotics (c) 2016 All Rights Reserved	 -->
+<!-- This file is confidential.	  						 -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+	
+	<head>
+		<META charset="UTF-8" CONTENT="no-cache">
+		<META http-equiv="Cache-Control" content="no-cache">
+		<META http-equiv="Pragma" content="no-cache">
+		<META http-equiv="Expires" content="0">
+		<!-- No zoom in the page -->
+		<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+		<!-- Include js files -->
+		<script src="/libs/qimessaging/1.0/qimessaging.js"></script>
+		<script src="js/jquery-1.11.0.min.js"></script>
+		<script src="js/record.js"></script>
+		<script src="js/connection.js"></script>
+		
+
+		<!-- Include css files -->
+		<link rel="stylesheet" href="css/record.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+
+	<body onload="startSubscribe('HTMLRecord');">
+
+		<!-- Command Sent by choregraphe -->
+		<div class="groupCommand" id="command"></div>
+		<hr/> 
+
+		<!-- Command Sent by choregraphe -->
+		<div class="groupText" id="text">
+			<h1>From  <span id="author_msg">unknown</span> </h1>
+			<h1>Message To: <span id="target_msg">unknown</span> </h1>
+		</div>
+
+		<img class="groupRecord" id="objectRecord" title="stop img" onclick="clickSound();choice();" name="record_img" src="img/start.png" height="200" weight="200" ></img> 
+
+		
+	</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Aldebaran Project Hopias                            -->
+<!-- music.hmtl                                          -->
+<!-- Innovation - Protolab - mcaniot@aldebaran.com       -->
+<!-- Aldebaran Robotics (c) 2016 All Rights Reserved     -->
+<!-- This file is confidential.                          -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <META charset="UTF-8" CONTENT="no-cache">
+        <META http-equiv="Cache-Control" content="no-cache">
+        <META http-equiv="Pragma" content="no-cache">
+        <META http-equiv="Expires" content="0">
+        <!-- No zoom in the page -->
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+        <!-- Include js files -->
+        <script src="/libs/qimessaging/1.0/qimessaging.js"></script>
+        <script src="js/music.js"></script>
+        <script src="js/connection.js"></script>
+        <script src="js/jquery-1.11.0.min.js"></script>
+
+        <!-- Include css files -->
+        <link rel="stylesheet" href="css/music.css" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/animated.css">
+    </head>
+
+    <body onload=" startSubscribe('HTMLMusic');" >
+    
+        <!-- Animation -->
+        <div class="cssload-container" id="animation">
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+            <div class="cssload-thing"></div>
+        </div>
+
+        <!-- Artist Name -->
+        <div class="groupArtist" id="objectArtist"></div> 
+
+        <!-- Button group -->
+    	<div class="animated fadeInUp" align="center" id="buttonbar" style="display: none;">
+
+            <img id="stop" title="stop img" onclick="choice('Pepper stop');clickAnimation(this,'img/stopSombre.png','img/stop.png');" src="img/stop.png" height="100" weight="100" ></img> 
+
+            <img id="rew" title="Rewind img" onclick="choice('Pepper précédent');clickAnimation(this,'img/previousSombre.png','img/previous.png');" src="img/previous.png" height="100" weight="100" ></img>
+
+            <img id="pause" title="Pause img" onclick="choice('Pepper lecture');hide();clickAnimation(this,'img/pauseSombre.png','img/pause.png');" name="pause/play" src="img/pause.png" height="100" weight="100" ></img>
+
+            <img id="fwd" title="Forward img" onclick="choice('Pepper suivant');clickAnimation(this,'img/nextSombre.png','img/next.png');" src="img/next.png" height="100" weight="100" ></img>
+
+            <img id="volDn"title="Volume down img" onclick="choice('Pepper moins');clickAnimation(this,'img/moinsSombre.png','img/moins.png');" src="img/moins.png" height="100" weight="100"></img>
+
+            <img id="volUp"title="Volume up img" onclick="choice('Pepper plus');clickAnimation(this,'img/plusSombre.png','img/plus.png');" src="img/plus.png" height="100" weight="100"></img>
+        </div> 
+
+        <!-- Command Sent by choregraphe -->
+        <div class="groupCommand" id="command"></div> 
+
+    </body>
+
+</html>
+

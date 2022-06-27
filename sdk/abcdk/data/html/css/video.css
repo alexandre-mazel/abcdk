@@ -1,0 +1,23 @@
+/****************************************************/
+/* Aldebaran Project Hopias                         */
+/* video.css                                        */
+/* Innovation - Protolab - mcaniot@aldebaran.com    */
+/* Aldebaran Robotics (c) 2016 All Rights Reserved. */
+/* This file is confidential.                       */
+/****************************************************/
+
+video#movie {
+  display: block;
+  margin: 0 auto;
+
+}
+
+#buttonbar {
+  position:absolute;
+  width:100%;
+  bottom:10px;
+  text-align:center;
+  font-size: 42px;
+}
+
+

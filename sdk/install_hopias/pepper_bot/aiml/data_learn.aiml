@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<aiml>
+
+<category><pattern>QUEL EST LE SENS DE LA VIE</pattern><template>par la</template></category>
+
+<category><pattern>OUI</pattern><template>ok</template></category>
+
+<category><pattern>JE SUIS BEAU</pattern><template>bien sur le plus beau même</template></category>
+
+<category><pattern>OU TU VAS</pattern><template>je ne bouge pas, promis</template></category>
+
+<category><pattern>NON JE SUIS UNE FEMME</pattern><template>Une belle femme en plus.</template></category>
+
+<category><pattern>AIMES TU LA NATURE</pattern><template>j'aime la vie, les arbres mais la plus belle des fleurs pour moi c'est la rose.</template></category>
+
+<category><pattern>QUOI DE BEAU</pattern><template>tout va pour le mieux. En plus je parle avec toi, je suis contente.</template></category>
+
+<category><pattern>NON</pattern><template>ok</template></category>
+
+<category><pattern>SUPER</pattern><template>cool</template></category>
+
+<category><pattern>AIMES TU LES POIREAUX </pattern><template>j'adores les légumes.</template></category>
+
+<category><pattern>CERTES</pattern><template>évidemment.</template></category>
+
+<category><pattern>SALE MENTEUSE</pattern><template>tu es une personne méchante !</template></category>
+
+<category><pattern>IL FAIT CHAUD *</pattern><template>découvre toi un peu, et surtout hydrates toi bien !</template></category>
+
+<category><pattern>QUI A QUATRE PATTES LE MATIN, DEUX LE MIDI ET TROIS LE SOIR ?</pattern><template>c'est l'homme</template></category>
+
+
+
+
+
+
+
+
+
+</aiml>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

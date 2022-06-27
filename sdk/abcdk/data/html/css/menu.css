@@ -1,0 +1,99 @@
+/****************************************************/
+/* Aldebaran Project Hopias                         */
+/* menu.css                                         */
+/* Innovation - Protolab - mcaniot@aldebaran.com    */
+/* Aldebaran Robotics (c) 2016 All Rights Reserved. */
+/* This file is confidential.                       */
+/****************************************************/
+
+.buttonMenu{
+
+	display: inline-block;
+	border:1px solid #4DB6EB;
+	color: #317596;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	font-family: Verdana;
+	width: auto;
+	height: auto;
+	box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+	-moz-box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+	-webkit-box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+	text-shadow: 1px 1px 1px #C1E2FB;
+	background-image: linear-gradient(to top, #4FBCF2, #53C6FF);
+	background-color: #52C3FB;
+	margin-top: 5%;
+	margin-bottom: 20px;
+	margin-left: 15%;
+	padding-top: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+
+}
+
+.buttonBottomNext{
+	position: absolute;
+  	bottom: 10px;
+  	text-align:center;
+  	left: 50%;
+
+  	font-family: DIN round pro, Open Sans, Calibri, Arial, Helvetica, sans-serif;
+    font-size: 80px;
+    font-style: normal;
+    color:white;
+
+  	display: inline-block;
+	border:1px solid #4DB6EB;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	width: auto;
+	height: auto;
+	box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+	-moz-box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+	-webkit-box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+	text-shadow: 1px 1px 1px #C1E2FB;
+	background-image: linear-gradient(to top, #4FBCF2, #53C6FF);
+	background-color: #52C3FB;
+	margin-left: 20px;
+}
+
+.buttonBottomBack{
+	position: absolute;
+  	bottom: 10px;
+  	text-align:center;
+  	left: 25%;
+
+  	font-family: DIN round pro, Open Sans, Calibri, Arial, Helvetica, sans-serif;
+    font-size: 80px;
+    font-style: normal;
+    color:white;
+
+  	display: inline-block;
+	border:1px solid #4DB6EB;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	width: auto;
+	height: auto;
+	box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+	-moz-box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+	-webkit-box-shadow: inset 0px 0px 1px 0 #FCFCFC;
+	text-shadow: 1px 1px 1px #C1E2FB;
+	background-image: linear-gradient(to top, #4FBCF2, #53C6FF);
+	background-color: #52C3FB;
+	margin-left: 20px;
+}
+
+
+.buttonMenu:active,.buttonBottomBack:active,.buttonBottomNext:active{
+	border:1px solid #3989B0;
+	color: #317596;
+	box-shadow: inset 0px 2px 9px 0 #3989B0;
+	-moz-box-shadow: inset 0px 2px 9px 0 #3989B0;
+	-webkit-box-shadow: inset 0px 2px 9px 0 #3989B0;
+	background-image: linear-gradient(to top, #3F96C1, #429ECC);
+	background-color: #2D6D8C;
+}

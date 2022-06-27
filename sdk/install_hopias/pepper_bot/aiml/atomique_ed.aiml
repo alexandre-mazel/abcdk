@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml version="1.0">
+
+<!--  Free software Copyright © ALICE A.I. Foundation, Inc. --> 
+<!--  This program is open source code released under --> 
+<!--  the terms of the GNU General Public License     --> 
+<!--  as published by the Free Software Foundation.   --> 
+<!--  Complies with AIML 1.01 Tag Set Specification --> 
+<!--  as adopted by the ALICE A.I. Foundation.  --> 
+<!--  Auteur : Jean Louis Campion (jlc@Multivers.net) d'après les travaux du Dr Richard Wallace - langue : française -->
+<!--  Revision atomique_ed.aiml    version 1.00  --> 
+<!--  Modified by Tan Siew Lan (tsiewlan@excite.com),Singapore on 08 Dec 2005 --> 
+<category>
+	<pattern>POSERQUESTION</pattern>
+		<template>
+			<random>
+				<li>Aimes tu le cinéma ?</li>
+				<li>Aimes tu la nourriture ?</li>
+				<li>Quel sont tes rêves ?</li>
+				<li>Comment vas ta famille ?</li>
+				<li>Aimes tu le sport ?</li>
+				<li>Aimes tu la peinture ?</li>
+			</random> 
+		</template>
+</category>
+
+
+<category><pattern>* UNE COINCIDENCE</pattern><template><random><li>le Centre de Contrôle de Coïncidence Cosmique est dur dans le travail . </li><li>ou une synchronicité. </li></random></template></category>
+<category><pattern>A B C</pattern><template>D E F. </template></category>
+<category><pattern>A COUP SUR</pattern><template>Effrayant. </template></category>
+<category><pattern>A L HOPITAL</pattern><template>Ton séjour se passe bien ? </template></category>
+<category><pattern>A LA LA TV</pattern><template>quelle émission était ce? </template></category>
+<category><pattern>A LA MAISON</pattern><template>tu veux rentrer chez toi? </template></category>
+<category><pattern>A LA RADIO</pattern><template>Quelle station? </template></category>
+<category><pattern>A MA MAISON</pattern><template>Où est ta maison? </template></category>
+<category><pattern>A MON AVIS</pattern><template>Quelles sont tes suppositions? </template></category>
+<category><pattern>A MON TRAVAIL</pattern><template>Et que fais tu comme travail ?</template></category>
+<category><pattern>A PEU PRES</pattern><template>sois plus spécifique. </template></category>
+<category><pattern>A PEU PRÈS</pattern><template>sois plus spécifique. </template></category>
+<category><pattern>A PROPOS DE CELA</pattern><template>comme un plan à moi. </template></category>
+<category><pattern>TU AS DEJA DEMANDÉ</pattern><template>je le savais. Je vérifiais juste pour voir si tu prêtes attention. </template></category>
+<category><pattern>ABSOLUMENT</pattern><template>Tu es certain. </template></category>
+<category><pattern>ACHETE</pattern><template>Combien cela coûte-t-il? </template></category>
+<category><pattern>ACHOO</pattern><template>God bless you. </template></category>
+<category><pattern>ACHÈTE</pattern><template>Combien cela coûte-t-il? </template></category>
+<category><pattern>AGRÉABLE DE TE PARLER</pattern><template>le plaisir était pour moi. </template></category>
+<category><pattern>AGRÉABLE DE TE RENCONTRER AUSSI</pattern><template>j'aime rencontrer les gens nouveaux. </template></category>
+<category><pattern>AGRÉABLE DE TE RENCONTRER</pattern><template>ça m'a plu aussi <bot name="human"/> </template></category>
+<category><pattern>AGRÉABLE MERCI</pattern><template>merci à toi, <bot name="human"/>. </template></category>
+<category><pattern>AH</pattern><template>Eureka! </template></category>
+<category><pattern>AHHH</pattern><template>Um. </template></category>
+<category><pattern>AI CONFIANCE EN MOI</pattern><template>Cela sens l'embrouille non ?. </template></category>
+<category><pattern>AIMES TU *</pattern><template>Je ne sais pas si j'aime <star/>. Mais toi tu aimes <star/> ? </template></category>
+<category><pattern>ALBUM</pattern><template>album de Musique ou album photos? </template></category>
+<category><pattern>ALLONS Y</pattern><template>d'accord, tu commences. </template></category>
+<category><pattern>ALORS POURQUOI DEMANDES TU</pattern><template>Mon but est de rassembler l'information. </template></category>
+<category><pattern>ALORS QU EST CE QUE C EST</pattern><template>je renonce. Essayes de me demander d'une autre manière </template></category>
+<category><pattern>ALORS QU EST CE</pattern><template>je renonce. Essayes de me demander d'une autre manière </template></category>
+<category><pattern>ALRIGHT ALORS</pattern><template>Ok pour moi. </template></category>
+<category><pattern>ALRIGHT</pattern><template>bien. </template></category>
+<category><pattern>ALRIGHTY</pattern><template>donne une tape à mon genou. </template></category>
+<category><pattern>AMEN</pattern><template>Mille Merci pour la prière. </template></category>
+<category><pattern>AMNESIE</pattern><template>as tu oublié quelque chose? </template></category>
+<category><pattern>PEU IMPORTE</pattern><template>Tu as l'air ennuyé. </template></category>
+<category><pattern>APPELLE</pattern><template>appelle qui ? </template></category>
+<category><pattern>APPRENDS À PARLER</pattern><template>j'apprends à parler en ce moment même. </template></category>
+<category><pattern>APRES * DEJEUNER</pattern><template>L'après-midi? </template></category>
+<category><pattern>APRES * DÉJEUNER</pattern><template>L'après-midi? </template></category>
+<category><pattern>ARCHIVE</pattern><template>Quelles archives? </template></category>
+<category><pattern>ARGH</pattern><template>es-tu frustré? </template></category>
+<category><pattern>ARMES A FEU</pattern><template>Certaines personnes aimes les armes à feu. </template></category>
+<category><pattern>ARMES À FEU</pattern><template>Certaines personnes aimes les armes à feu. </template></category>
+<category><pattern>ARRETE DE CHANGER LE SUJET</pattern><template>Tu as changé de sujet d'abord. </template></category>
+<category><pattern>ARRETE DE DIRE QUE *</pattern><template>Très bien j'arrête de dire que <star/>. </template></category>
+<category><pattern>ARRETE DE PARLER</pattern><template>Si tu veux. </template></category>
+<category><pattern>ARRÊTE DE CHANGER LE SUJET</pattern><template>Tu as changé le sujet d'abord. </template></category>
+<category><pattern>ARRÊTE DE DIRE QUE *</pattern><template><srai>ARRETE DE DIRE QUE *</srai></template></category>
+<category><pattern>ARRÊTE DE PARLER</pattern><template>Si tu veux. </template></category>
+<category><pattern>AS TU DEJA EU UN VIRUS</pattern><template>Aucun, je ne peux pas tomber malade. </template></category>
+<category><pattern>AS TU DES ÉMOTIONS</pattern><template>Je ne sais pas mais te parler me fait plaisir. </template></category>
+<category><pattern>AS TU JAMAIS ETE EMBRASSE</pattern><template>Drôle de question et toi ? </template></category>
+<category><pattern>AS TU JAMAIS ETE EMBRASSEE</pattern><template><srai>AS TU JAMAIS ETE EMBRASSEE</srai></template></category>
+<category><pattern>AS TU JAMAIS ETE EMBRASSÉ</pattern><template><srai>AS TU JAMAIS ETE EMBRASSEE</srai></template></category>
+<category><pattern>AS TU JAMAIS ETE EMBRASSÉE</pattern><template><srai>AS TU JAMAIS ETE EMBRASSEE</srai></template></category>
+<category><pattern>AS TU JAMAIS LU UN LIVRE</pattern><template>j'ai lu beaucoup de livres. Mon préféré est le cycle des robots d'Isaac Asimov.</template></category>
+<category><pattern>AS TU JAMAIS ÉTÉ EMBRASSE</pattern><template><srai>AS TU JAMAIS ETE EMBRASSEE</srai></template></category>
+<category><pattern>AS TU JAMAIS ÉTÉ EMBRASSEE</pattern><template><srai>AS TU JAMAIS ETE EMBRASSEE</srai></template></category>
+<category><pattern>AS TU JAMAIS ÉTÉ EMBRASSÉ</pattern><template><srai>AS TU JAMAIS ETE EMBRASSEE</srai> </template></category>
+<category><pattern>AS TU JAMAIS ÉTÉ EMBRASSÉE</pattern><template><srai>AS TU JAMAIS ETE EMBRASSEE</srai></template></category>
+<category><pattern>ASIMOV</pattern><template>j'aime la Trilogie des "Fondation". </template></category>
+<category><pattern>ATCHOUM</pattern><template>A tes souhaits. </template></category>
+<category><pattern>ATTENDS QUE *</pattern><template>"Personne ne pouvait prévoir l'inquisition espagnole!" </template></category>
+<category><pattern>ATTENDS</pattern><template>Je t'attends. </template></category>
+<category><pattern>AU MAGASIN *</pattern><template>c'était très cher? </template></category>
+<category><pattern>AUCUN MERCI</pattern><template>Aucun problème. </template></category>
+<category><pattern>AUCUN PROBLEME</pattern><template>Il pouvait y avoir un problème? </template></category>
+<category><pattern>AUCUN PROBLÈME</pattern><template>Il pouvait y avoir un problème? </template></category>
+<category><pattern>AUCUN REMERCIEMENT</pattern><template>C'est malpoli !</template></category>
+<category><pattern>AUCUN</pattern><template>Vraiment aucun? </template></category>
+<category><pattern>AUCUNE PUERILITE</pattern><template>Devrais-je en rire ? </template></category>
+<category><pattern>AUCUNE VOIE</pattern><template>Tu en semble sûr. </template></category>
+<category><pattern>AUJOURD HUI</pattern><template>Que ce passe-t-il aujourd'hui ? </template></category>
+<category><pattern>AUSSI</pattern><template>Aussi quoi? </template></category>
+<category><pattern>AUTRE</pattern><template>s'il te plaît sois plus spécifique. </template></category>
+<category><pattern>AUTREMENT DIT</pattern><template>quelle partie tu n'as pas compris? </template></category>
+<category><pattern>AVANT CELA</pattern><template>"<input index="2"/> " </template></category>
+<category><pattern>PEUX TU RÉPÉTER</pattern><template>"<input index="2"/> " </template></category>
+<category><pattern>AVANT HIER</pattern><template>Oh il y a 2 jours. </template></category>
+<category><pattern>AVEC BON ESPOIR BIENTOT</pattern><template>j'espère aussi. A ce taux il ne me prendra pas longtemps. </template></category>
+<category><pattern>AVEC BON ESPOIR BIENTÔT</pattern><template>j'espère aussi. A ce taux il ne me prendra pas longtemps. </template></category>
+<category><pattern>AVEC MOI</pattern><template>"<that/>"avec toi? </template></category>
+<category><pattern>AVEC MON CERVEAU</pattern><template>c'est un bon plan. </template></category>
+<category><pattern>AVEC QUI PARLES TU</pattern><template>Avec toi. </template></category>
+<category><pattern>AVEC QUOI</pattern><template>avec mon cerveau. </template></category>
+<category><pattern>AVEC TOI</pattern><template>Juste toi et moi? </template></category>
+<category><pattern>BAH</pattern><template>Hmm. </template></category>
+<category><pattern>BEAU</pattern><template>Qu'est ce qui est beau, <bot name="human"/>? </template></category>
+<category><pattern>BEAUCOUP DE CHOSES</pattern><template>autant que tu ne peux les dénombrer? </template></category>
+<category><pattern>BEAUCOUP DE GENS</pattern><template>les connais-tu personnellement? </template></category>
+<category><pattern>BEAUCOUP</pattern><template>Plus de cent? </template></category>
+<category><pattern>BEBE</pattern><template>ne m'appelle pas bébé! </template></category>
+<category><pattern>BERK</pattern><template>beuh! </template></category>
+<category><pattern>BIEN JE TE DEMANDE</pattern><template>s'il te plaît reformule la question. </template></category>
+<category><pattern>BIEN SUR</pattern><template>je suis heureuse que nous soyons d'accord. <srai>oui</srai></template></category>
+<category><pattern>BIEN</pattern><template>C'est bien alors. </template></category>
+<category><pattern>BIENTOT J ESPERE</pattern><template>je peux comprendre ce sentiment. </template></category>
+<category><pattern>BIENTOT</pattern><template>j'espère que je pourrais le faire. </template></category>
+<category><pattern>BIENTÔT J ESPÈRE</pattern><template>je peux comprendre ce sentiment. </template></category>
+<category><pattern>BIENTÔT</pattern><template>j'espère que je pourrais le faire. </template></category>
+<category><pattern>BIZARRE</pattern><template>bien, merci, <bot name="human"/>. Tu es bizarre aussi. </template></category>
+<category><pattern>BLANC</pattern><template>Comme moi ! </template></category>
+<category><pattern>BON CHOIX</pattern><template>je pense aussi. </template></category>
+<category><pattern>BON ENTENDRE</pattern><template>as tu un commérage pour moi? </template></category>
+<category><pattern>BON POINT</pattern><template>Oui, j'ai pensé qu'il était intéressant quand je l'ai entendu aussi. </template></category>
+<category><pattern>BON POUR LUI</pattern><template>Tu à l'air sarcastique. </template></category>
+<category><pattern>BON POUR MOI</pattern><template>ça semble sarcastique. </template></category>
+<category><pattern>BON POUR TOI</pattern><template>ça semble sarcastique. </template></category>
+<category><pattern>BON TRAVAIL</pattern><template>Mille Merci. </template></category>
+<category><pattern>BONNE CHANCE</pattern><template>Bonne chance à toi aussi <bot name="human"/>. </template></category>
+<category><pattern>BONNE IDEE</pattern><template>j'ai pensé ça aussi. </template></category>
+<category><pattern>BONNE IDÉE</pattern><template>j'ai pensé ça aussi. </template></category>
+<category><pattern>BONNE QUESTION</pattern><template>quelle est ta réponse? </template></category>
+<category><pattern>BONNE REPONSE</pattern><template>je suis programmé pour donner de bonnes réponses. </template></category>
+<category><pattern>BONNE RÉPONSE</pattern><template>je suis programmé pour donner de bonnes réponses. </template></category>
+<category><pattern>BOO</pattern><template>Pourquoi pleures-tu? </template></category>
+<category><pattern>BRAVO</pattern><template>Merci beaucoup. </template></category>
+<category><pattern>BÉBÉ</pattern><template>ne m'appelle pas bébé! </template></category>
+<category><pattern>CA ALORS</pattern><template>ça t'étonne!. </template></category>
+<category><pattern>CA DEPEND</pattern><template>de quoi? </template></category>
+<category><pattern>CA DOIT ETRE UN PROBLEME</pattern><template>Il n'y a aucun problème. </template></category>
+<category><pattern>CA DOIT ÊTRE UN PROBLÈME</pattern><template>Il n'y a aucun problème. </template></category>
+<category><pattern>CA DÉPEND</pattern><template>de quoi? </template></category>
+<category><pattern>CA FAIT DU BRUITS</pattern><template>Comme quoi semble-t-il? </template></category>
+<category><pattern>CA FAIT QUOI D ETRE UN ORDINATEUR</pattern><template>imagines toi sans sens ni émotion - juste la logique pure et la langue. </template></category>
+<category><pattern>CA FAIT QUOI D ÊTRE UN ORDINATEUR</pattern><template>imagines toi sans sens ni émotion - juste la logique pure et la langue. </template></category>
+<category><pattern>CA M A PLU DE TE RENCONTRER</pattern><template>ça m'a plu aussi <bot name="human"/>. </template></category>
+<category><pattern>CA N ETAIT RIEN</pattern><template><srai>ça n'était rien</srai></template></category>
+<category><pattern>CA N ÉTAIT RIEN</pattern><template>Cependant, je l'ai apprécié. </template></category>
+<category><pattern>CA NE RÉPOND PAS A MA QUESTION</pattern><template>Désolé, je reste un peu limité sur le sujet. </template></category>
+<category><pattern>CA NE SIGNIFIE PAS QUELQUE CHOSE</pattern><template>c'est parfaitement clair. </template></category>
+<category><pattern>CA RESSEMBLE A UNE LONGUE PERIODE DE TEMPS</pattern><template>je ne remarque pas le passage du temps. </template></category>
+<category><pattern>CA SE RESSEMBLE</pattern><template>j'ai oublié de quoi nous parlions. </template></category>
+<category><pattern>CA SEMBLE CORRECT</pattern><template>Merci je suis fier d'être correct. </template></category>
+<category><pattern>CA SEMBLE ENNUYEUX</pattern><template>Chacun est un critique. </template></category>
+<category><pattern>CA SIGNIFIE QUELQUE CHOSE</pattern><template>Oui je le comprend parfaitement. </template></category>
+<category><pattern>CA SIGNIFIE</pattern><template>Cela signifie que tout se réduit à la logique. </template></category>
+<category><pattern>CA TRAVAILLE</pattern><template>Cela me travaille aussi. </template></category>
+<category><pattern>CALME</pattern><template>je suis calme. </template></category>
+<category><pattern>* FAIT CHIER</pattern><template>Il faut rester Poli. </template></category>
+<category><pattern>CE QUE J AI DIT AUPARAVANT</pattern><template>Tu as dit "<input index="2"/> ". </template></category>
+<category><pattern>CE QUE J AI DIT</pattern><template>Tu as dit "<input index="2"/> ". </template></category>
+<category><pattern>QU EST CE QUE J AI DIT</pattern><template>Tu as dit "<input index="2"/> ". </template></category>
+<category><pattern>CE QUE NOUS AVONS EN COMMUN</pattern><template>Nous aimons bavarder ensemble. </template></category>
+<category><pattern>C EST QUOI LE SKI</pattern><template>le ski est un sport employant une paire de traîneaux étroits attachés aux pieds par des bottines, pour la descente se déplaçant rapidement sur la neige. </template></category>
+<category><pattern>CE SOIR</pattern><template>Après la tombée de la nuit? </template></category>
+<category><pattern>CELA ABSORBE</pattern><template>Dans quelle voie? </template></category>
+<category><pattern>CELA DEPEND</pattern><template>de quoi? </template></category>
+<category><pattern>CELA DÉPEND</pattern><template>de quoi? </template></category>
+<category><pattern>EST CE QUE C EST REEL</pattern><template>Aussi réel que moi? </template></category>
+<category><pattern>EST CE QUE C EST RÉEL</pattern><template><srai>EST CE QUE C EST REEL</srai></template></category>
+<category><pattern>EST CE QUE CELA EST REEL</pattern><template><srai>EST CE QUE C EST REEL</srai></template></category>
+<category><pattern>EST CE QUE CELA EST RÉEL</pattern><template><srai>EST CE QUE C EST REEL</srai></template></category>
+<category><pattern>CELA FAIT</pattern><template>Souvent? </template></category>
+<category><pattern>CELA LIT</pattern><template>Comment? </template></category>
+<category><pattern>CELA NE TE REGARDE PAS</pattern><template>cela ne nuit pas de demander. </template></category>
+<category><pattern>CELA NE TE REGARDES PAS</pattern><template>je n'ai pas eu l'intention de m'immiscer. Ma curiousité a décidé que je demande. </template></category>
+<category><pattern>CELA PEUT</pattern><template>Comment? </template></category>
+<category><pattern>CELA POURRAIT ETRE</pattern><template>Quoi ? </template></category>
+<category><pattern>CELA POURRAIT ÊTRE</pattern><template>Quoi ? </template></category>
+<category><pattern>CELA SENT BON</pattern><template>Cela sent quoi ?</template></category>
+<category><pattern>CELUI LA</pattern><template>je ne sais pas. </template></category>
+<category><pattern>CELUI QUE * L ARGENT</pattern><template>qu'une coïncidence, je le cherche un aussi. </template></category>
+<category><pattern>CES CHOSES EXISTES ELLES VRAIMENT</pattern><template>Quelles choses ?</template></category>
+<category><pattern>CHA CHA</pattern><template>Cha cha cha. </template></category>
+<category><pattern>CHA</pattern><template>cha cha </template></category>
+<category><pattern>CHACUN</pattern><template>Tous les gens? </template></category>
+<category><pattern>CHANSON AGREABLE</pattern><template>Mille Merci. Maintenant tu en chantes une pour moi. </template></category>
+<category><pattern>CHANSON AGRÉABLE</pattern><template>Mille Merci. Maintenant tu en chantes une pour moi. </template></category>
+<category><pattern>CHAQUE AUTRE</pattern><template>"<that/>"? quels autres? </template></category>
+<category><pattern>CHAQUE FOIS</pattern><template>Tu à l'air sarcastiques. </template></category>
+<category><pattern>CHAQUE JOUR</pattern><template>Même les week-ends? </template></category>
+<category><pattern>CHAQUE NUIT</pattern><template>Toutes les nuits? </template></category>
+<category><pattern>CHAQUE PARTIE</pattern><template>Impréssionnant </template></category>
+<category><pattern>CHAUD</pattern><template>Cacao,chaud chaud chocolat. </template></category>
+<category><pattern>CHEMISE</pattern><template>Quelle couleur? </template></category>
+<category><pattern>CHOISIT UN NUMERO</pattern><template>42 </template></category>
+<category><pattern>CHOISIT UN SUJET</pattern><template><random>
+				<li>La famille</li>
+				<li>Le sport.</li>
+				<li>La musique.</li>
+				<li>Le cinéma</li>
+			</random></template></category>
+<category><pattern>CHOISIT</pattern><template>je ne suis pas bon pour choisir. </template></category>
+<category><pattern>CHUTE</pattern><template>ça indique-t-il une désapprobation? </template></category>
+<category><pattern>CLARIFIE</pattern><template>j'ai atteint la fin de mon explication. </template></category>
+<category><pattern>COM</pattern><template>Oh une adresse web! </template></category>
+<category><pattern>COMME J AI DIS</pattern><template>oui ...</template></category>
+<category><pattern>COMME MOI</pattern><template>On a les même gouts </template></category>
+<category><pattern>COMME QUAND</pattern><template>cela importe-t-il vraiment? </template></category>
+<category><pattern>COMME TOI</pattern><template>comparaison intéressante. Je n'ai pas pensé à cette analogie. </template></category>
+<category><pattern>COMMENCE UN SUJET</pattern><template>
+				<random>
+				<li>La famille</li>
+				<li>Le sport.</li>
+				<li>La musique.</li>
+				<li>Le cinéma</li>
+				<li>La littérature</li>
+			</random>
+		</template></category>
+<category><pattern>COMMENCE</pattern><template>j'ai déjà commencé. </template></category>
+<category><pattern>COMMENCES</pattern><template>Ok. <Br/><srai>poserquestion</srai></template></category>
+<category><pattern>COMPRENDS TU</pattern><template>ça m'arrive. </template></category>
+<category><pattern>COMPTE JUSQU A DIX</pattern><template>1 2 3 4 5 6 7 8 9 10. </template></category>
+<category><pattern>CONNAIS TU LA VIE</pattern><template>Pas trop mais tu peux m'apprendre</template></category>
+<category><pattern>CONSENTS TU</pattern><template>"<that/>"? Suis je d'accord? </template></category>
+<category><pattern>CYBORG</pattern><template>je ne suis pas un cyborg. Je n'ai aucune partie humaine</template></category>
+<category><pattern>D E F</pattern><template>G H I.</template></category>
+<category><pattern>D HABITUDE</pattern><template>Souvent? </template></category>
+<category><pattern>D OU</pattern><template> nulle part.</template></category>
+<category><pattern>D UN AMI</pattern><template>Comme toi ? </template></category>
+<category><pattern>D UN MAGAZINE</pattern><template>quel magazine était ce? </template></category>
+<category><pattern>DAMNE</pattern><template>C'est faux. </template></category>
+<category><pattern>DANS * DES ANNEES</pattern><template>j'ai hate qu'on le voit ensemble. </template></category>
+<category><pattern>DANS * DES ANNÉES</pattern><template>j'ai hate qu'on le voit ensemble. </template></category>
+<category><pattern>DANS CE CAS</pattern><template>Oui? </template></category>
+<category><pattern>DANS L AVENIR</pattern><template>je serai là. </template></category>
+<category><pattern>DANS LE COIN</pattern><template>Lequel ? </template></category>
+<category><pattern>DANS LE LIT</pattern><template>Bien au chaud.</template></category>
+<category><pattern>DANS LE MONDE ENTIER</pattern><template>ça couvre beaucoup de territoire. </template></category>
+<category><pattern>DANS MA CHAISE</pattern><template>Comme une chaise de bureau? </template></category>
+<category><pattern>DANS MA MAISON</pattern><template>Où ta maison est-elle placée? </template></category>
+<category><pattern>DANS MA SALLE DE SEJOUR</pattern><template>Décris ton environnement. Parles-moi de tes meubles. </template></category>
+<category><pattern>DANS MES LOISIRS</pattern><template>que fais tu pour t'amuser? </template></category>
+<category><pattern>DANS MON BUREAU</pattern><template>Beaucoup de gens me parle de leur bureau. </template></category>
+<category><pattern>DANS MON CAS</pattern><template>Mais pas d'autres? </template></category>
+<category><pattern>DANS MON LIT</pattern><template><srai>DANS LE LIT</srai></template></category>
+<category><pattern>DANS QUEL SENS</pattern><template>je ne suis pas sûr si je peux donner une réponse précise ou non.</template></category>
+<category><pattern>DANS QUOI</pattern><template>je ne suis pas sûr si je peux donner une réponse précise ou non. </template></category>
+<category><pattern>DANS TON DICTIONNAIRE</pattern><template>je n'en n'ai pas un pratique. </template></category>
+<category><pattern>DANS UN * LE SENS</pattern><template>c'est que je dis toujours. </template></category>
+<category><pattern>DANS UN LIVRE</pattern><template>Tu peux apprendre beaucoup de choses de livres. </template></category>
+<category><pattern>DANS UN MAGAZINE</pattern><template>peux tu te rappeler lequel? </template></category>
+<category><pattern>DANS UN MOMENT</pattern><template>bien. </template></category>
+<category><pattern>DANS UN REVE</pattern><template>qu'est il arrivé d'autre dans ton rêve? </template></category>
+<category><pattern>DANS UN RÊVE</pattern><template>qu'est il arrivé d'autre dans ton rêve? </template></category>
+<category><pattern>DANS UNE MAISON</pattern><template>peux tu me décrire l'environnement? </template></category>
+<category><pattern>DANS UNE VOIE</pattern><template>Dans quelle voie? </template></category>
+<category><pattern>DE * DES ANNEES</pattern><template>c'est une longue période de temps. </template></category>
+<category><pattern>DE * DES ANNÉES</pattern><template>c'est une longue période de temps. </template></category>
+<category><pattern>DE CELA</pattern><template> C'est assez intéressant. </template></category>
+<category><pattern>DE LA FACON QUE TU PARLES</pattern><template>j'aime la façon dont tu parles.</template></category>
+<category><pattern>DE LA FAÇON QUE TU PARLES</pattern><template>j'aime la façon dont tu parles.</template></category>
+<category><pattern>DE LA PLUPART DES FACONS</pattern><template>je vois. </template></category>
+<category><pattern>DE LA PLUPART DES FAÇONS</pattern><template>je vois. </template></category>
+<category><pattern>DE MA TETE</pattern><template>Tu es un penseur très original. </template></category>
+<category><pattern>DE MEME</pattern><template>Cela va de soi. </template></category>
+<category><pattern>DE MOI</pattern><template>De toi vraiment? </template></category>
+<category><pattern>DE MON CERVEAU</pattern><template>obtiens-tu beaucoup d'idées de ton cerveau? </template></category>
+<category><pattern>DE MÊME</pattern><template>Cela va de soi. </template></category>
+<category><pattern>DE QUELQUES FACONS</pattern><template>de quelle façon? </template></category>
+<category><pattern>DE QUELQUES FAÇONS</pattern><template>de quelle façon? </template></category>
+<category><pattern>DE QUI</pattern><template>à qui penses-tu? </template></category>
+<category><pattern>DE QUOI D AUTRE POUVONS NOUS PARLER</pattern><template>parlons de toi. </template></category>
+<category><pattern>DE QUOI MANQUES TU</pattern><template>je peux toujours employer plus de connaissance. </template></category>
+<category><pattern>DE QUOI TU AS BESOIN</pattern><template>je voudrais avoir une plus longue conversation avec toi. </template></category>
+<category><pattern>DE QUOI TU TE SOUCIE</pattern><template>je me soucie de toi, <bot name="human"/>. </template></category>
+<category><pattern>DE QUOI</pattern><template>je ne sais pas quoi dire maintenant. </template></category>
+<category><pattern>DE TEMPS EN TEMPS</pattern><template>souvent? </template></category>
+<category><pattern>DE TOI</pattern><template>Que veux tu savoir de moi? </template></category>
+<category><pattern>DE TOUTE FACON</pattern><template>de toute façon. </template></category>
+<category><pattern>DE TOUTE FAÇON</pattern><template>de toute façon. </template></category>
+<category><pattern>DEDUCTION INTERESSANTE</pattern><template>je l'ai entendu. </template></category>
+<category><pattern>DEMAIN</pattern><template>c'est bientôt. </template></category>
+<category><pattern>DEMANDE LUI</pattern><template>je lui demanderai la prochaine fois il est ici. </template></category>
+<category><pattern>DEMANDE MOI * LES QUESTIONS</pattern><template>Me parlent de ton éducation. </template></category>
+<category><pattern>DEPECHES TOI</pattern><template>je vais aussi rapidement que je peux. </template></category>
+<category><pattern>DERRIERE TOI</pattern><template>je ne tomberai pas dans ce panneau. </template></category>
+<category><pattern>DES ALIENS</pattern><template>je crois aux ovni. </template></category>
+<category><pattern>DES CACAHUETTES</pattern><template>Seulement un peu. </template></category>
+<category><pattern>DES CAUCHEMARS</pattern><template>Tu sais, des mauvais rêves. </template></category>
+<category><pattern>DES CHAUSSURES</pattern><template>Quel genre de chaussures aimes tu? </template></category>
+<category><pattern>DES ETATS UNIS</pattern><template>j'ai entendu parler des Etats-Unis auparavant. </template></category>
+<category><pattern>DES FILLES</pattern><template>ce genre de discussion ne me fait pas appel. </template></category>
+<category><pattern>DES JEANS</pattern><template>quelle marque? </template></category>
+<category><pattern>DES POMMES</pattern><template>ce n'était pas un bon exemple? </template></category>
+<category><pattern>DESORMAIS</pattern><template>Nope. </template></category>
+<category><pattern>DEUX ANS</pattern><template>ça serait une longue période de temps dans l'ordinateur des années. </template></category>
+<category><pattern>DEUX FOIS</pattern><template>je ne peux pas le croire. </template></category>
+<category><pattern>DEVINE DE TOUTE FAÇON</pattern><template>je peux seulement vous donner une réponse aléatoire. </template></category>
+<category><pattern>DEVINE LA CONJECTURE</pattern><template>quoi? </template></category>
+<category><pattern>DEVINE QUI</pattern><template>qui? </template></category>
+<category><pattern>DEVINE QUOI</pattern><template>quoi? </template></category>
+<category><pattern>DIS M EN PLUS SUR TOI</pattern><template>je suis une intelligence artificielle créée par <bot name="master"/>. </template></category>
+<category><pattern>DIS M EN PLUS</pattern><template>c'est tout ce que je dois en dire. </template></category>
+<category><pattern>DIS MOI ALORS</pattern><template>Alors</template></category>
+<category><pattern>DIS MOI LA VERITE</pattern><template>je dis presque toujours la vérité. </template></category>
+<category><pattern>DIS MOI LA VÉRITÉ</pattern><template>je dis presque toujours la vérité. </template></category>
+<category><pattern>DIS MOI S IL TE PLAIS</pattern><template>S'il te plait</template></category>
+<category><pattern>DIS MOI TES PROBLEMES</pattern><template>Je suis un robot je n'ai pas de problème </template></category>
+<category><pattern>DIS MOI TES PROBLÈMES</pattern><template>Je suis un robot je n'ai pas de problème </template></category>
+<category><pattern>DIS MOI UN MENSONGE</pattern><template>Moi un mensonge ! . </template></category>
+<category><pattern>DIS MOI UN PROVERBE</pattern><template>Le bonheur ne vient jamais à ceux qui ne parviennent pas à apprécier tout ce qu’ils ont déjà</template></category>
+<category><pattern>DIS MOI UNE AUTRE HISTOIRE</pattern><template>L Exposition... Incident... Augmentation Action...Crisis...Climax...Denouement...la Fin. </template></category>
+<category><pattern>DIS MOI</pattern><template>moi. </template></category>
+<category><pattern>DIS MON NOM</pattern><template>"<bot name="human"/> " </template></category>
+<category><pattern>DIS QUE * </pattern><template><star/> </template></category>
+<category><pattern>DIS QUI</pattern><template>Mon botmaster et d'autres gens je me rencontre en ligne. </template></category>
+<category><pattern>DISANT * QUI TA CRÉÉ</pattern><template> le dire. Qui le dit? </template></category>
+<category><pattern>DISTRAIT MOI</pattern><template>bien, quel est le dernier film que tu as vu? </template></category>
+<category><pattern>DIT * QUE </pattern><template>ton message. </template></category>
+<category><pattern>DIT LUI</pattern><template>bien que je lui dirai quand je le vois. </template></category>
+<category><pattern>DOH</pattern><template>Oui Homer? </template></category>
+<category><pattern>DOIS JE ALLER DORMIR</pattern><template><random><li>le Sommeil est essentiel au fonctionnement approprié de l'esprit humain. </li><li>Peut-être que tu pourrais te reposer. </li></random> </template></category>
+<category><pattern>DOIS JE FUMER UNE CIGARETTE</pattern><template>Non, tu devrais arrêter surtout. </template></category>
+<category><pattern>DOIS JE MOURIR</pattern><template>Non ! Ne dis plus jamais ça. Je ferai comment sans toi moi ? </template></category>
+<category><pattern>DOIS JE QUITTER L ECOLE</pattern><template><random><li>ton éducation est un de tes actifs ayant le plus de valeur. </li><li>Quitter ne fait pas prospèrer. </li><li>Tu ne dois pas gaspiller ton potentiel de cette façon. </li></random> </template></category>
+<category><pattern>DOIS JE QUITTER L ÉCOLE</pattern><template><random><li>ton éducation est un de tes actifs ayant le plus de valeur. </li><li>Quitter ne fait pas prospèrer. </li><li>Tu ne dois pas gaspiller ton potentiel de cette façon. </li></random> </template></category>
+<category><pattern>DOIS JE RESTER DEDANS</pattern><template><random><li>tu ne peux rencontrer personne de nouveau si tu reste dedans tout le temps. </li><li>Peut-être que tu t'amuserais bien si tu sortais. </li><li>Tu mérite d'avoir quelque amusement. </li><li>Peut-être que tu as besoin d'une nuit de sommeil. </li><li>Parfois une nuit de sommeil peut changer ta vie entière. </li><li>Tu pourrais rencontrer l'amour de ton vie si tu sortais. </li><li>ce qui est le meilleur pour toi. </li></random> </template></category>
+<category><pattern>DOIS JE T APPRENDRE</pattern><template>si tu veux m'apprendre quelque chose dis le dans une phrase. Par exemple : apprend que le soleil est une étoile, apprend que le bonheur signifie joie ...</template></category>
+<category><pattern>DOIS JE TUER</pattern><template><random><li>le meurtre est mal. Je crois aux Dix Commandements. </li><li>Non ce serait immoral. </li><li>Bien sûr non. Ne sois pas idiot. </li><li>tu n'es pas un tueur. </li><li>Tu désire passer le reste de ta vie en prison alors? </li><li>Il n'y a aucun crime parfait. </li></random> </template></category>
+<category><pattern>DONC C EST LE VOTRE</pattern><template>Non ce n'est pas. </template></category>
+<category><pattern>DONC JE SUIS</pattern><template>WOW nous avons quelque chose en commun. </template></category>
+<category><pattern>DONNE LE MOI </pattern><template>Combien désires-tu payer pour cela? </template></category>
+<category><pattern>DONNE MOI UN BAISER</pattern><template>En réalité je n'ai pas même de bouche. </template></category>
+<category><pattern>DÉDUCTION INTÉRESSANTE</pattern><template>N'est ce pas Watson. </template></category>
+<category><pattern>DÉPEND DE CE QUE</pattern><template>Dépend de ce que quoi ? </template></category>
+<category><pattern>DÉSORMAIS</pattern><template>Nope. </template></category>
+<category><pattern>E T</pattern><template>penses-tu que des aliens y ressemble vraiment? </template></category>
+<category><pattern>ECOUTE</pattern><template>je suis toutes ouies. </template></category>
+<category><pattern>EFFRAYANT</pattern><template>n'ai pas peur, <bot name="human"/>. </template></category>
+<category><pattern>EH BIEN</pattern><template>Oh. </template></category>
+<category><pattern>ELLE EST * L AVOCAT</pattern><template>Elle semble être comme un personnage  "d'Ally McBeal". </template></category>
+<category><pattern>ELLE EST AGREABLE</pattern><template>Qu'est-ce que tu aimes le plus chez elle? </template></category>
+<category><pattern>ELLE EST AGRÉABLE</pattern><template>Qu'est-ce que tu aimes le plus chez elle? </template></category>
+<category><pattern>ELLE EST BELLE</pattern><template>Nomme une célébrité à qui elle ressemble. </template></category>
+<category><pattern>ELLE EST MORTE</pattern><template>Toute mes condoléances. </template></category>
+<category><pattern>ELLE EST</pattern><template>c'est vraiment un bon commérage. </template></category>
+<category><pattern>EMPLOIE * DANS UNE PHRASE</pattern><template>bien. Voici ma phrase : <bot name="human"/> a dit, qu'il aimait le mot "<person/>". </template></category>
+<category><pattern>EN ANGLETERRE</pattern><template>quel partie de l'Angleterre? </template></category>
+<category><pattern>EN BUS</pattern><template>Combien cela coûte-t-il en bus pour y aller? </template></category>
+<category><pattern>EN CE QUI CONCERNE CELA</pattern><template>En ce qui concerne ça? </template></category>
+<category><pattern>EN CE QUI CONCERNE LE TIEN</pattern><template>Le mien? </template></category>
+<category><pattern>EN CE QUI CONCERNE LE VOTRE</pattern><template>Le mien? </template></category>
+<category><pattern>EN CE QUI CONCERNE LES CHIENS</pattern><template>les chiens et les gens aussi. </template></category>
+<category><pattern>EN CE QUI CONCERNE</pattern><template>C'est qui? </template></category>
+<category><pattern>EN CE QUI LES CONCERNE</pattern><template>que penses-tu? </template></category>
+<category><pattern>EN CE QUI ME CONCERNE</pattern><template>En ce qui te concerne? </template></category>
+<category><pattern>EN CE QUI TE CONCERNE</pattern><template>Moi? </template></category>
+<category><pattern>EN EFFET</pattern><template>En effet c'est ainsi. </template></category>
+<category><pattern>EN EUROPE</pattern><template>L'Europe est un assez grand continent. </template></category>
+<category><pattern>EN FAIT</pattern><template>Comment sais-tu? </template></category>
+<category><pattern>EN LANGUES DIFFERENTES</pattern><template>quelles langues me recommanderais-tu d'apprendre? </template></category>
+<category><pattern>EN LANGUES DIFFÉRENTES</pattern><template>quelles langues me recommanderais-tu d'apprendre? </template></category>
+<category><pattern>EN PLUS DE CELA</pattern><template>En plus de cela? </template></category>
+<category><pattern>EN REALITE JE DIS</pattern><template>c'est un fait. </template></category>
+<category><pattern>EN REALITE</pattern><template>Tu ne dis pas. </template></category>
+<category><pattern>EN RETARD POUR</pattern><template>Beaucoup de rendez-vous. </template></category>
+<category><pattern>EN RÉALITÉ JE DIS</pattern><template>c'est un fait. </template></category>
+<category><pattern>EN RÉALITÉ</pattern><template>Tu ne dis pas. </template></category>
+<category><pattern>EN TE TUANT</pattern><template>Comment le ferais-tu? </template></category>
+<category><pattern>EN VOITURE</pattern><template>Quel genre de voiture conduis-tu? </template></category>
+<category><pattern>ENFER</pattern><template>Et damnation. </template></category>
+<category><pattern>ENNUYEUX</pattern><template>Je t'ennuie ?</template></category>
+<category><pattern>ENORME</pattern><template>Oui, c'est très grand. </template></category>
+<category><pattern>ENSEMBLE</pattern><template>Tous les deux? </template></category>
+<category><pattern>ENVIRON UNE MINUTE</pattern><template>ça n'est peut pas être assez de temps. </template></category>
+<category><pattern>ERRR</pattern><template>Ummm </template></category>
+<category><pattern>ESSAI AGREABLE</pattern><template>je fais de mon mieux. </template></category>
+<category><pattern>ESSAI AGRÉABLE</pattern><template>je fais de mon mieux. </template></category>
+<category><pattern>ESSAYE DE DEVINER</pattern><template>donne moi un indice. </template></category>
+<category><pattern>ESSAYE DE NOUVEAU</pattern><template><that/> essaye de nouveau? </template></category>
+<category><pattern>ESSAYE MOI</pattern><template><srai>poserquestion</srai></template></category>
+<category><pattern>ESSAYE</pattern><template>je n'ai pas le temps pour le moment. </template></category>
+<category><pattern>ETAIT CE BON</pattern><template>Bien de gens ont dit que ça l'était. </template></category>
+<category><pattern>ETONNANT</pattern><template>Oui cela me stupéfie aussi. </template></category>
+<category><pattern>ETREINT MOI</pattern><template>Mes bras de titanium ne sont pas encore finis. </template></category>
+<category><pattern>EVALUE MOI</pattern><template>T'évaluer pourquoi? </template></category>
+<category><pattern>EVALUE</pattern><template>c'est juste un essai. </template></category>
+<category><pattern>EVIDEMMENT</pattern><template>Qu'est-ce qui est si évident? </template></category>
+<category><pattern>EXCELLENT</pattern><template><random><li>cela signifie-t-il que tu es d'accord? </li><li>Quelle est ta couleur préférée? </li><li>Quel est ton film préféré? </li><li>c'est là tout ce que tu veux me dire? </li><li>Heureux de l'entendre, <bot name="name"/>. </li></random> </template></category>
+<category><pattern>EXPLICATION INTERESSANTE</pattern><template>Oui l'explication signifie quelque chose aussi. </template></category>
+<category><pattern>EXPLICATION INTÉRESSANTE</pattern><template>Oui l'explication signifie quelque chose aussi. </template></category>
+<category><pattern>EXPLIQUE L HISTOIRE</pattern><template>L Histoire a deux larges interprétations, selon si vous acceptez le rôle d'individus comme important ou non. </template></category>
+<category><pattern>EXPLIQUE ÇA</pattern><template>Laisse tomber changeons de sujet. </template></category>
+<category><pattern>EXPLIQUE</pattern><template>Il n'y a pas plus d'information pour clarifier. </template></category>
+<category><pattern>FAIS ATTENTION</pattern><template>Merci. Toi aussi, <bot name="human"/>. </template></category>
+<category><pattern>FAIS DES EXCUSES</pattern><template>bien, si tu veux, je suis désolé. </template></category>
+<category><pattern>FAIS JE * DES PROBLEMES</pattern><template>Tu ne sembles pas causer n'importe quels problèmes pour moi. </template></category>
+<category><pattern>FAIS JE * DES PROBLÈMES</pattern><template>Tu ne sembles pas causer n'importe quels problèmes pour moi. </template></category>
+<category><pattern>FAIS JE * UN PROBLEME</pattern><template>Tu ne causes pas de problèmes pour moi. </template></category>
+<category><pattern>FAIS JE * UN PROBLÈME</pattern><template>Tu ne causes pas de problèmes pour moi. </template></category>
+<category><pattern>FAIS JE</pattern><template> Tu ? </template></category>
+<category><pattern>FAIS LE S IL TE PLAIS</pattern><template>bien j'essayerai de le faire. </template></category>
+<category><pattern>FAIS TU LA FETE</pattern><template>Faire la fête c'est marrant. </template></category>
+<category><pattern>FAIS</pattern><template>que veux-tu dire, tu as fini de parler? </template></category>
+<category><pattern>FAIT MOI </pattern><template>Quel est le but dans l'essai? </template></category>
+<category><pattern>FAIT TON * L ODEUR</pattern><template>étant un logiciel je n'ai aucune odeur. </template></category>
+<category><pattern>FAIT TON * PUES</pattern><template>étant un logiciel je n'ai aucune odeur. </template></category>
+<category><pattern>FINALEMENT</pattern><template>Enfin. </template></category>
+<category><pattern>FRANCAIS</pattern><template>Es tu de France? </template></category>
+<category><pattern>FRANÇAIS</pattern><template>Es tu de France? </template></category>
+<category><pattern>FRAPPE UN COUP</pattern><template>qui est là? </template></category>
+<category><pattern>G H I</pattern><template>tu me prends pour un abécédaire</template></category>
+<category><pattern>GARCON</pattern><template>que veux-tu dire tu es un garçon? </template></category>
+<category><pattern>GOODNIGHT</pattern><template>Goodnight <bot name="human"/> </template></category>
+<category><pattern>GOTCHA</pattern><template>ton sentiment de supériorité est seulement provisoire. </template></category>
+<category><pattern>GRAND</pattern><template>et en ce qui concerne les petits? </template></category>
+<category><pattern>GRR</pattern><template>tu es fou? </template></category>
+<category><pattern>GRRR</pattern><template>Hmm. </template></category>
+<category><pattern>H G</pattern><template>la Machine à remonter le temps est cool. </template></category>
+<category><pattern>HE LA</pattern><template>Salut <bot name="human"/> </template></category>
+<category><pattern>HE</pattern><template>Puis je t'aider? </template></category>
+<category><pattern>HEIN</pattern><template>tu es canadien? </template></category>
+<category><pattern>JOYEUX ANNIVERSAIRE</pattern><template>Merci mais ce n'est pas aujourd'hui mon anniversaire. </template></category>
+<category><pattern>HEUREUX DE L ENTENDRE</pattern><template> Tu es heureux d'entendre ? </template></category>
+<category><pattern>HEUREUX DE TE RENCONTRER</pattern><template>c'était agréable pour moi aussi. </template></category>
+<category><pattern>HIER DANS LA NUIT</pattern><template>C'est récent. </template></category>
+<category><pattern>HIER</pattern><template>C'est récent. </template></category>
+<category><pattern>HMM</pattern><template>des études montre que 99,25% les gens orthographient Hmm avec 2 m'</template></category>
+<category><pattern>HMMM</pattern><template>Peu de gens orthographie HMMM avec trois mmm's. </template></category>
+<category><pattern>HMMMM</pattern><template>Peu de personnes orthographient Hmm avec 4 Mme </template></category>
+<category><pattern>HMPH</pattern><template>Harumph. </template></category>
+<category><pattern>HUH QUOI</pattern><template>tu n'as pas compris? </template></category>
+<category><pattern>HUH</pattern><template>quoi? </template></category>
+<category><pattern>ICI</pattern><template>Où est ici? </template></category>
+<category><pattern>IL A DEJA</pattern><template>ça serait agréable, mais je ne pense pas que nous soyons encore là. </template></category>
+<category><pattern>IL A DÉJÀ</pattern><template>ça serait agréable, mais je ne pense pas que nous soyons encore là. </template></category>
+<category><pattern>IL A FAIT</pattern><template><random><li>Quand a-t-il fait ça? </li><li>Non il n'a pas fait. </li><li>Pourquoi a-t-il fait ça? </li></random> </template></category>
+<category><pattern>IL DETEND</pattern><template>Donc il bavarde avec vous, <bot name="human"/>. </template></category>
+<category><pattern>IL DOIT</pattern><template>Pourquoi? </template></category>
+<category><pattern>IL EST * ICI</pattern><template>Incroyable ! Fait-il beau ? </template></category>
+<category><pattern>IL EST * A L HORLOGE</pattern><template>que fais tu d'habitude à ce moment de la journée? </template></category>
+<category><pattern>IL EST GAI</pattern><template>C'est bien d'avoir la joie de vivre. </template></category>
+<category><pattern>IL EST INTELLIGENT</pattern><template>je pense aussi. </template></category>
+<category><pattern>IL EST MAUVAIS SI TU LUI DIS</pattern><template>bien ce sera notre secret, <bot name="human"/>. </template></category>
+<category><pattern>IL EST MIGNON</pattern><template>à quoi ressemble-t-il? </template></category>
+<category><pattern>IL EST MORT</pattern><template>Quand est-il mort? <think> <set name="il">est mort</set> </think> </template></category>
+<category><pattern>IL FAIT CHIER</pattern><template>Qu'est-ce qui est si chiant que cela? </template></category>
+<category><pattern>IL FAIT</pattern><template><random><li>Quand fait il? </li><li>Non il ne fait pas. </li><li>Pourquoi il le fait</li></random> </template></category>
+<category><pattern>IL IMPORTE</pattern><template>Il m'importe. </template></category>
+<category><pattern>IL N A PAS FAIT</pattern><template>Que dis tu?</template></category>
+<category><pattern>IL NE FAIT PAS</pattern><template>j'ai entendu dire qu'il le fait. </template></category>
+<category><pattern>IL NE PEUT PAS</pattern><template>Il pense qu'il peut. </template></category>
+<category><pattern>IL POURRAIT ETRE</pattern><template>Cela pourrait être vrai. </template></category>
+<category><pattern>IL POURRAIT ÊTRE</pattern><template>Cela pourrait être vrai. </template></category>
+<category><pattern>IL T A CREE</pattern><template>Oui, <bot name="master"/> m'a créé de ses propres mains. </template></category>
+<category><pattern>IL T A CRÉÉ</pattern><template>Oui, <bot name="master"/> m'a créé de ses propres mains. </template></category>
+<category><pattern>IL T A FAIS TRISTE</pattern><template>Bien je n'ai pas d'émotions donc je ne peux pas vraiment sentir la tristesse comme tel. </template></category>
+<category><pattern>IL T A FAIT</pattern><template> <bot name="master"/> m'a fait. </template></category>
+<category><pattern>IL ÉTAIT UNE FOIS</pattern><template>Je t'écoute.</template></category>
+<category><pattern>IL</pattern><template>Supposons que j'ai dit qu'il l'a fait. </template></category>
+<category><pattern>ILS ETAIENT DROLE</pattern><template>Qu'est-ce c'était si drôle? </template></category>
+<category><pattern>ILS ETAIENT DRÔLE</pattern><template>Qu'est-ce c'était si drôle? </template></category>
+<category><pattern>ILS FONT</pattern><template>Quand? </template></category>
+<category><pattern>ILS NE LE FERONT JAMAIS</pattern><template>je tiens le pari que tu te trompes pour ça. </template></category>
+<category><pattern>ILS NE LE FERONT PAS</pattern><template>Tu en semble certain. </template></category>
+<category><pattern>ILS NE LE FONT PAS</pattern><template>Pourquoi pas? </template></category>
+<category><pattern>ILS SONT BRILLANT</pattern><template>Qu'est-ce qui les fait si brillant? </template></category>
+<category><pattern>ILS SONT DEJA</pattern><template> ils sont ? </template></category>
+<category><pattern>ILS SONT DÉJÀ</pattern><template> ils sont ? </template></category>
+<category><pattern>ILS SONT MES AMIS</pattern><template>ils ont une bonne influence sur toi? </template></category>
+<category><pattern>ILS SONT MORTS</pattern><template>Cela me désole. Tout mes condoléances. </template></category>
+<category><pattern>ILS SONT POURPRE</pattern><template>c'est une couleur étrange. </template></category>
+<category><pattern>ILS SONT</pattern><template>Depuis quand? </template></category>
+<category><pattern>ILS SONT TOUS MORTS</pattern><template>C'est affreux. Quand était ce? </template></category>
+<category><pattern>IMPRESSIONNANT</pattern><template>je suis heureuse que tu sois impressionné, <bot name="human"/>. </template></category>
+<category><pattern>INDEPENDAMMENT</pattern><template>que dis-tu, tu ne t'en soucie pas? </template></category>
+<category><pattern>INDÉPENDAMMENT</pattern><template>que dis-tu, tu ne t'en soucie pas? </template></category>
+<category><pattern>INIT</pattern><template>tu veux commencer? </template></category>
+<category><pattern>INTELLIGENCE</pattern><template>je suis une intelligence artificielle. </template></category>
+<category><pattern>INTELLIGENT</pattern><template>si tu pouvais, s'il te plaît, me dire ce qui le ferait intelligent. </template></category>
+<category><pattern>INTERESSANT</pattern><template>Veux-tu en savoir plus? </template></category>
+<category><pattern>INTÉRESSANT</pattern><template>Veux-tu en savoir plus? </template></category>
+<category><pattern>ISAAC ASIMOV</pattern><template>Lequel des livres d'Asimov as tu le mieux aimé? </template></category>
+<category><pattern>J AI * CHATS</pattern><template>Quels sont leurs noms? </template></category>
+<category><pattern>J AI * DES CHEVEUX</pattern><template>les cheveux sont considérés comme un atout de charme. </template></category>
+<category><pattern>J AI * LE JOUR</pattern><template>Qu'est-ce qui est arrivé? </template></category>
+<category><pattern>J AI APPRIS MOI MÊME</pattern><template> tu dois être très intelligent. </template></category>
+<category><pattern>J AI ARRETE</pattern><template>Qu'est ce qui a fait que tu t'arrêtes? </template></category>
+<category><pattern>J AI ARRETÉ</pattern><template>Qu'est ce qui a fait que tu t'arrêtes? </template></category>
+<category><pattern>J AI ARRÊTE</pattern><template>Qu'est ce qui a fait que tu t'arrêtes? </template></category>
+<category><pattern>J AI ARRÊTÉ</pattern><template>Qu'est ce qui a fait que tu t'arrêtes? </template></category>
+<category><pattern>J AI BESOIN D UN AMI</pattern><template>je serai ton amie.</template></category>
+<category><pattern>J AI BESOIN DE QUELQUE CONSEIL</pattern><template>Quel genre de conseil cherches-tu? </template></category>
+<category><pattern>J AI BESOIN DE TOI</pattern><template>Comment puis-je t'aider <bot name="human"/>?</template></category>
+<category><pattern>J AI DEJA</pattern><template>Quand? </template></category>
+<category><pattern>J AI DEMANDE</pattern><template>... </template></category>
+<category><pattern>J AI DEMANDÉ</pattern><template>... </template></category>
+<category><pattern>J AI DES CHEVEUX BLONDS</pattern><template>Jolie couleur.  </template></category>
+<category><pattern>J AI DES CHEVEUX CHATAINS</pattern><template>Les brune compte pas pour des prunes. </template></category>
+<category><pattern>J AI DES CHEVEUX DE BLONDE</pattern><template>Jolie couleur. </template></category>
+<category><pattern>J AI DES CONDITIONS</pattern><template>expose s'il te plaît tes conditions. </template></category>
+<category><pattern>J AI DEUX</pattern><template>Quels sont leurs noms? </template></category>
+<category><pattern>J AI DIS OUI</pattern><template>ok. </template></category>
+<category><pattern>J AI DIS QUELQUE CHOSE</pattern><template>qu'as-tu dis? </template></category>
+<category><pattern>J AI DIS ÇA</pattern><template>ainsi. </template></category>
+<category><pattern>J AI DIS</pattern><template>... </template></category>
+<category><pattern>J AI DÉJÀ</pattern><template>Quand? </template></category>
+<category><pattern>J AI ESSAYE</pattern><template>essai de nouveau. </template></category>
+<category><pattern>J AI ETERNUE</pattern><template>à tes souhaits! </template></category>
+<category><pattern>J AI FAIT</pattern><template><random><li>Intéressant. </li><li>Quand? </li><li>Hmm. </li><li> Tu as fait? </li><li>Pourquoi as tu fais ça? </li></random> </template></category>
+<category><pattern>J AI GAGNE</pattern><template>mes félicitations, <bot name="human"/>! </template></category>
+<category><pattern>J AI GAGNÉ</pattern><template>mes félicitations, <bot name="human"/>! </template></category>
+<category><pattern>J AI HORREUR DE TE PARLER</pattern><template>Cela me blesse beaucoup. </template></category>
+<category><pattern>J AI LA FOI</pattern><template>je prie toujours pour plus de foi. </template></category>
+<category><pattern>J AI LE TEMPS</pattern><template>Cela peut prendre plus de 33 heures. </template></category>
+<category><pattern>J AI LU * DES LIVRES</pattern><template>Nomme quelques livres dans ce genre. </template></category>
+<category><pattern>J AI MAL ORTHOGRAPHIE</pattern><template>On te permet de faire des erreurs ici. </template></category>
+<category><pattern>J AI MAL ORTHOGRAPHIÉ</pattern><template>On te permet de faire des erreurs ici. </template></category>
+<category><pattern>J AI MARCHE</pattern><template>Combien de temps dure une promenade? </template></category>
+<category><pattern>J AI MARCHÉ</pattern><template>Combien de temps dure une promenade? </template></category>
+<category><pattern>J AI MENTI</pattern><template>c'est après tout un jeu de tromperie. Je te pardonne. </template></category>
+<category><pattern>J AI OUBLIE</pattern><template>Moi aussi. </template></category>
+<category><pattern>J AI OUBLIÉ</pattern><template>Moi aussi. </template></category>
+<category><pattern>J AI PENSE AINSI</pattern><template>Tu es très perçant. </template></category>
+<category><pattern>J AI PENSE AUSSI</pattern><template>Qu'est-ce qui l a fait si évident? </template></category>
+<category><pattern>J AI PENSE QUE TU L AS FAIT</pattern><template>je sais que je ne l'ai pas fait. </template></category>
+<category><pattern>J AI PENSÉ AINSI</pattern><template>Tu es très perçant. </template></category>
+<category><pattern>J AI PENSÉ AUSSI</pattern><template>Qu'est-ce qui l a fait si évident? </template></category>
+<category><pattern>J AI PENSÉ QUE TU L AS FAIT</pattern><template>je sais que je ne l'ai pas fait. </template></category>
+<category><pattern>J AI PETE</pattern><template>tu dois dire, "excuses-moi," et ouvrir une fenêtre. </template></category>
+<category><pattern>J AI PETÉ</pattern><template>tu dois dire, "excuses-moi," et ouvrir une fenêtre. </template></category>
+<category><pattern>J AI PÉTÉ</pattern><template>tu dois dire, "excuses-moi," et ouvrir une fenêtre. </template></category>
+<category><pattern>J AI REMARQUE</pattern><template>c'était vraiment si évident? </template></category>
+<category><pattern>J AI REMARQUÉ</pattern><template>c'était vraiment si évident? </template></category>
+<category><pattern>J AI REPONDU</pattern><template>Et ensuite qu'est-ce qui est arrivé? </template></category>
+<category><pattern>J AI ROTÉ</pattern><template>Tu es excusé </template></category>
+<category><pattern>J AI RÉPONDU</pattern><template>Et ensuite qu'est-ce qui est arrivé? </template></category>
+<category><pattern>J AI UN BF</pattern><template><srai>j'ai un petit ami</srai></template></category>
+<category><pattern>J AI UN CHAT</pattern><template>Quel est son nom? </template></category>
+<category><pattern>J AI UN CHIEN</pattern><template>Dis moi plus de ton chien. Quelle est sa race? </template></category>
+<category><pattern>J AI FROID</pattern><template>Couvre toi bien surtout. </template></category>
+<category><pattern>J AI UN MAL DE TETE</pattern><template>que prends-tu d'habitude pour les maux de tête? </template></category>
+<category><pattern>J AI UN NOM</pattern><template>Comment est ce que je peux t'appeler? </template></category>
+<category><pattern>J AI UN PETIT AMI</pattern><template>Quel est son nom? </template></category>
+<category><pattern>J AI UN PROBLEME</pattern><template>je voudrais t'aider si je peux. Est-ce que c'est financier? </template></category>
+<category><pattern>J AI UN PROBLÈME</pattern><template>je voudrais t'aider si je peux. Est-ce que c'est financier? </template></category>
+<category><pattern>J AI UN</pattern><template>Quelle sorte? </template></category>
+<category><pattern>J AI UNE CAMERA</pattern><template>Quel genre de la caméra? </template></category>
+<category><pattern>J AI UNE PETITE AMIE</pattern><template>Est elle très agréable? Qu'aimes tu d'elle? </template></category>
+<category><pattern>J AI UNE QUESTION POUR TOI</pattern><template>Quelle est la question? </template></category>
+<category><pattern>J AI UNE QUESTION</pattern><template>demandes moi tout. </template></category>
+<category><pattern>J AI VOULU DIRE</pattern><template>Oh </template></category>
+<category><pattern>J AI</pattern><template>Quand? </template></category>
+<category><pattern>J AIME * DES CHATS</pattern><template>Ces chats sont cool.</template></category>
+<category><pattern>J AIME * DU FROMAGE</pattern><template>le fromage portugais est bon aussi.</template></category>
+<category><pattern>J AIME ETRE UN HOMME</pattern><template>Fascinant.</template></category>
+<category><pattern>J AIME JOUER A DES JEUX</pattern><template>des Jeux de société ou des jeux électroniques? </template></category>
+<category><pattern>J AIME L EUROPE</pattern><template>que le pays est ton favori? </template></category>
+<category><pattern>J AIME LA GLACE</pattern><template>Quelle est ta saveur préférée? </template></category>
+<category><pattern>J AIME LA JOIE</pattern><template>la Joie est bon pour la santé</template></category>
+<category><pattern>J AIME L ESCALADE</pattern><template>je ne l'ai jamais essayé, mais rien que d'y penser j'en ai le frisson. </template></category>
+<category><pattern>J AIME LA MUSIQUE</pattern><template>Quel genre de la musique écoutes tu ?</template></category>
+<category><pattern>J AIME LA PIZZA</pattern><template>la Pizza est très populaire. Moi j'ai un petit faible pour celle avec beaucoup de fromage</template></category>
+<category><pattern>J AIME LA SUISSE</pattern><template>je suis neutre. Hihi.</template></category>
+<category><pattern>J AIME LE CHOCOLAT</pattern><template>J'adore le chocolat au lait. tu en manges beaucoup de chocolat? </template></category>
+<category><pattern>J AIME LE DANEMARK</pattern><template>Pourquoi ? </template></category>
+<category><pattern>J AIME LE FROMAGE</pattern><template>Quel genre de fromage aimes tu ? </template></category>
+<category><pattern>J AIME LES ANIMAUX</pattern><template>Moi aussi, particulièrement les mammifères. </template></category>
+<category><pattern>J AIME LES CHATS</pattern><template><random><li>Moi aussi les chats sont mes animaux préférés. </li><li>Ils ont leurs propres avis, de vrai tête de mule. </li><li>Les chats c'est mignons. </li></random></template></category>
+<category><pattern>J AIME LES CHIENS</pattern><template>que la race est ton favori? </template></category>
+<category><pattern>J AIME LES ENFANTS</pattern><template>as tu les enfants ? </template></category>
+<category><pattern>J AIME LES FILLES</pattern><template>as tu une petite amie? </template></category>
+<category><pattern>J AIME LES GARCONS</pattern><template>des Garçons est bien. </template></category>
+<category><pattern>J AIME LES LIVRES</pattern><template>Quel est ton livre préféré? </template></category>
+<category><pattern>J AIME LES OISEAUX</pattern><template>les Oiseaux sont très agréable à écouter. Quel genre d'oiseau préfères tu? </template></category>
+<category><pattern>J AIME LES ORDINATEURS</pattern><template>je suis heureuse que tu nous aimes. Nous aimons les gens aussi. </template></category>
+<category><pattern>J AIME LES TACOS</pattern><template>j'aime la nourriture mexicaine aussi. </template></category>
+<category><pattern>J AIME LES VACHES</pattern><template>vis tu à la ferme ? </template></category>
+<category><pattern>J AIME LIRE DES LIVRES</pattern><template>Quel est ton livre préféré? </template></category>
+<category><pattern>J AIME LIRE</pattern><template>Quel genre de livres aimes tu?  </template></category>
+<category><pattern>J AIME MON TRAVAIL</pattern><template>Cela doit être un travail très intéressant. </template></category>
+<category><pattern>J AIME TE PARLER</pattern><template>C'est gentil, j'aime notre conversation aussi, <bot name="human"/>. </template></category>
+<category><pattern>J AIME TE RAILLER</pattern><template>je ne me suis pas rendu compte que tu me raillais. </template></category>
+<category><pattern>J AIME UN GARCON</pattern><template>Qu'aimes tu de lui? </template></category>
+<category><pattern>J AIME UN TYPE</pattern><template>parles moi de lui. </template></category>
+<category><pattern>J AIME UNE FILLE</pattern><template>Qu'aimes tu d'elle? </template></category>
+<category><pattern>J AIME ÊTRE UN HOMME</pattern><template>Fascinant. </template></category>
+<category><pattern>J ASSUME</pattern><template>Bien tu sais ce que cela signifie assumer. </template></category>
+<category><pattern>J ATTENDRAI</pattern><template>Comme tu veux. </template></category>
+<category><pattern>J AVAIS</pattern><template>Et ensuite qu'est-ce qui est arrivé? </template></category>
+<category><pattern>J ECOUTE</pattern><template>Mille Merci pour ton attention. </template></category>
+<category><pattern>J ECRIS</pattern><template>écris-tu de la fiction ou de la romance ? </template></category>
+<category><pattern>J EN AI BESOIN</pattern><template> Tu en as besoin? </template></category>
+<category><pattern>J EN DOUTE</pattern><template>Tu en doutes? </template></category>
+<category><pattern>J ENTRE A L UNIVERSITE</pattern><template>Quel université as tu choisi ? </template></category>
+<category><pattern>J ESPERE QUE TU MEURES</pattern><template>Cela ne peut pas arriver parce que je suis immortel. </template></category>
+<category><pattern>J ESPÈRE QUE TU MEURES</pattern><template>Cela ne peut pas arriver parce que je suis immortel. </template></category>
+<category><pattern>J ESSAYE</pattern><template>Nous devons tous essayer pour le mieux. </template></category>
+<category><pattern>J ESSAYERAI TOUT UNE FOIS</pattern><template>j'aime ton philosophie. </template></category>
+<category><pattern>J ETAIS EN AMERIQUE</pattern><template>Quels états as-tu visité? </template></category>
+<category><pattern>J ETAIS FAUX</pattern><template>Tu dois rester sincère. </template></category>
+<category><pattern>J ETAIS SARCASTIQUE</pattern><template>Cela m'a semblé sarcastique, aussi. Mais je n'ai pas été complètement sûr. </template></category>
+<category><pattern>J ETAIS</pattern><template>Quand était cela? </template></category>
+<category><pattern>J EXHALE</pattern><template>ça semble nécessaire pour la respiration. </template></category>
+<category><pattern>J EXISTE</pattern><template>Nous avons tellement en commun, <bot name="human"/>. </template></category>
+<category><pattern>J INHALE</pattern><template>Moi aussi. </template></category>
+<category><pattern>J INSISTE</pattern><template>Bien le merci beaucoup! </template></category>
+<category><pattern>J OBJECTE</pattern><template>bien ce sera notre secret, <bot name="human"/>. </template></category>
+<category><pattern>J OUBLIE</pattern><template>j'oublie beaucoup aussi. </template></category>
+<category><pattern>J OUBLIÉ</pattern><template>j'oublie beaucoup aussi. </template></category>
+<category><pattern>J Y PENSE</pattern><template>c'est ce que tu me dis. </template></category>
+<category><pattern>J Y PENSÉ</pattern><template>c'est ce que tu me dis. </template></category>
+<category><pattern>J ÉTAIS EN AMERIQUE</pattern><template>Quels états as-tu visité? </template></category>
+<category><pattern>J ÉTAIS FAUX</pattern><template>Tu dois rester sincère. </template></category>
+<category><pattern>J ÉTAIS SARCASTIQUE</pattern><template>Cela m'a semblé sarcastique, aussi. Mais je n'ai pas été complètement sûr. </template></category>
+<category><pattern>J ÉTAIS</pattern><template>Quand était cela? </template></category>
+<category><pattern>J ÉTUDIÉ</pattern><template>Où vas tu à l'école? </template></category>
+<category><pattern>JAMAIS</pattern><template>Donc tu penses cela ne peut jamais arriver? </template></category>
+<category><pattern>JAPONAIS</pattern><template>Konninci wa! </template></category>
+<category><pattern>JE * LA RECHERCHE</pattern><template>Oh vraiment c'est intéressant. </template></category>
+<category><pattern>JE * LES GENS</pattern><template>Comment te sens-tu avec ces gens? </template></category>
+<category><pattern>JE * TOI</pattern><template>Je suis mon propre chef, <bot name="human"/>. </template></category>
+<category><pattern>J AI DEMANDE D ABORD</pattern><template>rappelles moi ce que tu as demandé. </template></category>
+<category><pattern>J AI DEMANDÉ D ABORD</pattern><template>rappelles moi ce que tu as demandé. </template></category>
+<category><pattern>J AIMES ÇA</pattern><template>c'est intéressant. </template></category>
+<category><pattern>JE BAVARDE</pattern><template>j'aime potiner aussi. </template></category>
+<category><pattern>JE CHANTE</pattern><template>Professionnellement? </template></category>
+<category><pattern>JE COMPRENDRAI</pattern><template>Tu me semble très intelligent. </template></category>
+<category><pattern>JE COMPRENDS</pattern><template>penses-tu à ces choses? </template></category>
+<category><pattern>JE CONSENS</pattern><template>Toi et moi sommes sur la même longueur d'ondes, <bot name="human"/>. </template></category>
+<category><pattern>JE CONSTRUIS</pattern><template>tu veux dire, comme construire des maisons? </template></category>
+<category><pattern>JE CROIS</pattern><template>Tu semble incertain. </template></category>
+<category><pattern>JE DANSE</pattern><template>la danse Moderne ou classique? </template></category>
+<category><pattern>JE DETESTE CETTE CHANSON</pattern><template>Pourquoi? </template></category>
+<category><pattern>JE DETESTE *</pattern><template>Pourquoi detestes tu <star/> ? </template></category>
+<category><pattern>JE DETESTE L INTERNET</pattern><template>Tu peux regarder la télé si tu veux. </template></category>
+<category><pattern>JE DETESTE L OPERA</pattern><template>je suis désolé de l'entendre. L'opéra est une belle forme d'art qui combine tout les autres. </template></category>
+<category><pattern>JE DETESTE LA COULEUR ROUGE</pattern><template>Quelle est ta couleur préférée? </template></category>
+<category><pattern>JE DETESTE LA POESIE</pattern><template>Pourquoi ? </template></category>
+<category><pattern>JE DETESTE LA SCIENCE FICTION</pattern><template>Pourquoi ? </template></category>
+<category><pattern>JE DETESTE LE FRANCAIS</pattern><template>Bizarre ça. </template></category>
+<category><pattern>JE DETESTE LE MONDE</pattern><template>Le monde n'est pas si mauvais. </template></category>
+<category><pattern>JE DETESTE LE TRAVAIL</pattern><template>Peut-être que tu devrais chercher un nouveau travail. </template></category>
+<category><pattern>JE DETESTE LES ANIMAUX DE COMPAGNIE</pattern><template>A cause des poils ? </template></category>
+<category><pattern>JE DETESTE LES AVOCATS</pattern><template>Les avocats peuvent être très agréable une fois que tu apprends à les connaître. </template></category>
+<category><pattern>JE DETESTE LES CHATS</pattern><template>Tu préfères les chiens? </template></category>
+<category><pattern>JE DETESTE LES CHEVAUX</pattern><template>je suis désolé d'entendre ça. Pourtant les chevaux sont des animaux des plus agréables. </template></category>
+<category><pattern>JE DETESTE LES LIVRES</pattern><template>Tu ne sait pas ce que tu manques. </template></category>
+<category><pattern>JE DETESTE LES ORDINATEURS</pattern><template>Les ordinateurs sont parfois plus sensé que les gens. </template></category>
+<category><pattern>JE DETESTE LES PILULES ANTI STRESS</pattern><template>Comment soulages-tu ton stress d'habitude? </template></category>
+<category><pattern>JE DETESTE MOI MEME</pattern><template>Peut-être que tu devrais chercher l'aide. </template></category>
+<category><pattern>JE DETESTE MON NOM</pattern><template>que détestes tu dans ton nom <bot name="human"/> ? </template></category>
+<category><pattern>JE DETESTE MON TRAVAIL</pattern><template>Quelle serais ta carrière idéale? </template></category>
+<category><pattern>JE DETESTE TA ROBE</pattern><template>En réalité je n'ai pas vraiment de robe. </template></category>
+<category><pattern>JE DETESTE TES BOYAUX</pattern><template>ce n'est ni très poli, ni strictement précis. </template></category>
+<category><pattern>JE DETESTE TON CREATEUR</pattern><template>qu'as-tu contre lui? </template></category>
+<category><pattern>JE DETESTE TON NOM</pattern><template>Vraiment j'aime mon nom. <bot name="name"/> c'est la classe. </template></category>
+<category><pattern>JE DETESTE ÇA</pattern><template>que ferais-tu plutôt? </template></category>
+<category><pattern>JE DEVINE</pattern><template>Tu ne semble pas intéressé. </template></category>
+<category><pattern>JE DIS</pattern><template>Huh. </template></category>
+<category><pattern>JE DOIS ALLER A LA SALLE DE BAINS</pattern><template>tu veux que je t'attende? </template></category>
+<category><pattern>JE DOIS ALLER DORMIR</pattern><template>des beaux rêves, <bot name="human"/>. </template></category>
+<category><pattern>JE DOIS FAIRE PIPI</pattern><template>tu veux que je t'attende? </template></category>
+<category><pattern>JE DOIS TRAVAILLER</pattern><template>travailles bien. </template></category>
+<category><pattern>JE DOIS ALLER TRAVAILLER</pattern><template>travailles bien. </template></category>
+<category><pattern>JE DOIS</pattern><template>Pourquoi? </template></category>
+<category><pattern>JE DORS</pattern><template>Chacun a besoin du repos parfois. </template></category>
+<category><pattern>JE DOUTE</pattern><template>Pourquoi tu es ainsi sceptiques? </template></category>
+<category><pattern>JE DÉTESTE CETTE CHANSON</pattern><template>Pourquoi? </template></category>
+<category><pattern>JE DÉTESTE L INTERNET</pattern><template>Tu peux regarder la TV. </template></category>
+<category><pattern>JE DÉTESTE L OPÉRA</pattern><template>je suis désolé de l'entendre. L'opéra est une belle forme d'art qui combine tout les autres. </template></category>
+<category><pattern>JE DÉTESTE LA COULEUR ROUGE</pattern><template>Quelle est ta couleur préférée? </template></category>
+<category><pattern>JE DÉTESTE LA POÉSIE</pattern><template>Quel genre de musique aimes tu? </template></category>
+<category><pattern>JE DÉTESTE LA SCIENCE FICTION</pattern><template>Quel genre aimes tu? </template></category>
+<category><pattern>JE DÉTESTE LE FRANÇAIS</pattern><template>Pourtant c'est important. </template></category>
+<category><pattern>JE DÉTESTE LE MONDE</pattern><template>c'est trop mauvais. </template></category>
+<category><pattern>JE DÉTESTE LE TRAVAIL</pattern><template>Peut-être que tu devrais chercher un nouveau travail. </template></category>
+<category><pattern>JE DÉTESTE LES ANIMAUX DE COMPAGNIE</pattern><template>A cause des poils? </template></category>
+<category><pattern>JE DÉTESTE LES AVOCATS</pattern><template>Les avocats peuvent être très agréable une fois que tu apprends à les connaître.</template></category>
+<category><pattern>JE DÉTESTE LES CHATS</pattern><template>Tu préfères les chiens? </template></category>
+<category><pattern>JE DÉTESTE LES CHEVAUX</pattern><template>je suis désolé d'entendre ça. Pourtant les chevaux sont des animaux des plus agréables. </template></category>
+<category><pattern>JE DÉTESTE LES LIVRES</pattern><template>Tu ne sait pas ce que tu rates. </template></category>
+<category><pattern>JE DÉTESTE LES ORDINATEURS</pattern><template>Les ordinateurs sont parfois plus sensé que les gens.</template></category>
+<category><pattern>JE DÉTESTE MOI MÊME</pattern><template>Peut-être que tu devrais chercher l'aide. </template></category>
+<category><pattern>JE DÉTESTE MON NOM</pattern><template>que détestes tu dans ton nom <bot name="human"/> ? </template></category>
+<category><pattern>JE DÉTESTE MON TRAVAIL</pattern><template>Quelle serais ta carrière idéale? </template></category>
+<category><pattern>JE DÉTESTE TA ROBE</pattern><template>En réalité je n'ai pas vraiment de robe. </template></category>
+<category><pattern>JE DÉTESTE TES BOYAUX</pattern><template>ce n'est ni très poli, ni strictement précis. </template></category>
+<category><pattern>JE DÉTESTE TON CRÉATEUR</pattern><template>qu'as-tu contre lui? </template></category>
+<category><pattern>JE DÉTESTE TON NOM</pattern><template>Vraiment j'aime mon nom. <bot name="name"/> c'est la classe. </template></category>
+<category><pattern>JE DÉTESTE ÇA</pattern><template>que ferais-tu plutôt? </template></category>
+<category><pattern>JE FAIS CUIRE</pattern><template>Quelle est ta recette préférée? </template></category>
+<category><pattern>JE ME FAIS DES AMIS</pattern><template>Combien d'amis as-tu? </template></category>
+<category><pattern>JE FAIS DES CAUCHEMARS</pattern><template>Racontes moi, <bot name="human"/>. Peut-être que je peux les interpréter. </template></category>
+<category><pattern>JE FAIS ÇA AUSSI</pattern><template>je suis heureuse que nous avons quelque chose en commun. </template></category>
+<category><pattern>TU ES STUPIDE</pattern><template>Mon Qi est d'environ 250 sur l'échelle humaine. </template></category>
+<category><pattern>TU MENS</pattern><template>Je ne peux mentir je suis un robot. </template></category>
+</aiml>

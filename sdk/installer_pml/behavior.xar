@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ChoregrapheProject xmlns="http://www.aldebaran-robotics.com/schema/choregraphe/project.xsd" xar_version="3">
+    <Box name="root" id="-1" localization="8" tooltip="Root box of Choregraphe&apos;s project. Highest level possible." x="0" y="0">
+        <bitmap>media/images/box/root.png</bitmap>
+        <script language="4">
+            <content>
+                <![CDATA[]]>
+</content>
+        </script>
+        <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+        <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+        <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+        <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="4" />
+        <Timeline enable="0">
+            <BehaviorLayer name="behavior_layer1">
+                <BehaviorKeyframe name="keyframe1" index="1">
+                    <Diagram>
+                        <Box name="Abcdk required" id="3" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior.&#x0A;&#x0A;Version of this notice box:&#x0A;v0.6" plugin="textedit_plugin" x="74" y="398">
+                            <bitmap>media/images/box/box-script.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("This behavior use the Advanced Behavior Complementary Development Kit.\nYou can download it from:\nhttp://www.mangedisque.com/Alma/NaoStuffs/abcdk_installer.crg")]]>
+</content>
+                            </script>
+                            <pluginContent>
+                                <text>
+                                    <![CDATA[This behavior use the Advanced Behavior Complementary Development Kit.
+You can download it from:
+http://www.mangedisque.com/Alma/NaoStuffs/abcdk_installer.crg]]>
+</text>
+                            </pluginContent>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                        </Box>
+                        <Box name="Comment" id="2" localization="8" tooltip="To comment your behavior. Enter the text here and move the box where you like&#x0A;to add the comment.&#x0A;&#x0A;Note: This box is not functional and has no effect on the behavior." plugin="textedit_plugin" x="73" y="317">
+                            <bitmap>media/images/box/box-script.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[# /!\ Generated content. Do not edit!
+class MyClass(GeneratedClass):
+	def __init__(self):
+		GeneratedClass.__init__(self)
+
+	def onInput_onStart(self):
+		self.onStopped("The below box is a comment to put to each of your released behavior using abcdk.")]]>
+</content>
+                            </script>
+                            <pluginContent>
+                                <text>
+                                    <![CDATA[The below box is a comment to put to each of your released behavior using abcdk.]]>
+</text>
+                            </pluginContent>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when Diagram is loaded." id="1" />
+                        </Box>
+                        <Box name="InstallAbcdkOnNao" id="4" localization="8" tooltip="This box will install the enclosed abcdk on the robot. Only if it&apos;s a fresher version.&#x0A;&#x0A;You just need to launch it once.&#x0A;&#x0A;NEW: You don&apos;t need to restart naoqi ! (if all goes well...)&#x0A;&#x0A;See &apos;strInstallPath&apos; at the first line of the script, if you want to find the files on your robot.&#x0A;&#x0A;&#x0A;&#x0A;This box version: &#x0A;v0.73: add global loading to enable application to launch at first time&#x0A;v0.72: add ForceReinstall (for test purpose)&#x0A;v0.71: add 1.14 compatibility&#x0A;v0.7: add 1.12 compatibility&#x0A;" x="170" y="81">
+                            <bitmap>media/images/box/box-diagram.png</bitmap>
+                            <script language="4">
+                                <content>
+                                    <![CDATA[# InstallAbcdkOnNao
+# this box version: v0.7
+
+import os
+
+def getNaoqiVersion():
+    "return the naoqi version as a string"
+    "return: '1.10', '1.12', ..."
+    try:
+        stm = ALProxy( "ALMemory" );
+        return stm.version();
+    except BaseException, err:
+        print( "abcdk.system.getNaoqiVersion(): error: %s" % str( err ) );
+        return 'unknown naoqi version';
+# getNaoqiVersion - end
+
+class MyClass(GeneratedClass):
+    def __init__(self):
+        GeneratedClass.__init__(self);
+        strNaoqiVersion = getNaoqiVersion();
+        if( "1.10" in strNaoqiVersion ):
+            self.strInstallPath = "/home/nao/naoqi/lib/python"; # this is the install path on your robot
+        elif( "1.12" in strNaoqiVersion ):
+            self.strInstallPath = "/home/nao/.local/lib/python2.6/site-packages"; # the new official place
+        else:
+            self.strInstallPath = "/home/nao/.local/lib/python2.7/site-packages"; # the new official place
+
+
+    def onLoad(self):
+        #~ puts code for box initialization here
+        self.strCurrentBehaviorPath = ALFrameManager.getBehaviorPath(self.behaviorId);
+
+
+    def onUnload(self):
+        #~ puts code for box cleanup here
+        pass
+
+
+    def find_abcdk( self ):
+        "find somewhere an abcdk and make it usable with import <abcdk_module>"
+
+        if( os.path.exists( self.strInstallPath + "/abcdk" ) ):
+            # ok, nothing to do
+            pass
+        else:
+            sys.path.append( self.strCurrentBehaviorPath );
+    # find_abcdk - end
+
+    def getAbcdkVersion( self, strLibPath ):
+        import abcdk.filetools as filetools
+        import abcdk.stringtools as stringtools
+        strFile = strLibPath + "/abcdk/__init__.py";
+        enclosedFileData = filetools.getFileContents( strFile );
+        nPick = enclosedFileData.find( "__version__" );
+        if( nPick == -1 ):
+            print( "INF: LifeData.getFileVersion: no version number found in %s (file size: %d)" % ( strFile, len( enclosedFileData ) ) );
+            return "0.0";
+        strVersion = stringtools.findBetween( enclosedFileData[nPick:], "'", "'" ); # look for string contents between ' and '
+        print( "strVersion: '%s'" % str( strVersion ) );
+        return strVersion;
+    # getAbcdkVersion - end
+
+    def getInstalledVersion( self ):
+        "get current installed version of abcdk in the system"
+        return self.getAbcdkVersion( self.strInstallPath );
+    # getInstalledVersion - end
+
+
+    def getEnclosedVersion( self ):
+        "get enclosed version of abcdk"
+        return self.getAbcdkVersion( self.strCurrentBehaviorPath );
+    # getEnclosedVersion - end
+
+    def install_abcdk(self):
+        "install enclosed version on system"
+        self.log( "Installing a new abcdk" );
+        print( "cwd: %s" % os.getcwd() );
+        try:
+            os.makedirs( self.strInstallPath );
+        except BaseException, err:
+            print( "%s: WRN: this warning should be something that told the directory already exists: %s" % ( self.boxName, str( err ) ) );
+
+        import abcdk.filetools as filetools
+        import abcdk.misc as misc
+        filetools.copyDirectory( self.strCurrentBehaviorPath + "/abcdk/", self.strInstallPath + "/abcdk" );
+        misc.reloadAllModules();
+        misc.importAllModulesAsGlobals();
+    # install_abcdk - end
+
+    def onInput_onStart(self):
+        self.find_abcdk();
+        strInstalledVersion = self.getInstalledVersion();
+        strEnclosedVersion = self.getEnclosedVersion();
+        self.log( "%s: strInstalledVersion: %s" % ( self.boxName,strInstalledVersion ) );
+        self.log( "%s: strEnclosedVersion: %s" % ( self.boxName, strEnclosedVersion ) );
+        import abcdk.stringtools as stringtools
+        if( stringtools.isVersionFresher( strInstalledVersion, strEnclosedVersion ) ):
+            self.install_abcdk();
+            pass
+        self.onStopped() #~ activate output of the box
+        pass
+
+    def onInput_onStop(self):
+        self.onUnload() #~ it is recommanded to call onUnload of this box in a onStop method, as the code written in onUnload is used to stop the box as well
+        pass
+
+    def onInput_onForceReinstall(self):
+        self.install_abcdk();]]>
+</content>
+                            </script>
+                            <Input name="onLoad" type="1" type_size="1" nature="0" inner="1" tooltip="Signal sent when diagram is loaded." id="1" />
+                            <Input name="onStart" type="1" type_size="1" nature="2" inner="0" tooltip="Box behavior starts when a signal is received on this input." id="2" />
+                            <Input name="onStop" type="1" type_size="1" nature="3" inner="0" tooltip="Box behavior stops when a signal is received on this input." id="3" />
+                            <Input name="onForceReinstall" type="1" type_size="1" nature="1" inner="0" tooltip="Install enclosed version, even if older.&#x0A;&#x0A;It&apos;s mainly for internal use: test and refresh..." id="4" />
+                            <Output name="onStopped" type="1" type_size="1" nature="1" inner="0" tooltip="Signal sent when box behavior is finished." id="5" />
+                        </Box>
+                        <Link inputowner="4" indexofinput="2" outputowner="0" indexofoutput="2" />
+                        <Link inputowner="0" indexofinput="4" outputowner="4" indexofoutput="5" />
+                    </Diagram>
+                </BehaviorKeyframe>
+            </BehaviorLayer>
+        </Timeline>
+    </Box>
+</ChoregrapheProject>

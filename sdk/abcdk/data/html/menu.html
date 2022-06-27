@@ -1,0 +1,88 @@
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Aldebaran Project Hopias                            -->
+<!-- menu.hmtl                                           -->
+<!-- Innovation - Protolab - mcaniot@aldebaran.com       -->
+<!-- Aldebaran Robotics (c) 2016 All Rights Reserved     -->
+<!-- This file is confidential.                          -->
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <META charset="UTF-8" CONTENT="no-cache">
+        <META http-equiv="Cache-Control" content="no-cache">
+        <META http-equiv="Pragma" content="no-cache">
+        <META http-equiv="Expires" content="0">
+        <!-- No zoom in the page -->
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+        <!-- Include js files -->
+        <script src="/libs/qimessaging/1.0/qimessaging.js"></script>
+        <script src="js/menu.js"></script>
+        <script src="js/connection.js"></script>
+        <script src="js/jquery-1.11.0.min.js"></script>
+
+        <!-- Include css files -->
+        <link rel="stylesheet" href="css/menu.css" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/animated.css">
+    </head>
+
+    <body onload=" startSubscribe('HTMLMenu');" >
+
+        <!-- Button group menu -->
+
+        <!-- Page 1 -->
+        <div id="pageMenu1" style="display: block;">
+            <div class="buttonMenu" id="music" onclick="clickSound();choice('Music');" >
+                <h1>Musique</h1>
+            </div>
+
+            <div class="buttonMenu" id="video" onclick="clickSound();choice('Video');" >
+                <h1>Video</h1>
+            </div>
+
+            <div class="buttonMenu" id="App 3" onclick="clickSound();choice('App 3');" >
+                <h1>App 3</h1>
+            </div>
+
+            <div class="buttonMenu" id="App 4" onclick="clickSound();choice('App 4');" >
+                <h1>App 4</h1>
+            </div>
+
+            <div class="buttonBottomNext" id="next" onclick="clickSound();choice('next');" >
+                Next > 
+            </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div id="pageMenu2" style="display: none;">
+            <div class="buttonMenu" id="App 5" onclick="clickSound();choice('App 5');" >
+                <h1>App 5</h1>
+            </div>
+
+            <div class="buttonMenu" id="App 6" onclick="clickSound();choice('App 6');" >
+                <h1>App 6</h1>
+            </div>
+
+            <div class="buttonMenu" id="App 7" onclick="clickSound();choice('App 7');" >
+                <h1>App 7</h1>
+            </div>
+
+            <div class="buttonMenu" id="App 8" onclick="clickSound();choice('App 8');" >
+                <h1>App 8</h1>
+            </div>
+
+            <div class="buttonBottomBack" id="back" onclick="clickSound();choice('back');">
+                 < Back
+            </div>
+
+        </div>
+
+        <!-- Command Sent by choregraphe -->
+        <div class="groupCommand" id="command"></div> 
+    </body>
+
+</html>

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<package version="0.9.241" uuid="abcdk_installer">
+ <names>
+  <name lang="en_US">abcdk_installer</name>
+ </names>
+ <descriptions>
+  <description lang="en_US">A small tools (a bit internal)</description>
+ </descriptions>
+ <supportedLanguages>
+  <language>en_US</language>
+  <language>ar_SA</language>
+  <language>pt_BR</language>
+  <language>zh_CN</language>
+  <language>cs_CZ</language>
+  <language>da_DK</language>
+  <language>nl_NL</language>
+  <language>fi_FI</language>
+  <language>fr_FR</language>
+  <language>de_DE</language>
+  <language>it_IT</language>
+  <language>ja_JP</language>
+  <language>ko_KR</language>
+  <language>pl_PL</language>
+  <language>pt_PT</language>
+  <language>ru_RU</language>
+  <language>es_ES</language>
+  <language>sv_SE</language>
+  <language>tr_TR</language>
+ </supportedLanguages>
+ <descriptionLanguages>
+  <language>en_US</language>
+  <language>ar_SA</language>
+  <language>pt_BR</language>
+  <language>zh_CN</language>
+  <language>cs_CZ</language>
+  <language>da_DK</language>
+  <language>nl_NL</language>
+  <language>fi_FI</language>
+  <language>fr_FR</language>
+  <language>de_DE</language>
+  <language>it_IT</language>
+  <language>ja_JP</language>
+  <language>ko_KR</language>
+  <language>pl_PL</language>
+  <language>pt_PT</language>
+  <language>ru_RU</language>
+  <language>es_ES</language>
+  <language>sv_SE</language>
+  <language>tr_TR</language>
+ </descriptionLanguages>
+ <contents>
+  <behaviorContent path=".">
+   <nature></nature>
+   <permissions/>
+  </behaviorContent>
+ </contents>
+</package>

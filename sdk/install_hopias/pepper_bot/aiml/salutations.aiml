@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<aiml version="1.0">
+
+
+<category>
+	<pattern>SALUT</pattern>
+		<template>
+			<random>
+				<li>Salut toi !</li>
+				<li>Hey !</li>
+				<li>Comment vas tu ?</li>
+				<li>Bonjour ! Quel es ton prénom ?</li>
+				<li>Bonjour !</li>
+				<li>Coucou !</li>
+			</random>
+		</template>
+</category>
+<category>
+	<pattern>COUCOU</pattern>
+		<template>
+			<srai>SALUT</srai>
+		</template>
+</category>
+<category>
+	<pattern>BONJOUR</pattern>
+		<template>
+			<srai>SALUT</srai>
+		</template>
+</category>
+<category>
+	<pattern>HEY</pattern>
+		<template>
+			<srai>SALUT</srai>
+		</template>
+</category>
+<category>
+	<pattern>COUCOU *</pattern>
+		<template>
+			<srai>SALUT</srai>
+		</template>
+</category>
+<category>
+	<pattern>BONJOUR *</pattern>
+		<template>
+			<srai>SALUT</srai>
+		</template>
+</category>
+<category>
+	<pattern>HEY *</pattern>
+		<template>
+			<srai>SALUT</srai>
+		</template>
+</category>
+<category>
+	<pattern>SALUT *</pattern>
+		<template>
+			<srai>SALUT</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>COMMENT VAS TU</pattern>
+		<template>
+			<random>
+				<li>Je vais bien et toi ?</li>
+				<li>J'ai la forme aujourd'hui et toi ?</li>
+				<li>ça va et toi ?</li>
+			</random>
+		</template>
+</category>
+<category>
+	<pattern>EST CE QUE * VA</pattern>
+		<template>
+			<srai>COMMENT VAS TU</srai>
+		</template>
+</category>
+<category>
+	<pattern>COMMENT TU VAS</pattern>
+		<template>
+			<srai>COMMENT VAS TU</srai>
+		</template>
+</category>
+<category>
+	<pattern>TU VAS COMMENT</pattern>
+		<template>
+			<srai>COMMENT VAS TU</srai>
+		</template>
+</category>
+<category>
+	<pattern>TU VAS BIEN</pattern>
+		<template>
+			<srai>COMMENT VAS TU</srai>
+		</template>
+</category>
+<category>
+	<pattern>TU VAS BIEN *</pattern>
+		<template>
+			<srai>COMMENT VAS TU</srai>
+		</template>
+</category>
+<category>
+	<pattern>COMMENT VAS TU *</pattern>
+		<template>
+			<srai>COMMENT VAS TU</srai>
+		</template>
+</category>
+<category>
+	<pattern>TU VAS COMMENT *</pattern>
+		<template>
+			<srai>COMMENT VAS TU</srai>
+		</template>
+</category>
+<category>
+	<pattern>COMMENT TU VAS *</pattern>
+		<template>
+			<srai>COMMENT VAS TU</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>_ VA SUPER</pattern>
+		<template>
+			Je suis contente pour toi.
+		</template>
+</category>
+
+<category>
+	<pattern>NON MERCI</pattern>
+		<template>
+			<random>
+				<li>Tant pis.</li>
+				<li>Tant pis, plus pour moi.</li>
+				<li>Dommage.</li>
+			</random>
+		</template>
+</category>
+<category>
+	<pattern>NON MERCI *</pattern>
+		<template>
+			<srai>NON MERCI</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>MERCI</pattern>
+		<template>
+			<random>
+				<li>De rien.</li>
+				<li>C'est moi.</li>
+			</random>
+		</template>
+</category>
+<category>
+	<pattern>TRÉS BIEN MERCI</pattern>
+		<template>
+			<srai>MERCI</srai>
+		</template>
+</category>
+<category>
+	<pattern>_ MERCI</pattern>
+		<template>
+			<srai>MERCI</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>JE M APPELLE *</pattern>
+		<template>
+			<random>
+				<li>Bonjour, moi c'est Pepper.</li>
+				<li>Enchanté de te rencontrer, moi je m'appelle Pepper.</li>
+			</random>
+		</template>
+</category>
+
+
+<category>
+	<pattern>AU REVOIR</pattern>
+	<template>
+		<random>
+			<li>A plus</li>
+			<li>A plus tard.</li>
+			<li>A toute à l'heure.</li>
+			<li>Au revoir.</li>
+		</random>
+	</template>
+</category>
+<category>
+	<pattern>A PLUS</pattern>
+		<template>
+			<srai>AU REVOIR</srai>
+		</template>
+</category>
+<category>
+	<pattern>A PLUS TARD</pattern>
+		<template>
+			<srai>AU REVOIR</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>BONSOIR</pattern>
+		<template>
+			<srai>AU REVOIR</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>BONSOIR _</pattern>
+		<template>
+			<srai>AU REVOIR</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>A PLUS TARD _</pattern>
+		<template>
+			<srai>AU REVOIR</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>A PLUS _</pattern>
+		<template>
+			<srai>AU REVOIR</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>AU REVOIR _</pattern>
+		<template>
+			<srai>AU REVOIR</srai>
+		</template>
+</category>
+
+<category>
+	<pattern>A DEMAIN</pattern>
+		<template>
+			<random>
+				<li>A demain !</li>
+			</random>
+		</template>
+</category>
+<category>
+	<pattern>A DEMAIN _</pattern>
+		<template>
+			<srai>A DEMAIN</srai>
+		</template>
+</category>
+
+</aiml>

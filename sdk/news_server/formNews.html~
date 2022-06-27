@@ -1,0 +1,27 @@
+<html>
+<head>
+<title> My Form </title>
+</head>
+<body>
+<form name="myform" action="save2.php" method="post">
+<p>
+yearOfAction (1970):<input type="text" name="yearOfAction"><br>
+monthOfAction(Apr) :<input type="text" name="monthOfAction"><br>
+weekDayOfAction(Tue):<input type="text" name="weekDayOfAction"> <br>
+dayOfAction(32) :<input type="text" name="dayOfAction"><br>
+hourOfAction (10):<input type="text" name="hourOfAction"><br>
+minuteOfAction(32):<input type="text" name="minuteOfAction"> <br>
+secondOfAction(15) :<input type="text" name="secondOfAction"><br>
+place (livingroom):<input type="text" name="place"><br>
+source(CALVIN):<input type="text"name="source"> <br>
+action(GAVE) :<input type="text" name="action"><br>
+cible(LANNING):<input type="text" name="cible"> <br>
+objet(ROBOT) :<input type="text" name="objet"><br>
+actionDuration (5min):<input type="text" name="actionDuration"><br>
+Keywords(separated by ';')(happy;present;gift):<input type="text" name="Keywords"> </textarea>
+<br>
+
+<input type="submit" value=" Save "><br>
+</form>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="1.0">
+
+<category>
+	<pattern>APPREND QUE * EST *</pattern>
+		<template>
+			Ok, je saurai maintenant que <star/> est <star index="2"/>
+		</template>
+</category>
+
+<category>
+	<pattern>APPREND QUE * SIGNIFIE *</pattern>
+		<template>
+			Ok, je saurai maintenant que <star/> signifie <star index="2"/>
+		</template>
+</category>
+
+<category>
+	<pattern>APPREND QUE * VEUX DIRE *</pattern>
+		<template>
+			Ok, je saurai maintenant que <star/> veux dire <star index="2"/>
+		</template>
+</category>
+
+<category>
+	<pattern>APPRENDS QUE * EST *</pattern>
+		<template>
+			Ok, je saurai maintenant que <star/> est <star index="2"/>
+		</template>
+</category>
+
+<category>
+	<pattern>APPRENDS QUE * SIGNIFIE *</pattern>
+		<template>
+			Ok, je saurai maintenant que <star/> signifie <star index="2"/>
+		</template>
+</category>
+
+<category>
+	<pattern>APPRENDS QUE * VEUX DIRE *</pattern>
+		<template>
+			Ok, je saurai maintenant que <star/> veux dire <star index="2"/>
+		</template>
+</category>
+
+</aiml>

@@ -1,0 +1,19 @@
+How to generate a new abcdk version
+
+python source file are in:
+source_folder: ...\git\appu_shared\sdk\abcdk
+
+1. update your file, add new methods, correct bugs from in the source file...
+
+2. test your modification (add some calls in the autotest of some of the modified file)
+
+3. increment the abcdk version from source_folder/__init__.py
+
+4. launch .../git\appu_shared\sdk/update_installer.py
+
+5. open in choregraphe .../git\appu_shared\sdk/installer using project directory mode
+
+6. save it as abcdk_installer.crg
+
+
+Git it !
