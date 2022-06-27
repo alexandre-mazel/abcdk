@@ -21,7 +21,7 @@ from vad import VAD
 from sound_analyser import SoundAnalyser
 
 import abcdk.sound.analyse
-import abcdk.leds
+from abcdk.leds import leds
 from abcdk.files import moveFiles
 
 import stk.runner
@@ -38,14 +38,7 @@ class AbcdkSoundReceiver(object):
         self.qiapp = qiapp
         self.events = stk.events.EventHelper(self.qiapp.session)
         self.s = stk.services.ServiceCache(self.qiapp.session)
-        
-        filename = "~/logs/"
-        filename = os.path.expanduser(filename)
-        try: os.makedirs(filename)
-        except: pass
-        
-        filename += "AbcdkSoundReceiver.log"
-        logging.basicConfig(filename=filename,
+        logging.basicConfig(filename='logs/AbcdkSoundReceiver.log',
             level=logging.INFO,
             format='%(levelname)s %(relativeCreated)6d %(threadName)s %(message)s (%(module)s.%(lineno)d)',
             filemode='w')
@@ -83,10 +76,9 @@ class AbcdkSoundReceiver(object):
         self.nInhibitEndTime = time.time() - 1000
         self.nDelayAfterSoundGeneration = 0.050 # time to empty soundcard buffer
 
-        #~ self.leds = leds.LedsDcm(self.qiapp)
-        #~ self.leds.createProxy()
-        #~ self.leds.createAliases()
-        self.leds = abcdk.leds.ledsDcm
+        self.leds = leds.LedsDcm(self.qiapp)
+        self.leds.createProxy()
+        self.leds.createAliases()
         self.sa = SoundAnalyser( self.qiapp, 
                                  nSampleRate = self.nSampleRate, 
                                  datatype=np.int16, 
