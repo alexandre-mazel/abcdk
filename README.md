@@ -1,3 +1,5 @@
+Abcdk stand for Advanced Behavior Complementary Development Kit for NAOqi robots
+
 This is a legacy from my work (and some of my team) at Aldebaran-Robotics then SoftBank/Robotics for 14 years.
 
 Please free to use it as real documentation sample, howtos and lazy functionality.
