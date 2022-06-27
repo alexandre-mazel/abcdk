@@ -9,4 +9,4 @@ Don't expect everything to work, to be documented nor to be pep8.
 And more over, don't expect any support from me or the original company.
 
 
-Original goal was to have an overlayer to permits to have same code for NAO, Romeo and Pepper, and to hide all the annoying API changes after each official new released version.
+The original purpose was to have an over-layer enabling same working code for NAO, Romeo and Pepper, and to hide all the annoying API changes after each official new released version.
