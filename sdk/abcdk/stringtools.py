@@ -653,7 +653,7 @@ def isPhoneticEqual( s1, s2 ):
     try:
         meta1 = metaphone.dm( unicode(s1) )[0]
         meta2 = metaphone.dm( unicode(s2) )[0]
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: can't metaphone '%s' or '%s': err: %s" % (s1, s2, err ) )
         meta1 = s1
         meta2 = s2

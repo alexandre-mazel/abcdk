@@ -27,7 +27,8 @@ import numpy as np
 import traceback
 import debug
 import filetools
-import mutex
+#~ import mutex
+import threading
 
 import ctypes
 
@@ -244,7 +245,8 @@ class Camera:
         self.aSubsribersInUse = set() # list of subscriber currently in used, we shouldn't unsubscribe when the subscriber is in the list, we need to wait the image has been released before unsubscribing
         self.bUseLocalProxy = False  ## use getALImageremote by default
         
-        self.mutexGetImageCV2 = mutex.mutex();
+        #~ self.mutexGetImageCV2 = mutex.mutex();
+        self.mutexGetImageCV2 = threading.Lock();
     # __init__ - end
 
     def getCurrentSettings( self ):
@@ -605,7 +607,7 @@ class Camera:
                 cv.SetData( bufferImageToDraw2, image2 );
                 return [bufferImageToDraw, bufferImageToDraw2];
             return bufferImageToDraw;
-        except BaseException, err:
+        except BaseException as err:
             print( "ERR: abcdk.camera.getImage: catching error: %s! (%s)" % (err, traceback.format_exc()) );
         return None;
     # getImage - end
@@ -762,7 +764,7 @@ class Camera:
         self.mutexGetImageCV2.unlock();
         return image;
 
-        #except BaseException, err:
+        #except BaseException as err:
         #    print( "ERR: abcdk.camera.getImageCV2: catching error: %s!" % traceback.format_exc() );
         #return None;
     # getImageCV2 - end
@@ -793,7 +795,7 @@ class Camera:
                 #print("nColorSpace (%s), nImageResolution (%s), results:" % (nColorSpace, nImageResolution))
                 rImagePerSec = _testSpeedCamera(nColorSpace, nImageResolution)
                 res.append([nColorSpace, nImageResolution, rImagePerSec])
-        print res
+        print( res )
         ## ON ROMEO we get : [[0, 7, 14.09150438615292], [0, 0, 14.676634559724544], [0, 1, 14.671493053486659], [0, 2, 13.980443539369695], [0, 3, 6.256661365433674], [13, 7, 14.033450665372754], [13, 0, 14.673578627617513], [13, 1, 14.675853777091424], [13, 2, 6.998751362408521], [13, 3, 1.7358447410316877]]
         # ON NAO : [[0, 7, 29.233307029810536], [0, 0, 28.06853192861368], [0, 1, 28.07255059611683], [0, 2, 21.303238803833022], [0, 3, 6.478833021008139], [13, 7, 27.830928694666117], [13, 0, 27.450729054560316], [13, 1, 27.553239091277234], [13, 2, 8.7797696866663], [13, 3, 1.7813247539973027]]
 

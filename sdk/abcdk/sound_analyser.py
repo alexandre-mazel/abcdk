@@ -40,6 +40,8 @@ import python_speech_features
 global_strALMemoryKeyName__stop_process = "sound_receiver_must_stop"
 global_bSampleReceived = False
 
+global_strALMemoryKeyName__pause = "sound_receiver_pause"
+
 # for sakes, you want somme logging ? let's print them, first.
 class LogCustom:
     def __init__( self ):
@@ -66,6 +68,31 @@ class LogCustom:
 # class LogCustom
 log = LogCustom()
 log.setPrintAll(True)
+
+def getTimeStamp():
+    """
+    
+    # REM: linux command:
+    # timedatectl list-timezones: list all timezones
+    # sudo timedatectl set-timezone Europe/Paris => set paris
+    """
+    import datetime
+    datetimeObject = datetime.datetime.now()
+    strTimeStamp = datetimeObject.strftime( "%Y/%m/%d: %Hh%Mm%Ss" )
+    return strTimeStamp
+    
+def getLogPath():
+    if os.name == "nt":
+        strPath = "/tmp/"
+    else:
+        strPath = "/home/nao/"
+    return strPath
+    
+def logSimple(s):
+    f = open( getLogPath() + "sound_analyser.log","at") # need to create empty file (touch) as root and put rights to 777
+    f.write(getTimeStamp() + ": " + str(s) + "\n")
+    f.close()
+
 
 class VAD:
     """
@@ -174,6 +201,13 @@ class SoundAnalyzer:
         self.strLastRecognized = "";
         
         self.strDstPath = "/tmp/"
+        try:
+            alternatePath = "/home/nao/recorded/rawWavs/"
+            if not os.path.isdir(alternatePath): os.makedirs(alternatePath)
+            self.strDstPath = alternatePath # if we're here it means no error has been raised while creating folders
+        except BaseException as err:
+            print("ERR: SoundAnalyzer: err: %s" % str(err))
+        
         
         self.simulatedTime = time.time() # never use real computer time, but simulated one, so we could make automatic test faster
         
@@ -392,9 +426,9 @@ class SoundAnalyzer:
                     else:
                         aRecognizedSpeech = []
                         
-                if 1:
-                    # keep sum of amount of time sent to google per day
-                    self.storeAnalysedDuration( rDuration )                        
+                    if 1:
+                        # keep sum of amount of time sent to google per day
+                        self.storeAnalysedDuration( rDuration )                        
                         
                 if not self.bKeepAudioFiles:
                     try:
@@ -464,6 +498,12 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
         
         self.strNaoIp = strNaoIp
         self.bStarted = False
+        
+        self.inhibit_timeNextUsableAudioForSpeech = time.time() + 0.5
+        
+        # when ask to set pause from an external program, but want the possibility to the user to finish his sentence
+        self.bCurrentlyPaused=False
+        self.timeToActivatePause = time.time()
         
         try:
             naoqi.ALModule.__init__(self, strModuleName )
@@ -585,6 +625,20 @@ class AbcdkSoundReceiverModule(naoqi.ALModule):
         if( bMustStop ):
             self.stop()
             return
+            
+        try:
+            bInPause = self.mem.getData( global_strALMemoryKeyName__pause )
+            if bInPause and not self.bCurrentlyPaused:
+                self.bCurrentlyPaused = True
+                self.timeToActivatePause = time.time()+5. # let the human finish to speak, if (s)he was...
+            if not bInPause and self.bCurrentlyPaused:
+                self.bCurrentlyPaused = False
+
+            if bInPause and time.time() > self.timeToActivatePause:
+                return
+        except BaseException as err:
+            print("WRN: _processRemote_: while getting pause: err: %s" % str(err))
+            
 
         if 1:
             # handle ego noising
@@ -721,12 +775,27 @@ def launchSoundReceiverFromShell( strRobotIp = "localhost",  bActivateSpeechReco
     this is a usefull method to be launched directly from command line with this line:
     python -c "import abcdk.sound_analyser; abcdk.sound_analyser.launchSoundReceiverFromShell('localhost')"
     """
-    log.info( "launchSoundReceiverFromCommandLine( %s ) - beginning..." % strRobotIp )
+    if 1:
+        print("DBG: launchSoundReceiverFromShell: checking if already launched...\n\n")
+        #~ prevProxSound = naoqitools.myGetProxy("AbcdkSoundReceiver", strRobotIp, 9559) # doesn't work anymore
+        try:
+            prevProxSound = naoqi.ALProxy("AbcdkSoundReceiver", strRobotIp, 9559)
+            bFound = prevProxSound != None
+            print("DBG: launchSoundReceiverFromShell: prevProx Sound: %s" % str(prevProxSound) )
+        except BaseException as err:
+            bFound = False
+        if bFound:
+            print("ERR: launchSoundReceiverFromShell: already started, exiting...")
+            exit(0)
+        
+    logSimple( "launchSoundReceiverFromShell( %s ) - beginning..." % strRobotIp )
+    log.info( "launchSoundReceiverFromShell( %s ) - beginning..." % strRobotIp )
     #~ strCommand = "python -c 'import abcdk.sound_analyser; abcdk.sound_analyser.launchSoundReceiverStandalone( \"%s\" )'" % strRobotIp # callback failed with this command
     strCommand = "python /home/nao/.local/lib/python2.7/site-packages/abcdk/sound_analyser.py %s %s" % (strRobotIp,bActivateSpeechRecognition)
-    log.debug( "launchSoundReceiverFromCommandLine: launching: '%s'" %  strCommand )
+    log.debug( "launchSoundReceiverFromShell: launching: '%s'" %  strCommand )
     os.system( strCommand )    
-    log.info( "launchSoundReceiverFromCommandLine( %s ) - ended" % strRobotIp )
+    log.info( "launchSoundReceiverFromShell( %s ) - ended" % strRobotIp )
+    logSimple( "launchSoundReceiverFromShell( %s ) - ended..." % strRobotIp )
 
 def launchFromCommandLine( strIP = "localhost", bActivateSpeechRecognition = False):
     if hasattr( sys, "argv"):

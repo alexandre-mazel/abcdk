@@ -14,12 +14,12 @@ print( "importing abcdk.filetools" );
 import os
 import time
 import datetime
-import mutex
+#~ import mutex
+import threading
 import shutil
 import time
 
 import debug
-import naoqitools
 import pathtools
 
 
@@ -50,13 +50,13 @@ def copyFile( strPathFilenameSrc, strPathFilenameDst, bVerbose = False ):
     bError = False;
     try:
         file = open( strPathFilenameSrc, "rb" );
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: filetools.copyFile failed at source opening: %s" % err );
         return False;
         
     try:
         strBuf = file.read();
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: filetools.copyFile failed at dest opening: %s" % err );
         bError = True;
     file.close();        
@@ -66,7 +66,7 @@ def copyFile( strPathFilenameSrc, strPathFilenameDst, bVerbose = False ):
     try:
         file = open( strPathFilenameDst, "wb" );
         file.write( strBuf );
-    except (IOError, os.error), err:
+    except (IOError, os.error) as err:
         print( "ERR: filetools.copyFile failed: %s" % err );
         bError = True;
     file.close();
@@ -96,7 +96,7 @@ def compareFile( strFile1, strFile2, bCountDifference = False, bVerbose = False 
     try:
         nFileSize1 = os.path.getsize( strFile1 );
         nFileSize2 = os.path.getsize( strFile2 );
-    except BaseException, err:
+    except BaseException as err:
         print( "DBG: abcdk.filetools.compareFile: %s" % str( err ) );
         return -1;
     if( not bCountDifference and nFileSize1 != nFileSize2 ):
@@ -137,7 +137,7 @@ def copyDirectory( strPathSrc, strPathDst, strExcludeSkul = None ):
     bAtLeastOneFile = False;
     try:
         os.makedirs( strPathDst );
-    except BaseException, err:
+    except BaseException as err:
         print( "WRN: filetools.copyDirectory: while creating destination: " + str( err ) );
     if( not os.path.exists( strPathSrc ) ):
         return False;
@@ -159,14 +159,14 @@ def getFileContents( szFilename, bQuiet = False ):
     aBuf = "";
     try:
         file = open( szFilename );
-    except BaseException, err:
+    except BaseException as err:
         if( not bQuiet ):
             debug.debug( "ERR: filetools.getFileContents open failure: %s" % err );
         return "";
         
     try:
         aBuf = file.read();
-    except BaseException, err:
+    except BaseException as err:
         if( not bQuiet ):
             debug.debug( "ERR: filetools.getFileContents read failure: %s" % err );
         file.close();
@@ -174,7 +174,7 @@ def getFileContents( szFilename, bQuiet = False ):
         
     try:
         file.close();
-    except BaseException, err:
+    except BaseException as err:
         if( not bQuiet ):
             debug.debug( "ERR: filetools.getFileContents close failure: %s" % err );
         pass
@@ -234,7 +234,7 @@ def getFileTime( strFilename ):
     """
     try:
         nTime = os.path.getmtime( strFilename );
-    except os.error, err:
+    except os.error as err:
         nTime = 0;
 #    print( "getFileTime( '%s' ): %d" % ( strFilename, nTime ) );
     return nTime;
@@ -247,7 +247,7 @@ def getFileTimePrintable( strFilename ):
     """
     try:
         nTime = os.path.getmtime( strFilename );
-    except os.error, err:
+    except os.error as err:
         return "";
     #~ print( "getFileTimePrintable( '%s' ): %d" % ( strFilename, nTime ) );
     strTimeStamp = datetime.datetime.fromtimestamp(nTime).strftime( "%Y_%m_%d-%Hh%Mm%Ss%fms" );
@@ -264,7 +264,7 @@ def getAgeOfFile( strFilename ):
     try:
         nTime = time.time() - getFileTime( strFilename );
         return nTime;
-    except BaseException, err:
+    except BaseException as err:
         print( "DBG: filetools.getAgeOfFile: err: %s" % str( err ) );
         return time.time() - 10000000; 
 # getAgeOfFile - end
@@ -277,7 +277,7 @@ def touch( strFilename ):
     try:    
         os.utime( strFilename, None );
         return True;
-    except BaseException, err:
+    except BaseException as err:
         print( "DBG: filetools.touch: err: %s" % str( err ) );
     return False;
 # touch - end
@@ -287,7 +287,7 @@ def touch( strFilename ):
 def makedirsQuiet( strPath, bPrintError = False ):
     try:
         os.makedirs( strPath );
-    except BaseException, err:
+    except BaseException as err:
         if( bPrintError ):
             print( "WRN: filetools.makedirsQuiet: err: %s" + str( err ) );
         pass # quiet!
@@ -297,7 +297,7 @@ def makedirsQuiet( strPath, bPrintError = False ):
 def removeDirsQuiet( strPath, bPrintError = False ):
     try:
         shutil.rmtree( strPath );
-    except BaseException, err:
+    except BaseException as err:
         if( bPrintError ):
             print( "WRN: filetools.removeDirsQuiet: err: %s" + str( err ) );
         pass # quiet!
@@ -373,7 +373,7 @@ def extractFolderFromZip( zipFile, aTableListPath ):
             try:
                 zipFile.extract( strFilename, aTableListPath[strFirstFolder] );
                 nNbrExtracted += 1;
-            except BaseException, err:
+            except BaseException as err:
                 print( "ERR: life_data.installPackage: extract %s to %s, err: %s" % ( strFilename, aTableListPath[strFirstFolder], str( err ) ) );
                 # on continue la ou pas ?            
         nCount += 1;
@@ -399,20 +399,20 @@ def replaceInFile( strStringToFind, strStringNew, strFilenameSrc, strFilenameDst
         
     try:
         file = open( strFilenameDst, "w" );
-    except BaseException, err:
+    except BaseException as err:
         debug.debug( "ERR: filetools.replaceInFile open failure: %s" % err );        
         return False;
         
     try:
         file.write( strContents );
-    except BaseException, err:
+    except BaseException as err:
         debug.debug( "ERR: filetools.replaceInFile write failure: %s" % err );
         file.close();
         return False;
         
     try:
         file.close();
-    except BaseException, err:
+    except BaseException as err:
         debug.debug( "ERR: filetools.replaceInFile close failure: %s" % err );
         return False;
         
@@ -421,7 +421,8 @@ def replaceInFile( strStringToFind, strStringNew, strFilenameSrc, strFilenameDst
 
 # TODO: rewrite in a beautiful object
 global_strAltools_LogToFile = None;
-global_mutex_LogToFile = mutex.mutex();
+#~ global_mutex_LogToFile = mutex.mutex();
+global_mutex_LogToFile = threading.Lock()
 global_timeLogToFile_lastLog = time.time();
 def logToFile( strMessage, strSpecificFileName = "" ):
     "add a message to the current debug log file"
@@ -444,6 +445,7 @@ def logToFile( strMessage, strSpecificFileName = "" ):
     if( strSpecificFileName == '' ):
         strFileName = global_strAltools_LogToFile;
     else:
+        import naoqitools # pourquoi ici on met tout le temps du naoqi meme si pas sur un robot ?
         strFileName = pathtools.getCachePath() + strSpecificFileName + '_' + naoqitools.getNaoqiStartupTimeStamp() + ".log";
 #    print( "logToFile: logging to %s" % strFileName );
     try:
@@ -505,7 +507,7 @@ def loadCsv( strFilename, strSeparator = ",", bSkipHeader = False ):
     """
     try:
         file = open( strFilename, "rt" );
-    except BaseException, err:
+    except BaseException as err:
         print( "WRN: abcdk.filetools.loadCsv: file '%s' not found?: err: %s" % (strFilename, str(err) ) );
         return False;
     buf = file.read();
@@ -647,7 +649,7 @@ def isFileOpenForWrite( strFilename ):
             #~ try:
                 #~ for fd in os.listdir('/proc/%s/fd' % pid): 
                         #~ print os.path.samefile( strFilename, '/proc/%s/fd/%s' % (pid, fd) )
-            #~ except BaseException, err:
+            #~ except BaseException as err:
                 #~ print( "DBG: isFileOpenForWrite: err: %s" % err )
     #~ return False # TODO !
     file = open( strFilename, "ab" )

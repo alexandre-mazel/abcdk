@@ -157,7 +157,7 @@ def constructFromNamedArray(obj, aNamedArray ):
             if( attr != None ):
                 # eval( "obj." + attr_name + " = '" + attr_value + "'" );
                 setattr( obj, attr_name, attr_value );
-        except BaseException, err:
+        except BaseException as err:
             print( "WRN: constructFromNamedArray: ??? (err:%s)" % ( str( err ) ) );
             pass
   # for

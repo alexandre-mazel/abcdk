@@ -17,6 +17,8 @@ import sys
 import time
 import datetime
 
+sys.path.insert(0,'/opt/aldebaran/lib/python2.7/site-packages')
+
 import cache
 import config
 import debug
@@ -26,9 +28,13 @@ import evaltools
 # import system # de meme
 import test
 
+print("DBG: sys.path:%s" % sys.path)
+
+
+ 
 try:
     import qi
-except BaseException, err:
+except BaseException as err:
     print( "ERR: naoqitools: can't import qi" );
 
 
@@ -39,14 +45,14 @@ def getFileContents( szFilename, bQuiet = False ):
     aBuf = "";
     try:
         file = open( szFilename );
-    except BaseException, err:
+    except BaseException as err:
         if( not bQuiet ):
             debug.debug( "ERR: naoqitools.getFileContents open failure: %s" % err );
         return "";
 
     try:
         aBuf = file.read();
-    except BaseException, err:
+    except BaseException as err:
         if( not bQuiet ):
             debug.debug( "ERR: filetools.getFileContents read failure: %s" % err );
         file.close();
@@ -54,7 +60,7 @@ def getFileContents( szFilename, bQuiet = False ):
 
     try:
         file.close();
-    except BaseException, err:
+    except BaseException as err:
         if( not bQuiet ):
             debug.debug( "ERR: filetools.getFileContents close failure: %s" % err );
         pass
@@ -110,7 +116,7 @@ else:
       from naoqi import ALModule
       from naoqi import ALProxy
       bNaoqiInitialised = True;
-  except BaseException, err:
+  except BaseException as err:
       print( "ERR: abcdk.naoqitools: Can't load naoqi python module !?!, err: %s" % str( err ) );
       class ALModule:
           def __init__(self):
@@ -204,7 +210,7 @@ def myGetProxyWithAddr( strProxyName,  strIP = None, nPort = config.nDefaultPort
     debug.debug( "INF: MyGetProxyWithAddr: connected to '%s@%s:%d' (1)" % (strProxyName,strIP,nPort) );
     cache.storeInCache( strProxyName + strIP + str( nPort ), obj );
     return obj;
-  except BaseException, err:    
+  except BaseException as err:    
     debug.debug( "ERR: MyGetProxyWithAddr(%s): Exception catched: %s" % (strProxyName,err ) );
     return None;
 # myGetProxyWithAddr - end
@@ -223,7 +229,7 @@ def launchCall( *listArgs ):
     print( params );
     proxy.callPython( strFuncName, *params );
     thread.exit(); # exit thread
-  except BaseException, err:
+  except BaseException as err:
     debug.debug( "MyPCall: Exception catched: %s" % err );
 # launchCall - end
 
@@ -232,7 +238,7 @@ def myPCall( proxy, strFuncName, args ):
     listArgs = [ proxy, strFuncName, args ];
     thread.start_new_thread( LaunchCall, (listArgs,) );
     return;
-  except BaseException, err:
+  except BaseException as err:
     debug.debug( "MyPCall: Exception catched: %s" % err );
 # myPCall - end
 
@@ -379,7 +385,7 @@ def launch( strModuleName, strLibraryName = "", bHandleMultiVersion = False, str
     strUserPathDefault = "/home/nao/.local/lib/";
     try:
         launcher = myGetProxy( strLauncherName );
-    except BaseException, err:
+    except BaseException as err:
         print( "WRN: naoqitools.launch: can't connect to ALLauncher: '%s', trying ALLauncher_cogito..." % err );
         launcher = myGetProxy( "ALLauncher_cogito" );
     if( not launcher.isModulePresent( strModuleName ) ):
@@ -421,7 +427,7 @@ def getMemoryData( strName, defaultValue = None ):
     try:
         mem = myGetProxy( "ALMemory" );    
         return mem.getData( strName );
-    except BaseException, err:
+    except BaseException as err:
         print( "WRN: abcdk.naoqitools.getMemoryData: access to data '%s' return default: %s (err:%s)" % (strName, str(defaultValue), err ) );
     return defaultValue;
 # getMemoryData - end
@@ -438,14 +444,14 @@ class MemorySubscriber(ALModule):
         #~ print( "DBG: abcdk.MemorySubscriber.__init__: strModuleName: %s" % str(strModuleName) );
         try:
             ALModule.__init__(self, strModuleName );
-        except BaseException, err:
+        except BaseException as err:
             print( "ERR: abcdk.MemorySubscriber: init error (1): %s" % str(err) );
             
         try:            
             self.BIND_PYTHON( self.getName(),"callback" );
             self.mem = myGetProxy( "ALMemory" );
             self.pb = myGetProxy( "ALPythonBridge" );
-        except BaseException, err:
+        except BaseException as err:
             print( "ERR: abcdk.MemorySubscriber: init error (2): %s" % str(err) );
         self.dictRegister = list(); # a list of [strMemoryKeyname, strMethodToCall, in a naoqi or not?] # TODO: multi register to same variable
         #~ print( "DBG: abcdk.MemorySubscriber.__init__: self.mem: %s" % str(self.mem) );
@@ -510,7 +516,7 @@ class MemorySubscriber(ALModule):
         #~ eval( strCall, globals(), locals() );
         try:
             self.pb.eval( strCall );
-        except BaseException, err:
+        except BaseException as err:
             print( "ERR: abcdk.MemorySubscriber: while callbacking '%s': err: %s" % (strCall, str(err) ) );
     # callback - end
     
@@ -569,7 +575,7 @@ class ALMemoryPlug(naoqi.ALModule):
                 print( "ERR: abcdk.naoqitools.ALMemoryPlug: adding the method '%s'" % strMethod );
                 self.BIND_PYTHON( self.getName(), strMethod );
                 setAttr( self, strMethod, "bouchon" );
-        except BaseException, err:
+        except BaseException as err:
             print( "ERR: abcdk.naoqitools.ALMemoryPlug: loading error: %s" % str(err) );
 
     # __init__ - end
@@ -717,7 +723,7 @@ def isVariableInMemory( strVariableName, strSpecificProxyName = "ALMemory" ):
         mem = myGetProxy( strSpecificProxyName );
         d = mem.getType( strVariableName );
         return True;
-    except BaseException, err:
+    except BaseException as err:
         pass
     return False
 # isVariableInMemory - end

@@ -10,7 +10,8 @@
 print( "importing abcdk.debug" );
 
 import sys
-import mutex
+#~ import mutex
+import threading
 import time
 import datetime
 
@@ -27,7 +28,7 @@ def debug( args, bIgnoreDuplicateMessage = False ):
         if( str( args ) in global_debug_dictAlreadyOutputted.keys() ):
             return;
         global_debug_dictAlreadyOutputted[str(args)] = True; # add it!
-    print args;
+    print( args );
 # debug - end
 
 def setDebugMode( bNewVal ):
@@ -210,7 +211,8 @@ def getHumanTimeStamp():
 
 
 global_strAltools_LogToFile = None;
-global_mutex_LogToFile = mutex.mutex();
+#~ global_mutex_LogToFile = mutex.mutex();
+global_mutex_LogToFile = threading.Lock();
 global_timeLogToFile_lastLog = time.time();
 def logToFile( strMessage, strSpecificFileName = "" ):
     "add a message to the current debug log file"

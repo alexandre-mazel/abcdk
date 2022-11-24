@@ -71,7 +71,7 @@ def ariToPng( strStrImage, strDstImage ):
 
     try:
         file = open( strStrImage, "rb" );
-    except RuntimeError, err:
+    except RuntimeError as err:
         print( "ERR: abcdk.image.ariToPng: can't open file '%s'" % strStrImage );
         return False;
 
@@ -472,7 +472,7 @@ def haarDetectFromFile( strCascadeFileName, strFilename, strDebugFilename = "", 
     "(see haarDetect for detail)"
     try:
         imageBuffer = cv.LoadImage( strFilename );
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: haarDetectFromFile: image file '%s' not found. (err:%s)" % (strFilename, str(err)) );
         return False;
     return haarDetect( strCascadeFileName, imageBuffer, strDebugFilename, strDebugWindowName, strAutoCropDst , nWidthMargin, nHeightMargin, nMinNeighbour = nMinNeighbour, nMinSizeAnalyse = nMinSizeAnalyse );
@@ -511,7 +511,7 @@ def haarDetectFromNaoCam( strCascadeFileName, nResolution, strDebugFilename = ""
             # converted locally in NAO's  head
             cv.SetData( imageBuffer, image );
             return haarDetect( strCascadeFileName, imageBuffer, strDebugFilename, strDebugWindowName, strAutoCropDst , nWidthMargin, nHeightMargin, nMinNeighbour );
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: haarDetectFromNaoCam: catched error: %s" % str(err) );
     return False;
 # haarDetectFromNaoCam - end
@@ -564,7 +564,7 @@ def haarDetect( strCascadeFileName, imageBuffer, strDebugFilename = "", strDebug
     # detect objects
     try:
         cascade = cv.Load( strCascadeFileName );
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: haarDetect: haarcascade '%s' not found. (err:%s)" % ( strCascadeFileName, str(err)) );
         return False;
     timeAnalyse = time.time();
@@ -661,7 +661,7 @@ def addRectangles( strImageFilename, listSquare, strImageFilenameDest = "", nSty
 
     try:
         imageBuffer = cv.LoadImage( strImageFilename );
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: image.addSquare: image source file '%s' error: %s" % ( strImageFilename, str( err ) ) );
         return False;
 
@@ -723,7 +723,7 @@ def getCroppedImages(strPicName, listSquare, strDestName=""):
 
     try:
         imageBuffer = cv.LoadImage( strPicName );
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: image.addSquare: image source file '%s' error: %s" % ( strPicName, str( err ) ) );
         return False;
     for idx, rect in enumerate( listSquare ):
@@ -833,7 +833,7 @@ def applyMethodOnFile( strFilename, strMethodName, rCenterRatio = 1., bForceGray
         else:
             imageBuffer = cv.LoadImage( strFilename );
         # print getImageProperties( imageBuffer );
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: applyMethodOnFile: image file '%s' not an image?. (err:%s)" % (strFilename, str(err)) );
         return None;
     if( rCenterRatio != 1. ):
@@ -941,7 +941,7 @@ def reduceBigger( strSrcFile, strDstFile = None, nWidthMax = 1600, nHeightMax = 
     """
     try:
         imageBuffer = cv.LoadImage( strSrcFile );
-    except BaseException, err:
+    except BaseException as err:
         print( "ERR: image.reduceBigger: while loading image source file '%s', error: %s" % ( strSrcFile, str( err ) ) );
         return -1;
     # try - end
@@ -1005,7 +1005,7 @@ def foundSubFeatures( imageBuffer, listCascadeToApply, strDebugFilename = "", st
             # load the cascade for that level
             try:
                 listLoadedCascade.append( cv.Load( listCascadeToApply[nNumCascade] ) );
-            except BaseException, err:
+            except BaseException as err:
                 print( "ERR: haarDetect: haarcascade '%s' not found or ?. (err:%s)" % ( listCascadeToApply[nNumCascade], str(err)) );
                 return False;
         for rect in listRectCurrent:
@@ -1852,7 +1852,7 @@ def computeHomotethy(kp1, kp2, matched ):
     print( matched_p1 );
     print( matched_p2 );
     H, status = cv2.findHomography(matched_p1, matched_p2, cv2.RANSAC, 5.0)
-    print '%d / %d  inliers/matched' % (numpy.sum(status), len(status))
+    print( '%d / %d  inliers/matched' % (numpy.sum(status), len(status)) )
 
     return (matched_p1, matched_p2, status, H);
 # computeHomotethy - end
@@ -1942,11 +1942,11 @@ def compareObject( imageBufferRef, imageBuffer, bDrawDebug = False ):
 
     #~ equalizeColorImage( imageBuffer, bEqualiseEachChannelIndependantly = False );
     import cv2
-    print cv2.__version__;
-    print cv2.__package__
-    print cv2.__name__
-    print cv2.__file__
-    print cv.__file__
+    print( cv2.__version__ )
+    print( cv2.__package__ )
+    print( cv2.__name__ )
+    print( cv2.__file__ )
+    print( cv.__file__ )
 
     FLANN_INDEX_KDTREE = 1  # bug: flann enums are missing
     FLANN_INDEX_LSH    = 6
@@ -1973,16 +1973,16 @@ def compareObject( imageBufferRef, imageBuffer, bDrawDebug = False ):
     timeBegin = time.time();
     kp1, desc1 = detector.detectAndCompute(imageBufferRef, None)
     kp2, desc2 = detector.detectAndCompute(imageBuffer, None)
-    print 'imgref: %d features, img: %d features' % (len(kp1), len(kp2))
+    print('imgref: %d features, img: %d features' % (len(kp1), len(kp2)) )
 
     raw_matches = matcher.knnMatch(desc1, trainDescriptors = desc2, k = 2) #2
     p1, p2, kp_pairs = filter_matches(kp1, kp2, raw_matches)
     if len(p1) >= 4:
         H, status = cv2.findHomography(p1, p2, cv2.RANSAC, 5.0)
-        print '%d / %d  inliers/matched' % (numpy.sum(status), len(status))
+        print( '%d / %d  inliers/matched' % (numpy.sum(status), len(status)) )
     else:
         H, status = None, None
-        print '%d matches found, not enough for homography estimation' % len(p1)
+        print( '%d matches found, not enough for homography estimation' % len(p1) )
 
     rDuration = time.time() - timeBegin;
     print( "Duration: %5.2fs" % rDuration );
@@ -2305,7 +2305,7 @@ def findColoredMarks2_test():
         elif( aRef[nCptTotal][0][0] == -1 ):
             strOut = "NOT DETECTED BUT NOTHING TO DETECT => GOOD";
             nCptGood += 1;
-        print strOut;
+        print( strOut );
         if( strOut != "GOOD" ):
             showImage( imageBuffer, rTimeAutoClose = 0.3, strWindowName = strOut );
         if( nCptTotal >= 20 ): # permit to see a specific image
@@ -2382,7 +2382,7 @@ def findText_test():
                     break;
             else:
                 nCptBad += 1;
-        print strOut;
+        print( strOut )
         if( strOut != "GOOD" ):
             showImage( imageBuffer, rTimeAutoClose = 0.3, strWindowName = strOut );
         if( nCptTotal >= 0 ): # permit to see a specific image
@@ -2885,7 +2885,7 @@ def autotest_convertToAscii():
     #im = cv2.imread( "c:/work/Dev/git/appu_data/images_to_analyse/4_interest_green_bad.png" );
     #~ im = cv2.imread( "c:/work/graph/1_ACI_Associate.jpg" );
     im = cv2.imread( "c:/tempo/1_ACI_Associate_grey.jpg" );
-    print convertToAscii( im, nReduceToWidth = 160, nReduceToHeight = 120 );
+    print( convertToAscii( im, nReduceToWidth = 160, nReduceToHeight = 120 ) )
 
 
 def detectLine( img, bVerbose = False ):
@@ -3136,7 +3136,7 @@ def autotest_cameraCalibration():
     img = cv2.imread("./data/images/pattern_9_6.png", 0)
     aImgs = [img] * 10
     res =  _calibrateCamera(aImgs, aPatternSize=(9, 6))
-    print res
+    print( res )
 
 
 def addText(aImage, strText='subtitle text'):
@@ -3626,7 +3626,7 @@ def classifyImages( strSrcFolder, strDstFolder, function, aThreshold = [1], aCla
  
 def getSharpnessValue(im):
      r = getImageSharpness( im )
-     print r
+     print( r )
      r = r[0]
      return r
 
@@ -3813,8 +3813,8 @@ def removeStaticPixelsInFolder( strPathSrc, anNewColor = (255,255,255) ):
                 imDest[np.where((maskGreen == 0))] = color                
                 
             else:
-                print imDest[93,300]
-                print imDest[300,300]
+                print( imDest[93,300] )
+                print( imDest[300,300] )
                 # bourrin (but VERY long, like 4s per image)
                 for j in range(imDest.shape[0]):
                     for i in range(imDest.shape[1]):
@@ -3916,30 +3916,30 @@ def autoTest():
         for nMethod in range( 4 ):
             print( "-- nMethod: %d" % nMethod );
             imageBuffer = cv.LoadImage( strMyAppuDataPath + "images_to_analyse/0011_Mazel_Alexandre_027.jpg" );
-            print getImageQuality( imageBuffer, nMethod = nMethod );
+            print( getImageQuality( imageBuffer, nMethod = nMethod ) )
             imageBuffer = cv.LoadImage( strMyAppuDataPath + "images_to_analyse/0011_Mazel_Alexandre_027_grey.jpg" );
-            print getImageQuality( imageBuffer, nMethod = nMethod );
+            print( getImageQuality( imageBuffer, nMethod = nMethod ) )
     if( False ):
         print( "\n* Testing image quality change if image is blur or not" );
         for nMethod in range( 4 ):
             print( "-- nMethod: %d" % nMethod );
             print( "- blur:" );
             imageBuffer = cv.LoadImage( strMyAppuDataPath + "images_to_analyse/0011_Mazel_Alexandre_053_blur.jpg" );
-            print getImageQuality( imageBuffer, nMethod = nMethod );
+            print( getImageQuality( imageBuffer, nMethod = nMethod ) )
             imageBuffer = cv.LoadImage( strMyAppuDataPath + "images_to_analyse/0011_Mazel_Alexandre_054_blur.jpg" );
-            print getImageQuality( imageBuffer, nMethod = nMethod );
+            print( getImageQuality( imageBuffer, nMethod = nMethod ) )
             imageBuffer = cv.LoadImage( strMyAppuDataPath + "images_to_analyse/0011_Mazel_Alexandre_058_a_bit_blur.jpg" );
-            print getImageQuality( imageBuffer, nMethod = nMethod );
+            print( getImageQuality( imageBuffer, nMethod = nMethod ) )
             print( "- not blur:" );
             imageBuffer = cv.LoadImage( strMyAppuDataPath + "images_to_analyse/0011_Mazel_Alexandre_046.jpg" );
-            print getImageQuality( imageBuffer, nMethod = nMethod );
+            print( getImageQuality( imageBuffer, nMethod = nMethod ) )
             imageBuffer = cv.LoadImage( strMyAppuDataPath + "images_to_analyse/0011_Mazel_Alexandre_055.jpg" );
-            print getImageQuality( imageBuffer, nMethod = nMethod );
+            print( getImageQuality( imageBuffer, nMethod = nMethod ) )
             imageBuffer = cv.LoadImage( strMyAppuDataPath + "images_to_analyse/0011_Mazel_Alexandre_027.jpg" );
-            print getImageQuality( imageBuffer, nMethod = nMethod );
+            print( getImageQuality( imageBuffer, nMethod = nMethod ) )
     if( False ): # testing getCroppedImages()
         if ( getCroppedImages('/home/sebastien/Pictures/test/lulu.jpg', [[50, 50, 50, 50], [100, 50, 50, 50], [[50, 100, 75, 25], 'myId', 3], [[100, 100, 25, 100], 'me', 45], [0,0,200,100]]) ):
-            print "success, check your folder /home/sebastien/Pictures/test/lulu.jpg"
+            print( "success, check your folder /home/sebastien/Pictures/test/lulu.jpg" )
     if( False ):
         findColoredMarks_test();
     if( False ):

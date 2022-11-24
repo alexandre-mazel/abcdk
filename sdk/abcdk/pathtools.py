@@ -20,14 +20,14 @@ def getFileContents( szFilename, bQuiet = False ):
     aBuf = "";
     try:
         file = open( szFilename );
-    except BaseException, err:
+    except BaseException as err:
         if( not bQuiet ):
             debug.debug( "ERR: filetools(!).getFileContents open failure: %s" % err );
         return "";
         
     try:
         aBuf = file.read();
-    except BaseException, err:
+    except BaseException as err:
         if( not bQuiet ):
             debug.debug( "ERR: filetools(!).getFileContents read failure: %s" % err );
         file.close();
@@ -35,7 +35,7 @@ def getFileContents( szFilename, bQuiet = False ):
         
     try:
         file.close();
-    except BaseException, err:
+    except BaseException as err:
         if( not bQuiet ):
             debug.debug( "ERR: filetools(!).getFileContents close failure: %s" % err );
         pass

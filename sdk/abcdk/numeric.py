@@ -230,7 +230,7 @@ def randomDifferent( min, maxIncluded ):
     global global_listLastRandom;
     try:
         nLast = global_listLastRandom[maxIncluded];
-    except BaseException, err:
+    except BaseException as err:
         print( "INF: randomDifferent: first access to a random with max %d" % maxIncluded );
         nLast = min-1; # impossible value
     if( min == maxIncluded ):
@@ -590,7 +590,7 @@ def computeVectAngle(vect1, vect2):
         val =  num/denum
         theta = sign * math.acos(val)
 
-    except ValueError, err:
+    except ValueError as err:
         print("ERR: abcdk.numeric.computeVectANGLE v1 = %s, v2 = %s, error %s" % (str(vect1), str(vect2), str(err)))
         theta = 0
     return MinAngle(theta)
@@ -963,7 +963,7 @@ def testMaison():
     dx = res[0]
     dy = res[1]
     dwz = res[5]
-    #print res
+    #print( res )
     #vecDir = polarToCartesian(1, res[5])
     #pylab.quiver( res[0], res[1], vecDir[0], vecDir[1], color='r')
 
@@ -1006,7 +1006,7 @@ def testconvertPoseWorldToTorso():
     p6DObjectRtWorld = np.zeros(6)
     p6DRobotRtWorld  = np.array([1 , 1, 0, 0.0, 0.0, math.pi/2.0])
     val = convertPoseWorldToTorso(p6DObjectRtWorld, p6DRobotRtWorld)
-    print val
+    print( val )
     np.testing.assert_almost_equal(val, np.array([-1, 1, 0, 0, 0, -math.pi/2.0]))
 
 
@@ -1037,7 +1037,7 @@ def intersectionPlaneSegment(planePt, planeNormalVector, segmentPtA, segmentPtB 
             return [segmentPtA, segmentPtB]
     else: # vector are not orthogonal
         rDistanceFromPtA = float(rNumerator) / float(rDenominator)
-        #print rDistanceFromPtA
+        #print( rDistanceFromPtA )
         if (rDistanceFromPtA<0) or  (rDistanceFromPtA > abs(dist3D(segmentPtA, segmentPtB))):
             return None  # interesection outside of segment
         else:
@@ -1144,7 +1144,7 @@ def test_intersectionPlaneCuboid():
                 aVertex.append([np.array(ptA), np.array(ptB)])
                 aVertex.append([np.array(ptA), np.array(ptAinv)])
 
-    print aVertex
+    print( aVertex )
     import time
     rTimeStart = time.time()
     aIntersection = _intersectionPlaneCuboid(planePt, planeNormalVector, aVertex)
@@ -1376,11 +1376,11 @@ def autotest():
     Choice.autoTest();
     print( "classic random:" );
     for _ in xrange( 10 ):
-        print random.randint( 0, 3 );
+        print( random.randint( 0, 3 ) )
 
     print( "different random:" );
     for _ in xrange( 10 ):
-        print randomDifferent( 0, 3 );
+        print( randomDifferent( 0, 3 ) )
 
     listRect = [ [0,0,10,10], [-5,5,20,-20], [0,0,6,6] ];
     listRectOut = simplifyRectangleList( listRect );

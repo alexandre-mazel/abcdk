@@ -392,19 +392,19 @@ def autoTest():
 
 
     hsv = rgbToHsv( [255,0,0] );
-    print str( hsv )
+    print( str( hsv ) )
     assert( [0,255,255] == hsv );
     
     hsv = rgbToHsv( [40,128,255] );
-    print str( hsv )
+    print( str( hsv ) )
     assert( [152,215,255] == hsv );
 
     hsv = rgbToHsv( [255,0,255] );
-    print str( hsv )
+    print( str( hsv ) )
     assert( [212,255,255] == hsv );
 
     hsv = rgbToHsv( [50,125,100] );
-    print str( hsv )
+    print( str( hsv ) )
     assert( [113, 153, 125] == hsv );
     
     colorInfo = getColorNameFromHSV( [359,200,200], 0, True );    
@@ -426,10 +426,10 @@ def autoTest():
     # but must be Black !!! [ok]
     
     rgb = yuvToRgb( [23,120,135] );
-    print str( rgb )
+    print( str( rgb ) )
     assert( [19,11,0] == rgb );
     hsv = rgbToHsv( rgb );
-    print str( hsv )
+    print( str( hsv ) )
     assert( [24,255,19] == hsv ); #should be h 24/235 !!!
     colorInfo = getColorNameFromHSV( hsv );
     assert( "Black" == colorInfo[0] );
@@ -438,7 +438,7 @@ def autoTest():
     # => red-ish ! 
     # instead of brown "Wood Bark"
     hsv = rgbToHsv( [42,30,27] );
-    print str( hsv )
+    print( str( hsv ) )
     assert( [8, 91, 42] == hsv );
     colorInfo = getColorNameFromHSV( hsv );
     assert( "Black" == colorInfo[0] );
@@ -447,7 +447,7 @@ def autoTest():
     # => red-ish ! 
     # instead of brown "Cowboy"
     hsv = rgbToHsv( [69,57,54] );
-    print str( hsv )
+    print( str( hsv ) )
     assert( [8, 55, 69] == hsv );
     colorInfo = getColorNameFromHSV( hsv );
     assert( "Dark Grey" == colorInfo[0] );    

@@ -31,7 +31,7 @@ def isIterable( aVariable ):
     "return True even with exotic type <type 'numpy.ndarray'>"
     try:
         len( aVariable );
-    except BaseException, err:
+    except BaseException as err:
         return False;
     return True;
 # isIterable - end
@@ -45,7 +45,7 @@ def isArray( aVariable ):
     "has the variable the array type ?"
     #~ try:
         #~ aVariable[0];
-    #~ except BaseException, err:
+    #~ except BaseException as err:
         #~ return False;
     #~ return not isString( aVariable ); #car les strings aussi ont la méthode crochet
     bRet = isinstance( aVariable, list );
@@ -68,7 +68,7 @@ def isString( strVariable ):
     # if( type( strVariable ) == type( "some string") ):
     if isinstance( strVariable, basestring ): # True for both Unicode and byte strings
       return True;
-  except BaseException, err:
+  except BaseException as err:
     pass
   return False;
 # isString - end
@@ -78,7 +78,7 @@ def isString_Bytes( strVariable ):
   try:
     if isinstance( strVariable, str ):
       return True;
-  except BaseException, err:
+  except BaseException as err:
     pass
   return False;
 # isString_Bytes - end
